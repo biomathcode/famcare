@@ -66,3 +66,5 @@ export const sleepGoal = mysqlTable("sleep_goal", {
     targetHours: float("target_hours").notNull(),
     createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
 });
+
+

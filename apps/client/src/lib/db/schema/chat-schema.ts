@@ -20,3 +20,4 @@ export const chatMessage = mysqlTable("chat_message", {
     embedding: json("embedding"), // vector embedding for retrieval
     createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
 });
+

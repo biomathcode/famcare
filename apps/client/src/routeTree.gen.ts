@@ -8,22 +8,39 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from "@tanstack/react-router";
 import { createServerRootRoute } from "@tanstack/react-start/server";
 
 import { Route as rootRouteImport } from "./routes/__root";
 import { Route as DashboardRouteRouteImport } from "./routes/dashboard/route";
+import { Route as AboutRouteRouteImport } from "./routes/about/route";
 import { Route as authRouteRouteImport } from "./routes/(auth)/route";
 import { Route as IndexRouteImport } from "./routes/index";
 import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index";
+import { Route as AboutIndexRouteImport } from "./routes/about/index";
+import { Route as AppAppRouteImport } from "./routes/app/_app";
 import { Route as authSignupRouteImport } from "./routes/(auth)/signup";
 import { Route as authLoginRouteImport } from "./routes/(auth)/login";
+import { Route as AppAppIndexRouteImport } from "./routes/app/_app/index";
+import { ServerRoute as ApiHelloSplatServerRouteImport } from "./routes/api/hello/$";
 import { ServerRoute as ApiAuthSplatServerRouteImport } from "./routes/api/auth/$";
 
+const AppRouteImport = createFileRoute("/app")();
 const rootServerRouteImport = createServerRootRoute();
 
+const AppRoute = AppRouteImport.update({
+  id: "/app",
+  path: "/app",
+  getParentRoute: () => rootRouteImport,
+} as any);
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
   id: "/dashboard",
   path: "/dashboard",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const AboutRouteRoute = AboutRouteRouteImport.update({
+  id: "/about",
+  path: "/about",
   getParentRoute: () => rootRouteImport,
 } as any);
 const authRouteRoute = authRouteRouteImport.update({
@@ -40,6 +57,15 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   path: "/",
   getParentRoute: () => DashboardRouteRoute,
 } as any);
+const AboutIndexRoute = AboutIndexRouteImport.update({
+  id: "/",
+  path: "/",
+  getParentRoute: () => AboutRouteRoute,
+} as any);
+const AppAppRoute = AppAppRouteImport.update({
+  id: "/_app",
+  getParentRoute: () => AppRoute,
+} as any);
 const authSignupRoute = authSignupRouteImport.update({
   id: "/signup",
   path: "/signup",
@@ -50,6 +76,16 @@ const authLoginRoute = authLoginRouteImport.update({
   path: "/login",
   getParentRoute: () => authRouteRoute,
 } as any);
+const AppAppIndexRoute = AppAppIndexRouteImport.update({
+  id: "/",
+  path: "/",
+  getParentRoute: () => AppAppRoute,
+} as any);
+const ApiHelloSplatServerRoute = ApiHelloSplatServerRouteImport.update({
+  id: "/api/hello/$",
+  path: "/api/hello/$",
+  getParentRoute: () => rootServerRouteImport,
+} as any);
 const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
   id: "/api/auth/$",
   path: "/api/auth/$",
@@ -58,75 +94,120 @@ const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
 
 export interface FileRoutesByFullPath {
   "/": typeof authRouteRouteWithChildren;
+  "/about": typeof AboutRouteRouteWithChildren;
   "/dashboard": typeof DashboardRouteRouteWithChildren;
   "/login": typeof authLoginRoute;
   "/signup": typeof authSignupRoute;
+  "/app": typeof AppAppRouteWithChildren;
+  "/about/": typeof AboutIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
+  "/app/": typeof AppAppIndexRoute;
 }
 export interface FileRoutesByTo {
   "/": typeof authRouteRouteWithChildren;
   "/login": typeof authLoginRoute;
   "/signup": typeof authSignupRoute;
+  "/app": typeof AppAppIndexRoute;
+  "/about": typeof AboutIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
   "/": typeof IndexRoute;
   "/(auth)": typeof authRouteRouteWithChildren;
+  "/about": typeof AboutRouteRouteWithChildren;
   "/dashboard": typeof DashboardRouteRouteWithChildren;
   "/(auth)/login": typeof authLoginRoute;
   "/(auth)/signup": typeof authSignupRoute;
+  "/app": typeof AppRouteWithChildren;
+  "/app/_app": typeof AppAppRouteWithChildren;
+  "/about/": typeof AboutIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
+  "/app/_app/": typeof AppAppIndexRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/dashboard" | "/login" | "/signup" | "/dashboard/";
+  fullPaths:
+    | "/"
+    | "/about"
+    | "/dashboard"
+    | "/login"
+    | "/signup"
+    | "/app"
+    | "/about/"
+    | "/dashboard/"
+    | "/app/";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/login" | "/signup" | "/dashboard";
+  to: "/" | "/login" | "/signup" | "/app" | "/about" | "/dashboard";
   id:
     | "__root__"
     | "/"
     | "/(auth)"
+    | "/about"
     | "/dashboard"
     | "/(auth)/login"
     | "/(auth)/signup"
-    | "/dashboard/";
+    | "/app"
+    | "/app/_app"
+    | "/about/"
+    | "/dashboard/"
+    | "/app/_app/";
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
   authRouteRoute: typeof authRouteRouteWithChildren;
+  AboutRouteRoute: typeof AboutRouteRouteWithChildren;
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren;
+  AppRoute: typeof AppRouteWithChildren;
 }
 export interface FileServerRoutesByFullPath {
   "/api/auth/$": typeof ApiAuthSplatServerRoute;
+  "/api/hello/$": typeof ApiHelloSplatServerRoute;
 }
 export interface FileServerRoutesByTo {
   "/api/auth/$": typeof ApiAuthSplatServerRoute;
+  "/api/hello/$": typeof ApiHelloSplatServerRoute;
 }
 export interface FileServerRoutesById {
   __root__: typeof rootServerRouteImport;
   "/api/auth/$": typeof ApiAuthSplatServerRoute;
+  "/api/hello/$": typeof ApiHelloSplatServerRoute;
 }
 export interface FileServerRouteTypes {
   fileServerRoutesByFullPath: FileServerRoutesByFullPath;
-  fullPaths: "/api/auth/$";
+  fullPaths: "/api/auth/$" | "/api/hello/$";
   fileServerRoutesByTo: FileServerRoutesByTo;
-  to: "/api/auth/$";
-  id: "__root__" | "/api/auth/$";
+  to: "/api/auth/$" | "/api/hello/$";
+  id: "__root__" | "/api/auth/$" | "/api/hello/$";
   fileServerRoutesById: FileServerRoutesById;
 }
 export interface RootServerRouteChildren {
   ApiAuthSplatServerRoute: typeof ApiAuthSplatServerRoute;
+  ApiHelloSplatServerRoute: typeof ApiHelloSplatServerRoute;
 }
 
 declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
+    "/app": {
+      id: "/app";
+      path: "/app";
+      fullPath: "/app";
+      preLoaderRoute: typeof AppRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     "/dashboard": {
       id: "/dashboard";
       path: "/dashboard";
       fullPath: "/dashboard";
       preLoaderRoute: typeof DashboardRouteRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/about": {
+      id: "/about";
+      path: "/about";
+      fullPath: "/about";
+      preLoaderRoute: typeof AboutRouteRouteImport;
       parentRoute: typeof rootRouteImport;
     };
     "/(auth)": {
@@ -150,6 +231,20 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof DashboardIndexRouteImport;
       parentRoute: typeof DashboardRouteRoute;
     };
+    "/about/": {
+      id: "/about/";
+      path: "/";
+      fullPath: "/about/";
+      preLoaderRoute: typeof AboutIndexRouteImport;
+      parentRoute: typeof AboutRouteRoute;
+    };
+    "/app/_app": {
+      id: "/app/_app";
+      path: "/app";
+      fullPath: "/app";
+      preLoaderRoute: typeof AppAppRouteImport;
+      parentRoute: typeof AppRoute;
+    };
     "/(auth)/signup": {
       id: "/(auth)/signup";
       path: "/signup";
@@ -164,10 +259,24 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof authLoginRouteImport;
       parentRoute: typeof authRouteRoute;
     };
+    "/app/_app/": {
+      id: "/app/_app/";
+      path: "/";
+      fullPath: "/app/";
+      preLoaderRoute: typeof AppAppIndexRouteImport;
+      parentRoute: typeof AppAppRoute;
+    };
   }
 }
 declare module "@tanstack/react-start/server" {
   interface ServerFileRoutesByPath {
+    "/api/hello/$": {
+      id: "/api/hello/$";
+      path: "/api/hello/$";
+      fullPath: "/api/hello/$";
+      preLoaderRoute: typeof ApiHelloSplatServerRouteImport;
+      parentRoute: typeof rootServerRouteImport;
+    };
     "/api/auth/$": {
       id: "/api/auth/$";
       path: "/api/auth/$";
@@ -192,6 +301,18 @@ const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
   authRouteRouteChildren,
 );
 
+interface AboutRouteRouteChildren {
+  AboutIndexRoute: typeof AboutIndexRoute;
+}
+
+const AboutRouteRouteChildren: AboutRouteRouteChildren = {
+  AboutIndexRoute: AboutIndexRoute,
+};
+
+const AboutRouteRouteWithChildren = AboutRouteRoute._addFileChildren(
+  AboutRouteRouteChildren,
+);
+
 interface DashboardRouteRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute;
 }
@@ -204,16 +325,40 @@ const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
   DashboardRouteRouteChildren,
 );
 
+interface AppAppRouteChildren {
+  AppAppIndexRoute: typeof AppAppIndexRoute;
+}
+
+const AppAppRouteChildren: AppAppRouteChildren = {
+  AppAppIndexRoute: AppAppIndexRoute,
+};
+
+const AppAppRouteWithChildren =
+  AppAppRoute._addFileChildren(AppAppRouteChildren);
+
+interface AppRouteChildren {
+  AppAppRoute: typeof AppAppRouteWithChildren;
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAppRoute: AppAppRouteWithChildren,
+};
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren);
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   authRouteRoute: authRouteRouteWithChildren,
+  AboutRouteRoute: AboutRouteRouteWithChildren,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
+  AppRoute: AppRouteWithChildren,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>();
 const rootServerRouteChildren: RootServerRouteChildren = {
   ApiAuthSplatServerRoute: ApiAuthSplatServerRoute,
+  ApiHelloSplatServerRoute: ApiHelloSplatServerRoute,
 };
 export const serverRouteTree = rootServerRouteImport
   ._addFileChildren(rootServerRouteChildren)
