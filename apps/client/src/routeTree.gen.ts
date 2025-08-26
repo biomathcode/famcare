@@ -26,6 +26,11 @@ import { Route as AppAppSettingsRouteImport } from "./routes/app/_app/settings";
 import { Route as AppAppRecordsRouteImport } from "./routes/app/_app/records";
 import { Route as AppAppMembersRouteImport } from "./routes/app/_app/members";
 import { Route as AppAppChatsRouteImport } from "./routes/app/_app/chats";
+import { Route as ApiAiTtsRouteImport } from "./routes/api/ai/tts";
+import { Route as ApiAiTranscribeRouteImport } from "./routes/api/ai/transcribe";
+import { Route as ApiAiSseRouteImport } from "./routes/api/ai/sse";
+import { Route as ApiAiMessagesRouteImport } from "./routes/api/ai/messages";
+import { Route as ApiAiChatRouteImport } from "./routes/api/ai/chat";
 import { Route as AppAppChatChatIdRouteImport } from "./routes/app/_app/chat.$chatId";
 import { ServerRoute as ApiHelloServerRouteImport } from "./routes/api/hello";
 import { ServerRoute as ApiAuthSplatServerRouteImport } from "./routes/api/auth/$";
@@ -106,6 +111,31 @@ const AppAppChatsRoute = AppAppChatsRouteImport.update({
   path: "/chats",
   getParentRoute: () => AppAppRoute,
 } as any);
+const ApiAiTtsRoute = ApiAiTtsRouteImport.update({
+  id: "/api/ai/tts",
+  path: "/api/ai/tts",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const ApiAiTranscribeRoute = ApiAiTranscribeRouteImport.update({
+  id: "/api/ai/transcribe",
+  path: "/api/ai/transcribe",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const ApiAiSseRoute = ApiAiSseRouteImport.update({
+  id: "/api/ai/sse",
+  path: "/api/ai/sse",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const ApiAiMessagesRoute = ApiAiMessagesRouteImport.update({
+  id: "/api/ai/messages",
+  path: "/api/ai/messages",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const ApiAiChatRoute = ApiAiChatRouteImport.update({
+  id: "/api/ai/chat",
+  path: "/api/ai/chat",
+  getParentRoute: () => rootRouteImport,
+} as any);
 const AppAppChatChatIdRoute = AppAppChatChatIdRouteImport.update({
   id: "/chat/$chatId",
   path: "/chat/$chatId",
@@ -131,6 +161,11 @@ export interface FileRoutesByFullPath {
   "/app": typeof AppAppRouteWithChildren;
   "/about/": typeof AboutIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
+  "/api/ai/chat": typeof ApiAiChatRoute;
+  "/api/ai/messages": typeof ApiAiMessagesRoute;
+  "/api/ai/sse": typeof ApiAiSseRoute;
+  "/api/ai/transcribe": typeof ApiAiTranscribeRoute;
+  "/api/ai/tts": typeof ApiAiTtsRoute;
   "/app/chats": typeof AppAppChatsRoute;
   "/app/members": typeof AppAppMembersRoute;
   "/app/records": typeof AppAppRecordsRoute;
@@ -145,6 +180,11 @@ export interface FileRoutesByTo {
   "/app": typeof AppAppIndexRoute;
   "/about": typeof AboutIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
+  "/api/ai/chat": typeof ApiAiChatRoute;
+  "/api/ai/messages": typeof ApiAiMessagesRoute;
+  "/api/ai/sse": typeof ApiAiSseRoute;
+  "/api/ai/transcribe": typeof ApiAiTranscribeRoute;
+  "/api/ai/tts": typeof ApiAiTtsRoute;
   "/app/chats": typeof AppAppChatsRoute;
   "/app/members": typeof AppAppMembersRoute;
   "/app/records": typeof AppAppRecordsRoute;
@@ -163,6 +203,11 @@ export interface FileRoutesById {
   "/app/_app": typeof AppAppRouteWithChildren;
   "/about/": typeof AboutIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
+  "/api/ai/chat": typeof ApiAiChatRoute;
+  "/api/ai/messages": typeof ApiAiMessagesRoute;
+  "/api/ai/sse": typeof ApiAiSseRoute;
+  "/api/ai/transcribe": typeof ApiAiTranscribeRoute;
+  "/api/ai/tts": typeof ApiAiTtsRoute;
   "/app/_app/chats": typeof AppAppChatsRoute;
   "/app/_app/members": typeof AppAppMembersRoute;
   "/app/_app/records": typeof AppAppRecordsRoute;
@@ -181,6 +226,11 @@ export interface FileRouteTypes {
     | "/app"
     | "/about/"
     | "/dashboard/"
+    | "/api/ai/chat"
+    | "/api/ai/messages"
+    | "/api/ai/sse"
+    | "/api/ai/transcribe"
+    | "/api/ai/tts"
     | "/app/chats"
     | "/app/members"
     | "/app/records"
@@ -195,6 +245,11 @@ export interface FileRouteTypes {
     | "/app"
     | "/about"
     | "/dashboard"
+    | "/api/ai/chat"
+    | "/api/ai/messages"
+    | "/api/ai/sse"
+    | "/api/ai/transcribe"
+    | "/api/ai/tts"
     | "/app/chats"
     | "/app/members"
     | "/app/records"
@@ -212,6 +267,11 @@ export interface FileRouteTypes {
     | "/app/_app"
     | "/about/"
     | "/dashboard/"
+    | "/api/ai/chat"
+    | "/api/ai/messages"
+    | "/api/ai/sse"
+    | "/api/ai/transcribe"
+    | "/api/ai/tts"
     | "/app/_app/chats"
     | "/app/_app/members"
     | "/app/_app/records"
@@ -226,6 +286,11 @@ export interface RootRouteChildren {
   AboutRouteRoute: typeof AboutRouteRouteWithChildren;
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren;
   AppRoute: typeof AppRouteWithChildren;
+  ApiAiChatRoute: typeof ApiAiChatRoute;
+  ApiAiMessagesRoute: typeof ApiAiMessagesRoute;
+  ApiAiSseRoute: typeof ApiAiSseRoute;
+  ApiAiTranscribeRoute: typeof ApiAiTranscribeRoute;
+  ApiAiTtsRoute: typeof ApiAiTtsRoute;
 }
 export interface FileServerRoutesByFullPath {
   "/api/hello": typeof ApiHelloServerRoute;
@@ -360,6 +425,41 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AppAppChatsRouteImport;
       parentRoute: typeof AppAppRoute;
     };
+    "/api/ai/tts": {
+      id: "/api/ai/tts";
+      path: "/api/ai/tts";
+      fullPath: "/api/ai/tts";
+      preLoaderRoute: typeof ApiAiTtsRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/api/ai/transcribe": {
+      id: "/api/ai/transcribe";
+      path: "/api/ai/transcribe";
+      fullPath: "/api/ai/transcribe";
+      preLoaderRoute: typeof ApiAiTranscribeRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/api/ai/sse": {
+      id: "/api/ai/sse";
+      path: "/api/ai/sse";
+      fullPath: "/api/ai/sse";
+      preLoaderRoute: typeof ApiAiSseRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/api/ai/messages": {
+      id: "/api/ai/messages";
+      path: "/api/ai/messages";
+      fullPath: "/api/ai/messages";
+      preLoaderRoute: typeof ApiAiMessagesRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/api/ai/chat": {
+      id: "/api/ai/chat";
+      path: "/api/ai/chat";
+      fullPath: "/api/ai/chat";
+      preLoaderRoute: typeof ApiAiChatRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     "/app/_app/chat/$chatId": {
       id: "/app/_app/chat/$chatId";
       path: "/chat/$chatId";
@@ -463,6 +563,11 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRouteRoute: AboutRouteRouteWithChildren,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
   AppRoute: AppRouteWithChildren,
+  ApiAiChatRoute: ApiAiChatRoute,
+  ApiAiMessagesRoute: ApiAiMessagesRoute,
+  ApiAiSseRoute: ApiAiSseRoute,
+  ApiAiTranscribeRoute: ApiAiTranscribeRoute,
+  ApiAiTtsRoute: ApiAiTtsRoute,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
