@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Globe, Shield, Zap, Sparkles } from "lucide-react";
-import { authClient } from "@/components/auth/client";
+import authClient from "~/lib/auth/auth-client";
+
 import { LoginPopup } from "@/components/auth/login-popup";
 
 export function HeroSection() {
