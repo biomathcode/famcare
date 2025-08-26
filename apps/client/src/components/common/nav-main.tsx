@@ -2,10 +2,9 @@ import {
   IconCirclePlusFilled,
   IconDashboard,
   IconFileText,
-  IconSearch,
-  IconReport,
   IconUsers,
   IconSettings,
+  IconMessage,
 } from "@tabler/icons-react";
 
 import {
@@ -22,30 +21,26 @@ export function NavMain() {
 
   const items = [
     {
+      title: "Previous Chats",
+      navigate: () => nav({ to: "/app/chats" }),
+      icon: IconMessage,
+    },
+    {
       title: "Dashboard",
       navigate: () => nav({ to: "/app" }),
       icon: IconDashboard,
     },
     {
-      title: "My Records",
+      title: "Health Records",
       navigate: () => nav({ to: "/app/records" }),
       icon: IconFileText,
     },
     {
       title: "Family Members",
-      navigate: () => nav({ to: "/app/family" }),
+      navigate: () => nav({ to: "/app/members" }),
       icon: IconUsers,
     },
-    {
-      title: "Search",
-      navigate: () => nav({ to: "/app/search" }),
-      icon: IconSearch,
-    },
-    {
-      title: "Evaluations",
-      navigate: () => nav({ to: "/app/evaluations" }),
-      icon: IconReport,
-    },
+
     {
       title: "Settings",
       navigate: () => nav({ to: "/app/settings" }),
@@ -59,12 +54,12 @@ export function NavMain() {
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
             <SidebarMenuButton
-              onClick={() => nav({ to: "/app/create" })}
+              onClick={() => nav({ to: "/app/chat/123" })}
               tooltip="Quick Upload"
               className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
             >
               <IconCirclePlusFilled />
-              <span>Upload Record</span>
+              <span>Create Chat</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

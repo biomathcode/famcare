@@ -9,7 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, User } from "lucide-react";
 import { useState } from "react";
-import { authClient } from "./client";
+import authClient from "~/lib/auth/auth-client";
+
+// import { authClient } from "./client";
+
 import { useNavigate } from "@tanstack/react-router";
 
 type UserProfilePopupProps = {
@@ -30,7 +33,7 @@ function UserProfilePopup({ data, children }: UserProfilePopupProps) {
         onSuccess: () => {
           nav({ to: '/' })
         },
-      },
+      }
     });
     setLoading(false);
   };

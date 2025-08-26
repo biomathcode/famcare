@@ -63,13 +63,12 @@ function RootComponent() {
 
 function RootDocument({ children }: { readonly children: React.ReactNode }) {
   return (
-    // suppress since we're updating the "dark" class in ThemeProvider
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" >
       <head>
         <HeadContent />
       </head>
       <body>
-        <ThemeProvider>
+        <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
           {children}
           <Toaster richColors />
         </ThemeProvider>

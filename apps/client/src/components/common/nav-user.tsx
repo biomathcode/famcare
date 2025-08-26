@@ -1,6 +1,6 @@
 import { SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
 import { ModeToggle } from "@/components/common/mode-toggle";
-// import { UserTab } from "@/components/auth/user-icon";
+import { UserTab } from "@/components/auth/user-icon";
 
 export function NavUser() {
   return (
@@ -11,7 +11,7 @@ export function NavUser() {
         </div>
       </SidebarMenuItem>
       <SidebarMenuItem>
-        {/* <UserTab /> */}
+        <UserTab />
       </SidebarMenuItem>
     </SidebarMenu>
   );

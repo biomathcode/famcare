@@ -22,7 +22,12 @@ import { Route as AppAppRouteImport } from "./routes/app/_app";
 import { Route as authSignupRouteImport } from "./routes/(auth)/signup";
 import { Route as authLoginRouteImport } from "./routes/(auth)/login";
 import { Route as AppAppIndexRouteImport } from "./routes/app/_app/index";
-import { ServerRoute as ApiHelloSplatServerRouteImport } from "./routes/api/hello/$";
+import { Route as AppAppSettingsRouteImport } from "./routes/app/_app/settings";
+import { Route as AppAppRecordsRouteImport } from "./routes/app/_app/records";
+import { Route as AppAppMembersRouteImport } from "./routes/app/_app/members";
+import { Route as AppAppChatsRouteImport } from "./routes/app/_app/chats";
+import { Route as AppAppChatChatIdRouteImport } from "./routes/app/_app/chat.$chatId";
+import { ServerRoute as ApiHelloServerRouteImport } from "./routes/api/hello";
 import { ServerRoute as ApiAuthSplatServerRouteImport } from "./routes/api/auth/$";
 
 const AppRouteImport = createFileRoute("/app")();
@@ -81,9 +86,34 @@ const AppAppIndexRoute = AppAppIndexRouteImport.update({
   path: "/",
   getParentRoute: () => AppAppRoute,
 } as any);
-const ApiHelloSplatServerRoute = ApiHelloSplatServerRouteImport.update({
-  id: "/api/hello/$",
-  path: "/api/hello/$",
+const AppAppSettingsRoute = AppAppSettingsRouteImport.update({
+  id: "/settings",
+  path: "/settings",
+  getParentRoute: () => AppAppRoute,
+} as any);
+const AppAppRecordsRoute = AppAppRecordsRouteImport.update({
+  id: "/records",
+  path: "/records",
+  getParentRoute: () => AppAppRoute,
+} as any);
+const AppAppMembersRoute = AppAppMembersRouteImport.update({
+  id: "/members",
+  path: "/members",
+  getParentRoute: () => AppAppRoute,
+} as any);
+const AppAppChatsRoute = AppAppChatsRouteImport.update({
+  id: "/chats",
+  path: "/chats",
+  getParentRoute: () => AppAppRoute,
+} as any);
+const AppAppChatChatIdRoute = AppAppChatChatIdRouteImport.update({
+  id: "/chat/$chatId",
+  path: "/chat/$chatId",
+  getParentRoute: () => AppAppRoute,
+} as any);
+const ApiHelloServerRoute = ApiHelloServerRouteImport.update({
+  id: "/api/hello",
+  path: "/api/hello",
   getParentRoute: () => rootServerRouteImport,
 } as any);
 const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
@@ -101,7 +131,12 @@ export interface FileRoutesByFullPath {
   "/app": typeof AppAppRouteWithChildren;
   "/about/": typeof AboutIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
+  "/app/chats": typeof AppAppChatsRoute;
+  "/app/members": typeof AppAppMembersRoute;
+  "/app/records": typeof AppAppRecordsRoute;
+  "/app/settings": typeof AppAppSettingsRoute;
   "/app/": typeof AppAppIndexRoute;
+  "/app/chat/$chatId": typeof AppAppChatChatIdRoute;
 }
 export interface FileRoutesByTo {
   "/": typeof authRouteRouteWithChildren;
@@ -110,6 +145,11 @@ export interface FileRoutesByTo {
   "/app": typeof AppAppIndexRoute;
   "/about": typeof AboutIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
+  "/app/chats": typeof AppAppChatsRoute;
+  "/app/members": typeof AppAppMembersRoute;
+  "/app/records": typeof AppAppRecordsRoute;
+  "/app/settings": typeof AppAppSettingsRoute;
+  "/app/chat/$chatId": typeof AppAppChatChatIdRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
@@ -123,7 +163,12 @@ export interface FileRoutesById {
   "/app/_app": typeof AppAppRouteWithChildren;
   "/about/": typeof AboutIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
+  "/app/_app/chats": typeof AppAppChatsRoute;
+  "/app/_app/members": typeof AppAppMembersRoute;
+  "/app/_app/records": typeof AppAppRecordsRoute;
+  "/app/_app/settings": typeof AppAppSettingsRoute;
   "/app/_app/": typeof AppAppIndexRoute;
+  "/app/_app/chat/$chatId": typeof AppAppChatChatIdRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
@@ -136,9 +181,25 @@ export interface FileRouteTypes {
     | "/app"
     | "/about/"
     | "/dashboard/"
-    | "/app/";
+    | "/app/chats"
+    | "/app/members"
+    | "/app/records"
+    | "/app/settings"
+    | "/app/"
+    | "/app/chat/$chatId";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/login" | "/signup" | "/app" | "/about" | "/dashboard";
+  to:
+    | "/"
+    | "/login"
+    | "/signup"
+    | "/app"
+    | "/about"
+    | "/dashboard"
+    | "/app/chats"
+    | "/app/members"
+    | "/app/records"
+    | "/app/settings"
+    | "/app/chat/$chatId";
   id:
     | "__root__"
     | "/"
@@ -151,7 +212,12 @@ export interface FileRouteTypes {
     | "/app/_app"
     | "/about/"
     | "/dashboard/"
-    | "/app/_app/";
+    | "/app/_app/chats"
+    | "/app/_app/members"
+    | "/app/_app/records"
+    | "/app/_app/settings"
+    | "/app/_app/"
+    | "/app/_app/chat/$chatId";
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
@@ -162,29 +228,29 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren;
 }
 export interface FileServerRoutesByFullPath {
+  "/api/hello": typeof ApiHelloServerRoute;
   "/api/auth/$": typeof ApiAuthSplatServerRoute;
-  "/api/hello/$": typeof ApiHelloSplatServerRoute;
 }
 export interface FileServerRoutesByTo {
+  "/api/hello": typeof ApiHelloServerRoute;
   "/api/auth/$": typeof ApiAuthSplatServerRoute;
-  "/api/hello/$": typeof ApiHelloSplatServerRoute;
 }
 export interface FileServerRoutesById {
   __root__: typeof rootServerRouteImport;
+  "/api/hello": typeof ApiHelloServerRoute;
   "/api/auth/$": typeof ApiAuthSplatServerRoute;
-  "/api/hello/$": typeof ApiHelloSplatServerRoute;
 }
 export interface FileServerRouteTypes {
   fileServerRoutesByFullPath: FileServerRoutesByFullPath;
-  fullPaths: "/api/auth/$" | "/api/hello/$";
+  fullPaths: "/api/hello" | "/api/auth/$";
   fileServerRoutesByTo: FileServerRoutesByTo;
-  to: "/api/auth/$" | "/api/hello/$";
-  id: "__root__" | "/api/auth/$" | "/api/hello/$";
+  to: "/api/hello" | "/api/auth/$";
+  id: "__root__" | "/api/hello" | "/api/auth/$";
   fileServerRoutesById: FileServerRoutesById;
 }
 export interface RootServerRouteChildren {
+  ApiHelloServerRoute: typeof ApiHelloServerRoute;
   ApiAuthSplatServerRoute: typeof ApiAuthSplatServerRoute;
-  ApiHelloSplatServerRoute: typeof ApiHelloSplatServerRoute;
 }
 
 declare module "@tanstack/react-router" {
@@ -266,15 +332,50 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AppAppIndexRouteImport;
       parentRoute: typeof AppAppRoute;
     };
+    "/app/_app/settings": {
+      id: "/app/_app/settings";
+      path: "/settings";
+      fullPath: "/app/settings";
+      preLoaderRoute: typeof AppAppSettingsRouteImport;
+      parentRoute: typeof AppAppRoute;
+    };
+    "/app/_app/records": {
+      id: "/app/_app/records";
+      path: "/records";
+      fullPath: "/app/records";
+      preLoaderRoute: typeof AppAppRecordsRouteImport;
+      parentRoute: typeof AppAppRoute;
+    };
+    "/app/_app/members": {
+      id: "/app/_app/members";
+      path: "/members";
+      fullPath: "/app/members";
+      preLoaderRoute: typeof AppAppMembersRouteImport;
+      parentRoute: typeof AppAppRoute;
+    };
+    "/app/_app/chats": {
+      id: "/app/_app/chats";
+      path: "/chats";
+      fullPath: "/app/chats";
+      preLoaderRoute: typeof AppAppChatsRouteImport;
+      parentRoute: typeof AppAppRoute;
+    };
+    "/app/_app/chat/$chatId": {
+      id: "/app/_app/chat/$chatId";
+      path: "/chat/$chatId";
+      fullPath: "/app/chat/$chatId";
+      preLoaderRoute: typeof AppAppChatChatIdRouteImport;
+      parentRoute: typeof AppAppRoute;
+    };
   }
 }
 declare module "@tanstack/react-start/server" {
   interface ServerFileRoutesByPath {
-    "/api/hello/$": {
-      id: "/api/hello/$";
-      path: "/api/hello/$";
-      fullPath: "/api/hello/$";
-      preLoaderRoute: typeof ApiHelloSplatServerRouteImport;
+    "/api/hello": {
+      id: "/api/hello";
+      path: "/api/hello";
+      fullPath: "/api/hello";
+      preLoaderRoute: typeof ApiHelloServerRouteImport;
       parentRoute: typeof rootServerRouteImport;
     };
     "/api/auth/$": {
@@ -326,11 +427,21 @@ const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
 );
 
 interface AppAppRouteChildren {
+  AppAppChatsRoute: typeof AppAppChatsRoute;
+  AppAppMembersRoute: typeof AppAppMembersRoute;
+  AppAppRecordsRoute: typeof AppAppRecordsRoute;
+  AppAppSettingsRoute: typeof AppAppSettingsRoute;
   AppAppIndexRoute: typeof AppAppIndexRoute;
+  AppAppChatChatIdRoute: typeof AppAppChatChatIdRoute;
 }
 
 const AppAppRouteChildren: AppAppRouteChildren = {
+  AppAppChatsRoute: AppAppChatsRoute,
+  AppAppMembersRoute: AppAppMembersRoute,
+  AppAppRecordsRoute: AppAppRecordsRoute,
+  AppAppSettingsRoute: AppAppSettingsRoute,
   AppAppIndexRoute: AppAppIndexRoute,
+  AppAppChatChatIdRoute: AppAppChatChatIdRoute,
 };
 
 const AppAppRouteWithChildren =
@@ -357,8 +468,8 @@ export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>();
 const rootServerRouteChildren: RootServerRouteChildren = {
+  ApiHelloServerRoute: ApiHelloServerRoute,
   ApiAuthSplatServerRoute: ApiAuthSplatServerRoute,
-  ApiHelloSplatServerRoute: ApiHelloSplatServerRoute,
 };
 export const serverRouteTree = rootServerRouteImport
   ._addFileChildren(rootServerRouteChildren)
