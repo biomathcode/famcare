@@ -24,15 +24,17 @@ export const ServerRoute = createServerFileRoute('/api/ai/chat').methods({
         try {
             const { messages } = await request.json()
 
-            const tools = await getTools()
+            // const tools = await getTools()
 
-            const result = await streamText({
-                model: anthropic('claude-3-5-sonnet-latest'),
+            const model = moonshotai('kimi-k2-0711-preview')
+
+
+            const result = streamText({
+                model,
                 messages: convertToModelMessages(messages),
                 temperature: 0.7,
-                stopWhen: stepCountIs(5),
-                system: SYSTEM_PROMPT,
-                tools,
+                topP: 1,
+
             })
 
             return result.toUIMessageStreamResponse()

@@ -29,6 +29,8 @@ import { Route as AppAppChatsRouteImport } from "./routes/app/_app/chats";
 import { Route as AppAppChatChatIdRouteImport } from "./routes/app/_app/chat.$chatId";
 import { ServerRoute as ApiHelloServerRouteImport } from "./routes/api/hello";
 import { ServerRoute as ApiAuthSplatServerRouteImport } from "./routes/api/auth/$";
+import { ServerRoute as ApiAiMessagesServerRouteImport } from "./routes/api/ai.messages";
+import { ServerRoute as ApiAiChatServerRouteImport } from "./routes/api/ai.chat";
 
 const AppRouteImport = createFileRoute("/app")();
 const rootServerRouteImport = createServerRootRoute();
@@ -106,7 +108,6 @@ const AppAppChatsRoute = AppAppChatsRouteImport.update({
   path: "/chats",
   getParentRoute: () => AppAppRoute,
 } as any);
-
 const AppAppChatChatIdRoute = AppAppChatChatIdRouteImport.update({
   id: "/chat/$chatId",
   path: "/chat/$chatId",
@@ -120,6 +121,16 @@ const ApiHelloServerRoute = ApiHelloServerRouteImport.update({
 const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
   id: "/api/auth/$",
   path: "/api/auth/$",
+  getParentRoute: () => rootServerRouteImport,
+} as any);
+const ApiAiMessagesServerRoute = ApiAiMessagesServerRouteImport.update({
+  id: "/api/ai/messages",
+  path: "/api/ai/messages",
+  getParentRoute: () => rootServerRouteImport,
+} as any);
+const ApiAiChatServerRoute = ApiAiChatServerRouteImport.update({
+  id: "/api/ai/chat",
+  path: "/api/ai/chat",
   getParentRoute: () => rootServerRouteImport,
 } as any);
 
@@ -174,52 +185,51 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
-  | "/"
-  | "/about"
-  | "/dashboard"
-  | "/login"
-  | "/signup"
-  | "/app"
-  | "/about/"
-  | "/dashboard/"
-
-  | "/app/chats"
-  | "/app/members"
-  | "/app/records"
-  | "/app/settings"
-  | "/app/"
-  | "/app/chat/$chatId";
+    | "/"
+    | "/about"
+    | "/dashboard"
+    | "/login"
+    | "/signup"
+    | "/app"
+    | "/about/"
+    | "/dashboard/"
+    | "/app/chats"
+    | "/app/members"
+    | "/app/records"
+    | "/app/settings"
+    | "/app/"
+    | "/app/chat/$chatId";
   fileRoutesByTo: FileRoutesByTo;
   to:
-  | "/"
-  | "/login"
-  | "/signup"
-  | "/app"
-  | "/about"
-  | "/dashboard"
-  | "/app/chats"
-  | "/app/members"
-  | "/app/records"
-  | "/app/settings"
-  | "/app/chat/$chatId";
+    | "/"
+    | "/login"
+    | "/signup"
+    | "/app"
+    | "/about"
+    | "/dashboard"
+    | "/app/chats"
+    | "/app/members"
+    | "/app/records"
+    | "/app/settings"
+    | "/app/chat/$chatId";
   id:
-  | "__root__"
-  | "/"
-  | "/(auth)"
-  | "/about"
-  | "/dashboard"
-  | "/(auth)/login"
-  | "/(auth)/signup"
-  | "/app"
-  | "/app/_app"
-  | "/about/"
-  | "/dashboard/"
-  | "/app/_app/chats"
-  | "/app/_app/members"
-  | "/app/_app/records"
-  | "/app/_app/settings"
-  | "/app/_app/"
-  | "/app/_app/chat/$chatId";
+    | "__root__"
+    | "/"
+    | "/(auth)"
+    | "/about"
+    | "/dashboard"
+    | "/(auth)/login"
+    | "/(auth)/signup"
+    | "/app"
+    | "/app/_app"
+    | "/about/"
+    | "/dashboard/"
+    | "/app/_app/chats"
+    | "/app/_app/members"
+    | "/app/_app/records"
+    | "/app/_app/settings"
+    | "/app/_app/"
+    | "/app/_app/chat/$chatId";
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
@@ -231,27 +241,40 @@ export interface RootRouteChildren {
 }
 export interface FileServerRoutesByFullPath {
   "/api/hello": typeof ApiHelloServerRoute;
+  "/api/ai/chat": typeof ApiAiChatServerRoute;
+  "/api/ai/messages": typeof ApiAiMessagesServerRoute;
   "/api/auth/$": typeof ApiAuthSplatServerRoute;
 }
 export interface FileServerRoutesByTo {
   "/api/hello": typeof ApiHelloServerRoute;
+  "/api/ai/chat": typeof ApiAiChatServerRoute;
+  "/api/ai/messages": typeof ApiAiMessagesServerRoute;
   "/api/auth/$": typeof ApiAuthSplatServerRoute;
 }
 export interface FileServerRoutesById {
   __root__: typeof rootServerRouteImport;
   "/api/hello": typeof ApiHelloServerRoute;
+  "/api/ai/chat": typeof ApiAiChatServerRoute;
+  "/api/ai/messages": typeof ApiAiMessagesServerRoute;
   "/api/auth/$": typeof ApiAuthSplatServerRoute;
 }
 export interface FileServerRouteTypes {
   fileServerRoutesByFullPath: FileServerRoutesByFullPath;
-  fullPaths: "/api/hello" | "/api/auth/$";
+  fullPaths: "/api/hello" | "/api/ai/chat" | "/api/ai/messages" | "/api/auth/$";
   fileServerRoutesByTo: FileServerRoutesByTo;
-  to: "/api/hello" | "/api/auth/$";
-  id: "__root__" | "/api/hello" | "/api/auth/$";
+  to: "/api/hello" | "/api/ai/chat" | "/api/ai/messages" | "/api/auth/$";
+  id:
+    | "__root__"
+    | "/api/hello"
+    | "/api/ai/chat"
+    | "/api/ai/messages"
+    | "/api/auth/$";
   fileServerRoutesById: FileServerRoutesById;
 }
 export interface RootServerRouteChildren {
   ApiHelloServerRoute: typeof ApiHelloServerRoute;
+  ApiAiChatServerRoute: typeof ApiAiChatServerRoute;
+  ApiAiMessagesServerRoute: typeof ApiAiMessagesServerRoute;
   ApiAuthSplatServerRoute: typeof ApiAuthSplatServerRoute;
 }
 
@@ -362,7 +385,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AppAppChatsRouteImport;
       parentRoute: typeof AppAppRoute;
     };
-
     "/app/_app/chat/$chatId": {
       id: "/app/_app/chat/$chatId";
       path: "/chat/$chatId";
@@ -386,6 +408,20 @@ declare module "@tanstack/react-start/server" {
       path: "/api/auth/$";
       fullPath: "/api/auth/$";
       preLoaderRoute: typeof ApiAuthSplatServerRouteImport;
+      parentRoute: typeof rootServerRouteImport;
+    };
+    "/api/ai/messages": {
+      id: "/api/ai/messages";
+      path: "/api/ai/messages";
+      fullPath: "/api/ai/messages";
+      preLoaderRoute: typeof ApiAiMessagesServerRouteImport;
+      parentRoute: typeof rootServerRouteImport;
+    };
+    "/api/ai/chat": {
+      id: "/api/ai/chat";
+      path: "/api/ai/chat";
+      fullPath: "/api/ai/chat";
+      preLoaderRoute: typeof ApiAiChatServerRouteImport;
       parentRoute: typeof rootServerRouteImport;
     };
   }
@@ -466,13 +502,14 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRouteRoute: AboutRouteRouteWithChildren,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
   AppRoute: AppRouteWithChildren,
-
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>();
 const rootServerRouteChildren: RootServerRouteChildren = {
   ApiHelloServerRoute: ApiHelloServerRoute,
+  ApiAiChatServerRoute: ApiAiChatServerRoute,
+  ApiAiMessagesServerRoute: ApiAiMessagesServerRoute,
   ApiAuthSplatServerRoute: ApiAuthSplatServerRoute,
 };
 export const serverRouteTree = rootServerRouteImport
