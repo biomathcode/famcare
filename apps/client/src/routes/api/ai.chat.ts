@@ -1,6 +1,7 @@
 import { createServerFileRoute } from '@tanstack/react-start/server'
 import { anthropic } from '@ai-sdk/anthropic'
 import { convertToModelMessages, stepCountIs, streamText } from 'ai'
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
 
 import getTools from '@/utils/tools'
 
@@ -11,6 +12,12 @@ You can use the following tools to help the user:
 - getGuitars: Get all guitars from the database
 - recommendGuitar: Recommend a guitar to the user
 `
+
+const moonshotai = createOpenAICompatible({
+    apiKey: process.env.MOONSHOTAI_API_KEY!,
+    name: 'moonshotai',
+    baseURL: 'https://api.moonshot.ai/v1'
+})
 
 export const ServerRoute = createServerFileRoute('/api/ai/chat').methods({
     POST: async ({ request }) => {

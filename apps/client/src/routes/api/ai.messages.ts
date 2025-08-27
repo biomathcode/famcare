@@ -1,5 +1,5 @@
 import { createServerFileRoute } from '@tanstack/react-start/server'
-import { transports } from '@/utils/demo.sse'
+import { transports } from '@/utils/sse'
 
 export const ServerRoute = createServerFileRoute('/api/ai/messages').methods({
     POST: async ({ request }) => {

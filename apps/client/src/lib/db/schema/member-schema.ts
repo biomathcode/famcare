@@ -11,7 +11,7 @@ import { sql } from "drizzle-orm";
 import { user } from './auth-schema';
 
 export const member = mysqlTable("member", {
-    id: varchar("id", { length: 36 }).primaryKey(),
+    id: varchar("id", { length: 36 }).primaryKey().default(sql`(UUID())`),
     userId: varchar("user_id", { length: 36 })
         .notNull()
         .references(() => user.id, { onDelete: "cascade" }),

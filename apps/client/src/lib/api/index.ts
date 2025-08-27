@@ -12,23 +12,28 @@ import {
     exerciseGoal,
     sleepGoal,
 } from "@/lib/db/schema";
-
 import { eq } from "drizzle-orm";
+import { nanoid } from "nanoid";  // ✅ import nanoid
 
 // 🔹 Generic CRUD helpers
 function createCrud<T extends { id: string }>(table: any) {
     return {
         // CREATE
-        async create(data: Omit<T, "id"> & { id?: string }) {
-            const result = await db.insert(table).values(data);
+        async create(data) {
+            const id = nanoid(36); // ✅ auto-generate id if not passed
 
-            // MySQL me insert karne ke baad naya id `insertId` me hota hai
-            const insertedId = result[0].insertId;
-
-            return {
-                id: insertedId,
+            const insertData = {
                 ...data,
+                dob: data.dob ? new Date(data.dob) : null,
+
+                id,
             };
+
+            console.log("Inserting data:", insertData);
+
+            await db.insert(table).values(insertData);
+
+            return insertData;
         },
 
         // READ (by id)
@@ -44,14 +49,8 @@ function createCrud<T extends { id: string }>(table: any) {
 
         // UPDATE
         async update(id: string, data: Partial<T>) {
-            const result = await db
-                .update(table)
-                .set(data)
-                .where(eq(table.id, id))
-
-            const insertedId = result[0].insertId;
-
-            return insertedId;
+            await db.update(table).set(data).where(eq(table.id, id));
+            return { id, ...data };
         },
 
         // DELETE
@@ -60,10 +59,10 @@ function createCrud<T extends { id: string }>(table: any) {
             return { success: true };
         },
 
-        //Find All
+        // Find All
         async findAll() {
             return await db.select().from(table);
-        }
+        },
     };
 }
 
