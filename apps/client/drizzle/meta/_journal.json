@@ -8,6 +8,13 @@
       "when": 1756070187552,
       "tag": "0000_overrated_reptil",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1756371865784,
+      "tag": "0001_lush_king_cobra",
+      "breakpoints": true
     }
   ]
 }

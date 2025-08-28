@@ -6,11 +6,14 @@ import { defineConfig } from "vite";
 import tsConfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
+  ssr: { noExternal: ['streamdown'], },
+
   plugins: [
     devtools(),
     tsConfigPaths({
       projects: ["./tsconfig.json"],
     }),
+
     tanstackStart({
       // https://github.com/TanStack/router/discussions/2863#discussioncomment-13713677
       customViteReactPlugin: true,

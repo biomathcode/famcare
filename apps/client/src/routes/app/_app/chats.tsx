@@ -13,6 +13,7 @@ import {
   ConversationContent,
   ConversationScrollButton,
 } from '@/components/ai-elements/conversation';
+import { Response } from "~/components/ai-elements/response";
 
 
 export const Route = createFileRoute("/app/_app/chats")({
@@ -32,8 +33,10 @@ export default function Chat() {
 
 
 
+
+
   return (
-    <div>
+    <div className="relative">
       <Conversation>
         <ConversationContent>
           {messages.map(({ role, parts }, index) => (
@@ -42,7 +45,7 @@ export default function Chat() {
                 {parts.map((part, i) => {
                   switch (part.type) {
                     case 'text':
-                      return <div key={`${role}-${i}`}>{part.text}</div>;
+                      return <Response key={`${role}-${i}`}>{part.text}</Response>;
                   }
                 })}
               </MessageContent>
@@ -56,6 +59,7 @@ export default function Chat() {
           sendMessage({ text: input });
           setInput("");
         }}
+        className="fixed bottom-10 w-xl  "
       >
         <div className="flex space-x-3 max-w-xl mx-auto">
           <textarea

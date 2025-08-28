@@ -2,6 +2,10 @@
 Organize your Family Health using AI 
 
 
+## Chat Session Flow-> 
+Click Create Chat -> db chat session in created -> incremental save the chat_message with session id -> fetch chat message by session id -> display chat message in the chat window
+
+
 # [React TanStarter](https://github.com/dotnize/react-tanstarter)
 
 A minimal starter template for 🏝️ TanStack Start. [→ Preview here](https://tanstarter.nize.ph/)

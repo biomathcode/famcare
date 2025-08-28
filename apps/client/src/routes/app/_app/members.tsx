@@ -42,7 +42,14 @@ export const Route = createFileRoute("/app/_app/members")({
         const members = await getMembers();
         return { members };
     },
+    pendingComponent: LoadingScreen,
 });
+
+function LoadingScreen() {
+    return (
+        <div>Loading...</div>
+    )
+}
 
 function RouteComponent() {
 
@@ -53,7 +60,6 @@ function RouteComponent() {
 
     const user = context.user;
 
-    const createMemberMutation = useServerFn(createMembers);
 
 
 
