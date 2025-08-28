@@ -1,48 +1,57 @@
-import { MoonIcon, SunIcon } from "lucide-react";
+"use client";
 
+import { RiMoonClearLine, RiSunLine } from "@remixicon/react";
 import { useTheme } from "~/components/theme-provider";
-import { Button } from "~/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
+import { useId, useState } from "react";
 
-export function ThemeToggle() {
+export default function ThemeToggle() {
+  const id = useId();
   const { theme, setTheme } = useTheme();
+  const [system, setSystem] = useState(false);
 
-  console.log('theme', theme)
+  const smartToggle = () => {
+    const prefersDarkScheme = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
+    if (theme === "system") {
+      setTheme(prefersDarkScheme ? "light" : "dark");
+      setSystem(false);
+    } else if (
+      (theme === "light" && !prefersDarkScheme) ||
+      (theme === "dark" && prefersDarkScheme)
+    ) {
+      setTheme(theme === "light" ? "dark" : "light");
+      setSystem(false);
+    } else {
+      setTheme("system");
+      setSystem(true);
+    }
+  };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <SunIcon className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-          <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuCheckboxItem
-          checked={theme === "light"}
-          onCheckedChange={(v) => v && setTheme("light")}
-        >
-          Light
-        </DropdownMenuCheckboxItem>
-        <DropdownMenuCheckboxItem
-          checked={theme === "dark"}
-          onCheckedChange={(v) => v && setTheme("dark")}
-        >
-          Dark
-        </DropdownMenuCheckboxItem>
-        <DropdownMenuCheckboxItem
-          checked={theme === "system"}
-          onCheckedChange={(v) => v && setTheme("system")}
-        >
-          System
-        </DropdownMenuCheckboxItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="flex flex-col justify-center">
+      <input
+        type="checkbox"
+        name="theme-toggle"
+        id={id}
+        className="peer sr-only"
+        checked={system}
+        onChange={smartToggle}
+        aria-label="Toggle dark mode"
+      />
+      <label
+        className="text-muted-foreground/80 hover:text-foreground/80 rounded peer-focus-visible:border-ring peer-focus-visible:ring-ring/50 relative inline-flex size-8 cursor-pointer items-center justify-center transition-[color,box-shadow] outline-none peer-focus-visible:ring-[3px]"
+        htmlFor={id}
+        aria-hidden="true"
+      >
+        <RiSunLine className="dark:hidden" size={20} aria-hidden="true" />
+        <RiMoonClearLine
+          className="hidden dark:block"
+          size={20}
+          aria-hidden="true"
+        />
+        <span className="sr-only">Switch to system/light/dark version</span>
+      </label>
+    </div>
   );
 }
