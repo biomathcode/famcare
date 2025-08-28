@@ -19,7 +19,6 @@ import { api } from "~/lib/api";
 
 export const createMembers = createServerFn({ method: 'POST', response: "raw", })
     .handler(async ({ data }) => {
-
         if (!data.userId) throw new Error("userId is required");
         await api.members.create(
             data

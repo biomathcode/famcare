@@ -5,11 +5,14 @@ import {
   HeadContent,
   Outlet,
   Scripts,
+  useRouterState,
 } from "@tanstack/react-router";
 
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+
+import Nprogress from "nprogress";
 
 import { $getUser } from "~/lib/auth/functions";
 import appCss from "~/styles.css?url";
@@ -18,6 +21,7 @@ import appCss from "~/styles.css?url";
 
 import { ThemeProvider } from "~/components/theme-provider";
 import { Toaster } from "~/components/ui/sonner";
+import { useEffect } from "react";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -56,6 +60,15 @@ export const Route = createRootRouteWithContext<{
 });
 
 function RootComponent() {
+  const routerState = useRouterState();
+
+  useEffect(() => {
+    if (routerState.isLoading) {
+      Nprogress.start();
+    } else {
+      Nprogress.done();
+    }
+  }, [routerState.isLoading]);
   return (
     <RootDocument>
       <Outlet />
@@ -93,3 +106,7 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
     </html>
   );
 }
+
+
+
+

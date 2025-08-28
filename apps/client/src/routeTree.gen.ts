@@ -25,7 +25,10 @@ import { Route as AppAppIndexRouteImport } from "./routes/app/_app/index";
 import { Route as AppAppSettingsRouteImport } from "./routes/app/_app/settings";
 import { Route as AppAppRecordsRouteImport } from "./routes/app/_app/records";
 import { Route as AppAppMembersRouteImport } from "./routes/app/_app/members";
+import { Route as AppAppExerciseRouteImport } from "./routes/app/_app/exercise";
+import { Route as AppAppDietRouteImport } from "./routes/app/_app/diet";
 import { Route as AppAppChatsRouteImport } from "./routes/app/_app/chats";
+import { Route as AppAppCalendarRouteImport } from "./routes/app/_app/calendar";
 import { Route as AppAppChatChatIdRouteImport } from "./routes/app/_app/chat.$chatId";
 import { ServerRoute as ApiHelloServerRouteImport } from "./routes/api/hello";
 import { ServerRoute as ApiAuthSplatServerRouteImport } from "./routes/api/auth/$";
@@ -103,9 +106,24 @@ const AppAppMembersRoute = AppAppMembersRouteImport.update({
   path: "/members",
   getParentRoute: () => AppAppRoute,
 } as any);
+const AppAppExerciseRoute = AppAppExerciseRouteImport.update({
+  id: "/exercise",
+  path: "/exercise",
+  getParentRoute: () => AppAppRoute,
+} as any);
+const AppAppDietRoute = AppAppDietRouteImport.update({
+  id: "/diet",
+  path: "/diet",
+  getParentRoute: () => AppAppRoute,
+} as any);
 const AppAppChatsRoute = AppAppChatsRouteImport.update({
   id: "/chats",
   path: "/chats",
+  getParentRoute: () => AppAppRoute,
+} as any);
+const AppAppCalendarRoute = AppAppCalendarRouteImport.update({
+  id: "/calendar",
+  path: "/calendar",
   getParentRoute: () => AppAppRoute,
 } as any);
 const AppAppChatChatIdRoute = AppAppChatChatIdRouteImport.update({
@@ -143,7 +161,10 @@ export interface FileRoutesByFullPath {
   "/app": typeof AppAppRouteWithChildren;
   "/about/": typeof AboutIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
+  "/app/calendar": typeof AppAppCalendarRoute;
   "/app/chats": typeof AppAppChatsRoute;
+  "/app/diet": typeof AppAppDietRoute;
+  "/app/exercise": typeof AppAppExerciseRoute;
   "/app/members": typeof AppAppMembersRoute;
   "/app/records": typeof AppAppRecordsRoute;
   "/app/settings": typeof AppAppSettingsRoute;
@@ -157,7 +178,10 @@ export interface FileRoutesByTo {
   "/app": typeof AppAppIndexRoute;
   "/about": typeof AboutIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
+  "/app/calendar": typeof AppAppCalendarRoute;
   "/app/chats": typeof AppAppChatsRoute;
+  "/app/diet": typeof AppAppDietRoute;
+  "/app/exercise": typeof AppAppExerciseRoute;
   "/app/members": typeof AppAppMembersRoute;
   "/app/records": typeof AppAppRecordsRoute;
   "/app/settings": typeof AppAppSettingsRoute;
@@ -175,7 +199,10 @@ export interface FileRoutesById {
   "/app/_app": typeof AppAppRouteWithChildren;
   "/about/": typeof AboutIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
+  "/app/_app/calendar": typeof AppAppCalendarRoute;
   "/app/_app/chats": typeof AppAppChatsRoute;
+  "/app/_app/diet": typeof AppAppDietRoute;
+  "/app/_app/exercise": typeof AppAppExerciseRoute;
   "/app/_app/members": typeof AppAppMembersRoute;
   "/app/_app/records": typeof AppAppRecordsRoute;
   "/app/_app/settings": typeof AppAppSettingsRoute;
@@ -193,7 +220,10 @@ export interface FileRouteTypes {
     | "/app"
     | "/about/"
     | "/dashboard/"
+    | "/app/calendar"
     | "/app/chats"
+    | "/app/diet"
+    | "/app/exercise"
     | "/app/members"
     | "/app/records"
     | "/app/settings"
@@ -207,7 +237,10 @@ export interface FileRouteTypes {
     | "/app"
     | "/about"
     | "/dashboard"
+    | "/app/calendar"
     | "/app/chats"
+    | "/app/diet"
+    | "/app/exercise"
     | "/app/members"
     | "/app/records"
     | "/app/settings"
@@ -224,7 +257,10 @@ export interface FileRouteTypes {
     | "/app/_app"
     | "/about/"
     | "/dashboard/"
+    | "/app/_app/calendar"
     | "/app/_app/chats"
+    | "/app/_app/diet"
+    | "/app/_app/exercise"
     | "/app/_app/members"
     | "/app/_app/records"
     | "/app/_app/settings"
@@ -378,11 +414,32 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AppAppMembersRouteImport;
       parentRoute: typeof AppAppRoute;
     };
+    "/app/_app/exercise": {
+      id: "/app/_app/exercise";
+      path: "/exercise";
+      fullPath: "/app/exercise";
+      preLoaderRoute: typeof AppAppExerciseRouteImport;
+      parentRoute: typeof AppAppRoute;
+    };
+    "/app/_app/diet": {
+      id: "/app/_app/diet";
+      path: "/diet";
+      fullPath: "/app/diet";
+      preLoaderRoute: typeof AppAppDietRouteImport;
+      parentRoute: typeof AppAppRoute;
+    };
     "/app/_app/chats": {
       id: "/app/_app/chats";
       path: "/chats";
       fullPath: "/app/chats";
       preLoaderRoute: typeof AppAppChatsRouteImport;
+      parentRoute: typeof AppAppRoute;
+    };
+    "/app/_app/calendar": {
+      id: "/app/_app/calendar";
+      path: "/calendar";
+      fullPath: "/app/calendar";
+      preLoaderRoute: typeof AppAppCalendarRouteImport;
       parentRoute: typeof AppAppRoute;
     };
     "/app/_app/chat/$chatId": {
@@ -466,7 +523,10 @@ const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
 );
 
 interface AppAppRouteChildren {
+  AppAppCalendarRoute: typeof AppAppCalendarRoute;
   AppAppChatsRoute: typeof AppAppChatsRoute;
+  AppAppDietRoute: typeof AppAppDietRoute;
+  AppAppExerciseRoute: typeof AppAppExerciseRoute;
   AppAppMembersRoute: typeof AppAppMembersRoute;
   AppAppRecordsRoute: typeof AppAppRecordsRoute;
   AppAppSettingsRoute: typeof AppAppSettingsRoute;
@@ -475,7 +535,10 @@ interface AppAppRouteChildren {
 }
 
 const AppAppRouteChildren: AppAppRouteChildren = {
+  AppAppCalendarRoute: AppAppCalendarRoute,
   AppAppChatsRoute: AppAppChatsRoute,
+  AppAppDietRoute: AppAppDietRoute,
+  AppAppExerciseRoute: AppAppExerciseRoute,
   AppAppMembersRoute: AppAppMembersRoute,
   AppAppRecordsRoute: AppAppRecordsRoute,
   AppAppSettingsRoute: AppAppSettingsRoute,

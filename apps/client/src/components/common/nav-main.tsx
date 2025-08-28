@@ -5,6 +5,9 @@ import {
   IconUsers,
   IconSettings,
   IconMessage,
+  IconCalendarWeek,
+  IconSalad,
+  IconTreadmill,
 } from "@tabler/icons-react";
 
 import {
@@ -14,10 +17,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "~/components/ui/sidebar";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useRouter } from "@tanstack/react-router";
+
+import { createChatSession } from '@/lib/api/chatSession';
+import { useRouteContext } from "@tanstack/react-router";
 
 export function NavMain() {
   const nav = useNavigate();
+  const { user } = useRouteContext({ from: '/app' });
 
   const items = [
     {
@@ -46,6 +53,21 @@ export function NavMain() {
       navigate: () => nav({ to: "/app/settings" }),
       icon: IconSettings,
     },
+    {
+      title: "Diet",
+      navigate: () => nav({ to: "/app/diet" }),
+      icon: IconSalad,
+    },
+    {
+      title: "Exercise",
+      navigate: () => nav({ to: "/app/exercise" }),
+      icon: IconTreadmill,
+    },
+    {
+      title: "Calendar",
+      navigate: () => nav({ to: "/app/calendar" }),
+      icon: IconCalendarWeek,
+    }
   ];
 
   return (
@@ -53,8 +75,19 @@ export function NavMain() {
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
+            {/* TODO: Add Create Session here and Router to that page */}
             <SidebarMenuButton
-              onClick={() => nav({ to: "/app/chat/123" })}
+              onClick={async () => {
+                const chatSession = await createChatSession({
+                  data: {
+                    userId: user?.id || ''
+                  }
+                })
+
+                console.log(chatSession);
+                nav({ to: `/app/chat/${chatSession.id}` })
+
+              }}
               tooltip="Quick Upload"
               className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
             >

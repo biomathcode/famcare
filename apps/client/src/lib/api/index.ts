@@ -11,6 +11,7 @@ import {
     healthMetric,
     exerciseGoal,
     sleepGoal,
+    chatSession,
 } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";  // ✅ import nanoid
@@ -78,4 +79,5 @@ export const api = {
     healthMetrics: createCrud(healthMetric),
     exerciseGoals: createCrud(exerciseGoal),
     sleepGoals: createCrud(sleepGoal),
+    chatSession: createCrud(chatSession),  // ✅ chatSession CRUD
 };

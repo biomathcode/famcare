@@ -29,6 +29,8 @@ export function createRouter() {
     defaultStructuralSharing: true,
   });
 
+
+
   setupRouterSsrQueryIntegration({
     router,
     queryClient,
