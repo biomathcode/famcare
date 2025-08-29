@@ -29,21 +29,6 @@ export function CtaSection() {
             </Button>
           </div>
 
-          {/* Trust indicators */}
-          <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <Shield className="h-4 w-4 text-primary" />
-              <span>14-day free trial</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Zap className="h-4 w-4 text-primary" />
-              <span>Setup in 2 minutes</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span>💳</span>
-              <span>No credit card required</span>
-            </div>
-          </div>
         </div>
       </div>
     </section>

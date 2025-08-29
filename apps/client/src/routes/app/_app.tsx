@@ -36,7 +36,7 @@ function RouteComponent() {
                 <SidebarInset className="flex flex-col w-full">
                     <SiteHeader />
                     <div className="flex-1 overflow-auto @container/main">
-                        <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+                        <div className="flex flex-col   h-full">
                             <Outlet />
                             <Toaster />
                         </div>

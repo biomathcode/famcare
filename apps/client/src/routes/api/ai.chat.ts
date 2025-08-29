@@ -5,18 +5,18 @@ import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
 
 import getTools from '@/utils/tools'
 
-const SYSTEM_PROMPT = `You are a helpful assistant for a store that sells guitars.
+const SYSTEM_PROMPT = `You are a helpful health care management assistant.
 
 You can use the following tools to help the user:
 
-- getGuitars: Get all guitars from the database
-- recommendGuitar: Recommend a guitar to the user
+- getMembers: Use this tool to get all members from the database
 `
 
 const moonshotai = createOpenAICompatible({
     apiKey: process.env.MOONSHOTAI_API_KEY!,
     name: 'moonshotai',
-    baseURL: 'https://api.moonshot.ai/v1'
+    baseURL: 'https://api.moonshot.ai/v1',
+
 })
 
 export const ServerRoute = createServerFileRoute('/api/ai/chat').methods({
@@ -24,7 +24,7 @@ export const ServerRoute = createServerFileRoute('/api/ai/chat').methods({
         try {
             const { messages } = await request.json()
 
-            // const tools = await getTools()
+            const tools = await getTools()
 
             const model = moonshotai('kimi-k2-0711-preview')
 
@@ -33,7 +33,10 @@ export const ServerRoute = createServerFileRoute('/api/ai/chat').methods({
                 model,
                 messages: convertToModelMessages(messages),
                 temperature: 0.7,
-                topP: 1,
+                // topP: 1,
+                stopWhen: stepCountIs(5),
+                tools,
+                system: SYSTEM_PROMPT,
 
             })
 

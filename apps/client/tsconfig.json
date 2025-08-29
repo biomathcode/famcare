@@ -1,5 +1,9 @@
 {
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "trigger.config.ts"
+  ],
   "compilerOptions": {
     "strict": true,
     "esModuleInterop": true,

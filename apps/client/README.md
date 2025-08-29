@@ -6,6 +6,21 @@ Organize your Family Health using AI
 Click Create Chat -> db chat session in created -> incremental save the chat_message with session id -> fetch chat message by session id -> display chat message in the chat window
 
 
+### TODOS
+-[] Add File Records
+-[] Add File Upload
+-[] Create Vector embeddings and use ai
+-[] Add Feature using tidb
+-[] Add User Profile
+-[] Add User Settings
+-[] Create Exercise plan 
+-[] Create Diet plan
+-[] Add Calendar View 
+
+Create Calendar Events for timely medicine taking Using AI
+
+For creating the calendar event we would require trigger/ queue system to create the event after knowing the chat,exercise and diet plan 
+
 # [React TanStarter](https://github.com/dotnize/react-tanstarter)
 
 A minimal starter template for 🏝️ TanStack Start. [→ Preview here](https://tanstarter.nize.ph/)

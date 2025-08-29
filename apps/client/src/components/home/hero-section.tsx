@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Globe, Shield, Zap, Sparkles } from "lucide-react";
 import authClient from "~/lib/auth/auth-client";
@@ -29,30 +28,26 @@ export function HeroSection() {
             className="mb-6 px-4 py-2 text-sm font-medium bg-primary/5 border-primary/20 text-primary"
           >
             <Sparkles className="mr-2 h-3 w-3" />
-            Trusted by 10,000+ businesses worldwide
+            Open Sourced
           </Badge>
 
           {/* Main headline */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-            Stop Losing Revenue to{" "}
+            Take care of Family Health {" "} <br />
             <span className="bg-gradient-to-r from-primary via-primary to-purple-600 bg-clip-text text-transparent">
-              Broken Links
+              Using AI
             </span>
           </h1>
 
           {/* Subheading */}
           <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
-            Smart link management with AI monitoring and geo-routing that keeps
-            your traffic flowing and revenue growing.
+            Family Health Management system powered by AI
           </p>
 
           {/* CTA Section */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <div className="flex gap-2 w-full sm:w-auto max-w-md">
-              <Input
-                placeholder="Enter your URL to shorten"
-                className="h-11 text-base"
-              />
+
               {data ? (
                 <Button
                   size="lg"
@@ -77,15 +72,15 @@ export function HeroSection() {
           <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <Zap className="h-4 w-4 text-primary" />
-              <span>Instant Link Creation</span>
+              <span>Instant File Upload</span>
             </div>
             <div className="flex items-center gap-2">
               <Globe className="h-4 w-4 text-primary" />
-              <span>Geo-based Routing</span>
+              <span>Create Medicine Schedule</span>
             </div>
             <div className="flex items-center gap-2">
               <Shield className="h-4 w-4 text-primary" />
-              <span>AI Link Monitoring</span>
+              <span>Understand your own health </span>
             </div>
           </div>
         </div>
