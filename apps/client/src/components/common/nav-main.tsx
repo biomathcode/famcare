@@ -49,11 +49,6 @@ export function NavMain() {
     },
 
     {
-      title: "Settings",
-      navigate: () => nav({ to: "/app/settings" }),
-      icon: IconSettings,
-    },
-    {
       title: "Diet",
       navigate: () => nav({ to: "/app/diet" }),
       icon: IconSalad,
@@ -67,7 +62,13 @@ export function NavMain() {
       title: "Calendar",
       navigate: () => nav({ to: "/app/calendar" }),
       icon: IconCalendarWeek,
-    }
+    },
+
+    {
+      title: "Settings",
+      navigate: () => nav({ to: "/app/settings" }),
+      icon: IconSettings,
+    },
   ];
 
   return (

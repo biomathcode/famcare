@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createServerFn } from '@tanstack/react-start';
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { IconSend } from "@tabler/icons-react";
@@ -32,10 +33,30 @@ import {
 } from '@/components/ai-elements/conversation';
 import { Response } from "~/components/ai-elements/response";
 import { Loader } from "~/components/ai-elements/loader";
+import { api } from "~/lib/api";
+
+
+export const saveChat = createServerFn<{ data: { userId: string; sessionId: string; role: string; content: string } }>().handler(async ({ data }) => {
+    await api.chatMessages.create({
+        role: data.role,
+        content: data.content,
+        sessionId: data.sessionId,
+        userId: data.userId,
+    });
+});
+
+export const getChatMessages = createServerFn().handler(async ({ data }) => {
+    return await api.chatMessages.findAll()
+        .then(rows => rows.filter(row => row.sessionId === data.sessionId));
+});
 
 
 export const Route = createFileRoute("/app/_app/chat/$chatId")({
     component: Chat,
+    loader: async ({ params }) => {
+        const chats = await getChatMessages({ data: { sessionId: params.chatId } });
+        return { chats };
+    }
 });
 
 
@@ -50,14 +71,47 @@ export default function Chat() {
     const [model, setModel] = useState<string>(models[0].id);
 
 
+    const context = Route.useRouteContext();
+    const { chatId } = Route.useParams();
+
+
+    const user = context.user;
+
+    const { chats } = Route.useLoaderData<{ chats: any[] }>(); // ✅ get from loader
+
+
+    // 🔹 Transform DB chats into useChat format
+    const initialMessages = chats.map((c) => ({
+        id: c.id,
+        role: c.role,
+        parts: [{ type: "text", text: c.content }],
+    }));
+
     const { messages, sendMessage, status, regenerate, } = useChat({
+        messages: initialMessages,
         transport: new DefaultChatTransport({
             api: '/api/ai/chat',
         }),
+
+        onFinish: async (message) => {
+            console.log('message', message)
+            await saveChat({
+                data: {
+                    userId: user?.id || " ",   // same user
+                    sessionId: chatId,
+                    role: "assistant",
+                    content: JSON.stringify(message),
+                }
+            });
+        },
+
     })
 
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         sendMessage(
             { text: text },
@@ -67,6 +121,14 @@ export default function Chat() {
                 },
             },
         );
+        await saveChat({
+            data: {
+                userId: user?.id || '', // ← replace with actual auth user id
+                sessionId: chatId,
+                role: "user",
+                content: text,
+            }
+        });
         setText('');
     };
 

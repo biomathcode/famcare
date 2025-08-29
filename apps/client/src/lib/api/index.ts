@@ -64,6 +64,25 @@ function createCrud<T extends { id: string }>(table: any) {
         async findAll() {
             return await db.select().from(table);
         },
+
+
+        // 🔹 Find many by (all rows matching condition)
+        async findManyBy<K extends keyof T>(column: K, value: T[K]) {
+            return await db
+                .select()
+                .from(table)
+                .where(eq(table[column as string], value));
+        },
+
+        // 🔹 Generic findBy (works with any column)
+        // return first match or null
+        async findBy<K extends keyof T>(column: K, value: T[K]) {
+            const [row] = await db
+                .select()
+                .from(table)
+                .where(eq(table[column as string], value));
+            return row ?? null;
+        },
     };
 }
 

@@ -188,6 +188,9 @@ importers:
       drizzle-orm:
         specifier: ^0.44.4
         version: 0.44.4(@opentelemetry/api@1.9.0)(@tidbcloud/serverless@0.2.0)(better-sqlite3@12.2.0)(gel@2.1.1)(kysely@0.28.5)(mysql2@3.14.3)(postgres@3.4.7)
+      drizzle-zod:
+        specifier: ^0.8.3
+        version: 0.8.3(drizzle-orm@0.44.4(@opentelemetry/api@1.9.0)(@tidbcloud/serverless@0.2.0)(better-sqlite3@12.2.0)(gel@2.1.1)(kysely@0.28.5)(mysql2@3.14.3)(postgres@3.4.7))(zod@4.1.0)
       embla-carousel-react:
         specifier: ^8.6.0
         version: 8.6.0(react@19.1.1)
@@ -209,6 +212,9 @@ importers:
       nprogress:
         specifier: ^0.2.0
         version: 0.2.0
+      openai:
+        specifier: ^5.16.0
+        version: 5.16.0(ws@8.18.3)(zod@4.1.0)
       postgres:
         specifier: ^3.4.7
         version: 3.4.7
@@ -4196,6 +4202,12 @@ packages:
       sqlite3:
         optional: true
 
+  drizzle-zod@0.8.3:
+    resolution: {integrity: sha512-66yVOuvGhKJnTdiqj1/Xaaz9/qzOdRJADpDa68enqS6g3t0kpNkwNYjUuaeXgZfO/UWuIM9HIhSlJ6C5ZraMww==}
+    peerDependencies:
+      drizzle-orm: '>=0.36.0'
+      zod: ^3.25.0 || ^4.0.0
+
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
@@ -5757,6 +5769,18 @@ packages:
   open@8.4.2:
     resolution: {integrity: sha512-7x81NCL719oNbsq/3mh+hVrAWmFuEYUqrq/Iw3kUzH8ReypT9QQ0BLoJS7/G9k6N81XjW4qHWtjWwe/9eLy1EQ==}
     engines: {node: '>=12'}
+
+  openai@5.16.0:
+    resolution: {integrity: sha512-hoEH8ZNvg1HXjU9mp88L/ZH8O082Z8r6FHCXGiWAzVRrEv443aI57qhch4snu07yQydj+AUAWLenAiBXhu89Tw==}
+    hasBin: true
+    peerDependencies:
+      ws: ^8.18.0
+      zod: ^3.23.8
+    peerDependenciesMeta:
+      ws:
+        optional: true
+      zod:
+        optional: true
 
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
@@ -11344,6 +11368,11 @@ snapshots:
       mysql2: 3.14.3
       postgres: 3.4.7
 
+  drizzle-zod@0.8.3(drizzle-orm@0.44.4(@opentelemetry/api@1.9.0)(@tidbcloud/serverless@0.2.0)(better-sqlite3@12.2.0)(gel@2.1.1)(kysely@0.28.5)(mysql2@3.14.3)(postgres@3.4.7))(zod@4.1.0):
+    dependencies:
+      drizzle-orm: 0.44.4(@opentelemetry/api@1.9.0)(@tidbcloud/serverless@0.2.0)(better-sqlite3@12.2.0)(gel@2.1.1)(kysely@0.28.5)(mysql2@3.14.3)(postgres@3.4.7)
+      zod: 4.1.0
+
   dunder-proto@1.0.1:
     dependencies:
       call-bind-apply-helpers: 1.0.2
@@ -13432,6 +13461,11 @@ snapshots:
       define-lazy-prop: 2.0.0
       is-docker: 2.2.1
       is-wsl: 2.2.0
+
+  openai@5.16.0(ws@8.18.3)(zod@4.1.0):
+    optionalDependencies:
+      ws: 8.18.3
+      zod: 4.1.0
 
   optionator@0.9.4:
     dependencies:

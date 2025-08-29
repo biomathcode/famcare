@@ -20,7 +20,6 @@ export const Route = createFileRoute("/app/_app")({
 function RouteComponent() {
     const data = Route.useLoaderData();
 
-    console.log("data from api", data)
 
     return (
         <div className="h-screen overflow-hidden flex">

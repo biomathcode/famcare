@@ -17,6 +17,13 @@ Click Create Chat -> db chat session in created -> incremental save the chat_mes
 -[] Create Diet plan
 -[] Add Calendar View 
 
+Use This to persist chat history and other data into the database 
+
+- [] https://github.com/vercel-labs/ai-sdk-persistence-db
+
+
+For file upload we can go in two directions one using kimi ai image upload
+
 Create Calendar Events for timely medicine taking Using AI
 
 For creating the calendar event we would require trigger/ queue system to create the event after knowing the chat,exercise and diet plan 

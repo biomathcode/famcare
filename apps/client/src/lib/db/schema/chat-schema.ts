@@ -10,6 +10,15 @@ import { sql } from "drizzle-orm";
 
 import { user } from './auth-schema';
 
+export const chatSession = mysqlTable("chat_session", {
+    id: varchar("id", { length: 36 }).primaryKey(),
+    userId: varchar("user_id", { length: 36 })
+        .notNull()
+        .references(() => user.id, { onDelete: "cascade" }),
+    title: varchar("title", { length: 255 }).notNull(), // e.g. "Math QnA"
+    createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
 export const chatMessage = mysqlTable("chat_message", {
     id: varchar("id", { length: 36 }).primaryKey(),
     userId: varchar("user_id", { length: 36 })
@@ -26,11 +35,3 @@ export const chatMessage = mysqlTable("chat_message", {
 
 
 
-export const chatSession = mysqlTable("chat_session", {
-    id: varchar("id", { length: 36 }).primaryKey(),
-    userId: varchar("user_id", { length: 36 })
-        .notNull()
-        .references(() => user.id, { onDelete: "cascade" }),
-    title: varchar("title", { length: 255 }).notNull(), // e.g. "Math QnA"
-    createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
-});
