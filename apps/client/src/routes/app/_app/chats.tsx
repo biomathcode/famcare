@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { createServerFn } from '@tanstack/react-start';
 
 import { api } from "~/lib/api";
@@ -27,9 +27,17 @@ export default function Chat() {
 
   return (
     <div className="relative">
-      {
-        chatSession.map((e) => <div key={e.id}>{e.title}</div>)
-      }
+      <div className="flex flex-col gap-2">
+
+        {
+          chatSession.map((e) => <Link
+            to="/app/chat/$chatId"
+
+            params={{ chatId: e.id }}
+            key={e.id}>{e.title}</Link>)
+        }
+      </div>
+
 
     </div>
   )

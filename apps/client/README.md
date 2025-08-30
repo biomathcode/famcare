@@ -22,7 +22,19 @@ Use This to persist chat history and other data into the database
 - [] https://github.com/vercel-labs/ai-sdk-persistence-db
 
 
+
+### Flow b/w user and AI
+user -> uploaded image -> then we ask for member -> create a new member or update the existing member -> then we create a medical record for the member -> then we create medical schedule -> then we create a google ice calendar event for the medical schedule for the member/ 
+
+
+
+what are vector embeddings -> ?  
+https://www.pinecone.io/learn/vector-database/
+
 For file upload we can go in two directions one using kimi ai image upload
+
+use uploadthings for files uploads -> 
+[text](https://docs.uploadthing.com/getting-started/tanstack-start)
 
 Create Calendar Events for timely medicine taking Using AI
 
