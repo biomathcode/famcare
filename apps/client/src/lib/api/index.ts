@@ -12,6 +12,7 @@ import {
     exerciseGoal,
     sleepGoal,
     chatSession,
+    media,
 } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
@@ -98,4 +99,5 @@ export const api = {
     exerciseGoals: createCrud(exerciseGoal),
     sleepGoals: createCrud(sleepGoal),
     chatSession: createCrud(chatSession),  // ✅ chatSession CRUD
+    media: createCrud(media),
 };
