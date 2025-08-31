@@ -5,6 +5,7 @@ import {
     text,
     timestamp,
     json,
+    int
 } from "drizzle-orm/mysql-core";
 import { sql } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";

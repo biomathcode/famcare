@@ -1,6 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from '@tanstack/react-start';
 
+//TODO add document upload using 
+// pnpm dlx shadcn@latest add https://originui.com/r/comp-549.json
+
+
+
 
 const getFiles = createServerFn({ method: "GET" }).
     handler(async () => {

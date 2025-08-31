@@ -8,6 +8,8 @@ import {
   IconCalendarWeek,
   IconSalad,
   IconTreadmill,
+  IconPill,
+  IconBed,
 } from "@tabler/icons-react";
 
 import {
@@ -17,59 +19,75 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "~/components/ui/sidebar";
-import { useNavigate, useRouter } from "@tanstack/react-router";
+import { useNavigate, useRouteContext, Link } from "@tanstack/react-router";
 
 import { createChatSession } from '@/lib/api/chatSession';
-import { useRouteContext } from "@tanstack/react-router";
+
+
+const navItems = [
+  {
+    title: "Previous Chats",
+    path: "/app/chats",
+    icon: IconMessage,
+  },
+  {
+    title: "Dashboard",
+    path: "/app/home",
+    icon: IconDashboard,
+  },
+  {
+    title: "Health Records",
+    path: "/app/records",
+    icon: IconFileText,
+  },
+  {
+    title: "Family Members",
+    path: "/app/members",
+    icon: IconUsers,
+  },
+
+  {
+    title: "Diet",
+    path: "/app/diet",
+    icon: IconSalad,
+  },
+  {
+    title: "Exercise",
+    path: "/app/exercise",
+    icon: IconTreadmill,
+  },
+  {
+    title: "Calendar",
+    path: "/app/calendar",
+
+    icon: IconCalendarWeek,
+  },
+
+  {
+    title: "Settings",
+    path: "/app/settings",
+
+    icon: IconSettings,
+  },
+
+  {
+    title: "Medicines",
+    path: "/app/medicines",
+    icon: IconPill,
+  },
+  {
+    title: "Sleep",
+    path: "/app/sleep",
+    icon: IconBed,
+
+  }
+];
 
 export function NavMain() {
   const nav = useNavigate();
   const { user } = useRouteContext({ from: '/app' });
 
-  const items = [
-    {
-      title: "Previous Chats",
-      navigate: () => nav({ to: "/app/chats" }),
-      icon: IconMessage,
-    },
-    {
-      title: "Dashboard",
-      navigate: () => nav({ to: "/app" }),
-      icon: IconDashboard,
-    },
-    {
-      title: "Health Records",
-      navigate: () => nav({ to: "/app/records" }),
-      icon: IconFileText,
-    },
-    {
-      title: "Family Members",
-      navigate: () => nav({ to: "/app/members" }),
-      icon: IconUsers,
-    },
 
-    {
-      title: "Diet",
-      navigate: () => nav({ to: "/app/diet" }),
-      icon: IconSalad,
-    },
-    {
-      title: "Exercise",
-      navigate: () => nav({ to: "/app/exercise" }),
-      icon: IconTreadmill,
-    },
-    {
-      title: "Calendar",
-      navigate: () => nav({ to: "/app/calendar" }),
-      icon: IconCalendarWeek,
-    },
-
-    {
-      title: "Settings",
-      navigate: () => nav({ to: "/app/settings" }),
-      icon: IconSettings,
-    },
-  ];
 
   return (
     <SidebarGroup>
@@ -98,11 +116,21 @@ export function NavMain() {
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton onClick={item.navigate} tooltip={item.title}>
-                {item.icon && <item.icon />}
-                <span>{item.title}</span>
+          {navItems.map(({ title, path, icon: Icon }) => (
+            <SidebarMenuItem key={title}>
+              <SidebarMenuButton asChild tooltip={title}>
+                <Link
+                  to={path}
+                  activeProps={{
+                    className: "bg-muted text-foreground font-medium",
+                  }}
+                  inactiveProps={{
+                    className: "hover:bg-muted/50",
+                  }}
+                >
+                  <Icon />
+                  <span>{title}</span>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

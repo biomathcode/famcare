@@ -15,6 +15,13 @@
       "when": 1756371865784,
       "tag": "0001_lush_king_cobra",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1756630728458,
+      "tag": "0002_talented_praxagora",
+      "breakpoints": true
     }
   ]
 }

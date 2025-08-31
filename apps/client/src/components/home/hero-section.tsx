@@ -4,6 +4,7 @@ import { ArrowRight, Globe, Shield, Zap, Sparkles } from "lucide-react";
 import authClient from "~/lib/auth/auth-client";
 
 import { LoginPopup } from "@/components/auth/login-popup";
+import { Link } from "@tanstack/react-router";
 
 export function HeroSection() {
   const { data } = authClient.useSession();
@@ -15,7 +16,9 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-primary/5 py-20 sm:py-28">
+
+
+    <section className="relative   py-20 sm:py-28">
       {/* Background decoration */}
       <div className="absolute inset-0 bg-grid-white/[0.02] -z-10" />
       <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent -z-10" />
@@ -49,14 +52,18 @@ export function HeroSection() {
             <div className="flex gap-2 w-full sm:w-auto max-w-md">
 
               {data ? (
-                <Button
-                  size="lg"
-                  className="h-11 px-6"
-                  onClick={handleStartFree}
-                >
-                  Start Free
-                  <ArrowRight className="ml-1 h-4 w-4" />
-                </Button>
+                <Link to="/app">
+
+                  <Button
+                    size="lg"
+                    className="h-11 px-6"
+                    onClick={handleStartFree}
+                  >
+                    Start Free
+                    <ArrowRight className="ml-1 h-4 w-4" />
+                  </Button>
+                </Link>
+
               ) : (
                 <LoginPopup>
                   <Button size="lg" className="h-11 px-6">
@@ -86,5 +93,7 @@ export function HeroSection() {
         </div>
       </div>
     </section>
+
+
   );
 }

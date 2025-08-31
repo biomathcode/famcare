@@ -22,6 +22,16 @@ Use This to persist chat history and other data into the database
 - [] https://github.com/vercel-labs/ai-sdk-persistence-db
 
 
+TODO: Add A Member selector ui basically add all members and select one in a form field 
+TODO: Add Profile pic upload for member
+TODO: List Sleep, Exercise, Diet plans for the members
+TODO: 
+
+### Onboarding Flow -> 
+User -> Logs in -> Add Family Members -> Add Medical Records for the members -> Can generate chat, exercise, diet plan for the members -> Can create medical schedule for the members -> Can create google calendar event for the medical schedule for the members
+
+
+
 
 ### Flow b/w user and AI
 user -> uploaded image -> then we ask for member -> create a new member or update the existing member -> then we create a medical record for the member -> then we create medical schedule -> then we create a google ice calendar event for the medical schedule for the member/ 

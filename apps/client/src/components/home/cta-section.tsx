@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Link } from "@tanstack/react-router";
 import { ArrowRight, Shield, Zap } from "lucide-react";
 
 export function CtaSection() {
@@ -23,10 +24,13 @@ export function CtaSection() {
               type="email"
               className="h-12 text-base flex-1"
             />
-            <Button size="lg" className="h-12 px-8 sm:px-6">
-              Start Free Trial
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+            <Link to="/app" >
+
+              <Button size="lg" className="h-12 px-8 sm:px-6">
+                Start Free Trial
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
           </div>
 
         </div>

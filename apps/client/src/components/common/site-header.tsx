@@ -8,8 +8,8 @@ export function SiteHeader() {
 
   const getPageTitle = (path: string) => {
     if (path === "/app") return "Dashboard";
-    if (path === "/app/links") return "Links";
-    if (path === "/app/create") return "Create Link";
+    if (path === "/app/calendar") return "Calendar";
+    if (path === "/app/records") return "Health Records";
     if (path.startsWith("/app/link/")) {
       return `Link`;
     }

@@ -12,7 +12,7 @@ export function Navigation() {
 
   return (
     <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-4xl mx-auto px-4">
-      <div className="bg-background/80 backdrop-blur-md border border-border/50 rounded-full px-6 py-3 shadow-lg">
+      <div className="bg-background/20 backdrop-blur-md border border-border/50 rounded-full px-6 py-3 shadow-lg">
         <div className="flex items-center justify-between">
           {/* Company Logo/Name */}
           <div className="flex items-center gap-2">

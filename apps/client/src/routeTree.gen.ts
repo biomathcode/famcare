@@ -19,18 +19,21 @@ import { Route as IndexRouteImport } from "./routes/index";
 import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index";
 import { Route as AboutIndexRouteImport } from "./routes/about/index";
 import { Route as AppAppRouteImport } from "./routes/app/_app";
-import { Route as ApiUploadthingRouteImport } from "./routes/api/uploadthing";
 import { Route as authSignupRouteImport } from "./routes/(auth)/signup";
 import { Route as authLoginRouteImport } from "./routes/(auth)/login";
 import { Route as AppAppIndexRouteImport } from "./routes/app/_app/index";
+import { Route as AppAppSleepRouteImport } from "./routes/app/_app/sleep";
 import { Route as AppAppSettingsRouteImport } from "./routes/app/_app/settings";
 import { Route as AppAppRecordsRouteImport } from "./routes/app/_app/records";
 import { Route as AppAppMembersRouteImport } from "./routes/app/_app/members";
+import { Route as AppAppMedicinesRouteImport } from "./routes/app/_app/medicines";
+import { Route as AppAppHomeRouteImport } from "./routes/app/_app/home";
 import { Route as AppAppExerciseRouteImport } from "./routes/app/_app/exercise";
 import { Route as AppAppDietRouteImport } from "./routes/app/_app/diet";
 import { Route as AppAppChatsRouteImport } from "./routes/app/_app/chats";
 import { Route as AppAppCalendarRouteImport } from "./routes/app/_app/calendar";
 import { Route as AppAppChatChatIdRouteImport } from "./routes/app/_app/chat.$chatId";
+import { ServerRoute as ApiUploadthingServerRouteImport } from "./routes/api/uploadthing";
 import { ServerRoute as ApiHelloServerRouteImport } from "./routes/api/hello";
 import { ServerRoute as ApiUploadFileServerRouteImport } from "./routes/api/upload.file";
 import { ServerRoute as ApiAuthSplatServerRouteImport } from "./routes/api/auth/$";
@@ -77,11 +80,6 @@ const AppAppRoute = AppAppRouteImport.update({
   id: "/_app",
   getParentRoute: () => AppRoute,
 } as any);
-const ApiUploadthingRoute = ApiUploadthingRouteImport.update({
-  id: "/api/uploadthing",
-  path: "/api/uploadthing",
-  getParentRoute: () => rootRouteImport,
-} as any);
 const authSignupRoute = authSignupRouteImport.update({
   id: "/signup",
   path: "/signup",
@@ -97,6 +95,11 @@ const AppAppIndexRoute = AppAppIndexRouteImport.update({
   path: "/",
   getParentRoute: () => AppAppRoute,
 } as any);
+const AppAppSleepRoute = AppAppSleepRouteImport.update({
+  id: "/sleep",
+  path: "/sleep",
+  getParentRoute: () => AppAppRoute,
+} as any);
 const AppAppSettingsRoute = AppAppSettingsRouteImport.update({
   id: "/settings",
   path: "/settings",
@@ -110,6 +113,16 @@ const AppAppRecordsRoute = AppAppRecordsRouteImport.update({
 const AppAppMembersRoute = AppAppMembersRouteImport.update({
   id: "/members",
   path: "/members",
+  getParentRoute: () => AppAppRoute,
+} as any);
+const AppAppMedicinesRoute = AppAppMedicinesRouteImport.update({
+  id: "/medicines",
+  path: "/medicines",
+  getParentRoute: () => AppAppRoute,
+} as any);
+const AppAppHomeRoute = AppAppHomeRouteImport.update({
+  id: "/home",
+  path: "/home",
   getParentRoute: () => AppAppRoute,
 } as any);
 const AppAppExerciseRoute = AppAppExerciseRouteImport.update({
@@ -136,6 +149,11 @@ const AppAppChatChatIdRoute = AppAppChatChatIdRouteImport.update({
   id: "/chat/$chatId",
   path: "/chat/$chatId",
   getParentRoute: () => AppAppRoute,
+} as any);
+const ApiUploadthingServerRoute = ApiUploadthingServerRouteImport.update({
+  id: "/api/uploadthing",
+  path: "/api/uploadthing",
+  getParentRoute: () => rootServerRouteImport,
 } as any);
 const ApiHelloServerRoute = ApiHelloServerRouteImport.update({
   id: "/api/hello",
@@ -164,7 +182,6 @@ export interface FileRoutesByFullPath {
   "/dashboard": typeof DashboardRouteRouteWithChildren;
   "/login": typeof authLoginRoute;
   "/signup": typeof authSignupRoute;
-  "/api/uploadthing": typeof ApiUploadthingRoute;
   "/app": typeof AppAppRouteWithChildren;
   "/about/": typeof AboutIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
@@ -172,9 +189,12 @@ export interface FileRoutesByFullPath {
   "/app/chats": typeof AppAppChatsRoute;
   "/app/diet": typeof AppAppDietRoute;
   "/app/exercise": typeof AppAppExerciseRoute;
+  "/app/home": typeof AppAppHomeRoute;
+  "/app/medicines": typeof AppAppMedicinesRoute;
   "/app/members": typeof AppAppMembersRoute;
   "/app/records": typeof AppAppRecordsRoute;
   "/app/settings": typeof AppAppSettingsRoute;
+  "/app/sleep": typeof AppAppSleepRoute;
   "/app/": typeof AppAppIndexRoute;
   "/app/chat/$chatId": typeof AppAppChatChatIdRoute;
 }
@@ -182,7 +202,6 @@ export interface FileRoutesByTo {
   "/": typeof authRouteRouteWithChildren;
   "/login": typeof authLoginRoute;
   "/signup": typeof authSignupRoute;
-  "/api/uploadthing": typeof ApiUploadthingRoute;
   "/app": typeof AppAppIndexRoute;
   "/about": typeof AboutIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
@@ -190,9 +209,12 @@ export interface FileRoutesByTo {
   "/app/chats": typeof AppAppChatsRoute;
   "/app/diet": typeof AppAppDietRoute;
   "/app/exercise": typeof AppAppExerciseRoute;
+  "/app/home": typeof AppAppHomeRoute;
+  "/app/medicines": typeof AppAppMedicinesRoute;
   "/app/members": typeof AppAppMembersRoute;
   "/app/records": typeof AppAppRecordsRoute;
   "/app/settings": typeof AppAppSettingsRoute;
+  "/app/sleep": typeof AppAppSleepRoute;
   "/app/chat/$chatId": typeof AppAppChatChatIdRoute;
 }
 export interface FileRoutesById {
@@ -203,7 +225,6 @@ export interface FileRoutesById {
   "/dashboard": typeof DashboardRouteRouteWithChildren;
   "/(auth)/login": typeof authLoginRoute;
   "/(auth)/signup": typeof authSignupRoute;
-  "/api/uploadthing": typeof ApiUploadthingRoute;
   "/app": typeof AppRouteWithChildren;
   "/app/_app": typeof AppAppRouteWithChildren;
   "/about/": typeof AboutIndexRoute;
@@ -212,9 +233,12 @@ export interface FileRoutesById {
   "/app/_app/chats": typeof AppAppChatsRoute;
   "/app/_app/diet": typeof AppAppDietRoute;
   "/app/_app/exercise": typeof AppAppExerciseRoute;
+  "/app/_app/home": typeof AppAppHomeRoute;
+  "/app/_app/medicines": typeof AppAppMedicinesRoute;
   "/app/_app/members": typeof AppAppMembersRoute;
   "/app/_app/records": typeof AppAppRecordsRoute;
   "/app/_app/settings": typeof AppAppSettingsRoute;
+  "/app/_app/sleep": typeof AppAppSleepRoute;
   "/app/_app/": typeof AppAppIndexRoute;
   "/app/_app/chat/$chatId": typeof AppAppChatChatIdRoute;
 }
@@ -226,7 +250,6 @@ export interface FileRouteTypes {
     | "/dashboard"
     | "/login"
     | "/signup"
-    | "/api/uploadthing"
     | "/app"
     | "/about/"
     | "/dashboard/"
@@ -234,9 +257,12 @@ export interface FileRouteTypes {
     | "/app/chats"
     | "/app/diet"
     | "/app/exercise"
+    | "/app/home"
+    | "/app/medicines"
     | "/app/members"
     | "/app/records"
     | "/app/settings"
+    | "/app/sleep"
     | "/app/"
     | "/app/chat/$chatId";
   fileRoutesByTo: FileRoutesByTo;
@@ -244,7 +270,6 @@ export interface FileRouteTypes {
     | "/"
     | "/login"
     | "/signup"
-    | "/api/uploadthing"
     | "/app"
     | "/about"
     | "/dashboard"
@@ -252,9 +277,12 @@ export interface FileRouteTypes {
     | "/app/chats"
     | "/app/diet"
     | "/app/exercise"
+    | "/app/home"
+    | "/app/medicines"
     | "/app/members"
     | "/app/records"
     | "/app/settings"
+    | "/app/sleep"
     | "/app/chat/$chatId";
   id:
     | "__root__"
@@ -264,7 +292,6 @@ export interface FileRouteTypes {
     | "/dashboard"
     | "/(auth)/login"
     | "/(auth)/signup"
-    | "/api/uploadthing"
     | "/app"
     | "/app/_app"
     | "/about/"
@@ -273,9 +300,12 @@ export interface FileRouteTypes {
     | "/app/_app/chats"
     | "/app/_app/diet"
     | "/app/_app/exercise"
+    | "/app/_app/home"
+    | "/app/_app/medicines"
     | "/app/_app/members"
     | "/app/_app/records"
     | "/app/_app/settings"
+    | "/app/_app/sleep"
     | "/app/_app/"
     | "/app/_app/chat/$chatId";
   fileRoutesById: FileRoutesById;
@@ -285,17 +315,18 @@ export interface RootRouteChildren {
   authRouteRoute: typeof authRouteRouteWithChildren;
   AboutRouteRoute: typeof AboutRouteRouteWithChildren;
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren;
-  ApiUploadthingRoute: typeof ApiUploadthingRoute;
   AppRoute: typeof AppRouteWithChildren;
 }
 export interface FileServerRoutesByFullPath {
   "/api/hello": typeof ApiHelloServerRoute;
+  "/api/uploadthing": typeof ApiUploadthingServerRoute;
   "/api/ai/chat": typeof ApiAiChatServerRoute;
   "/api/auth/$": typeof ApiAuthSplatServerRoute;
   "/api/upload/file": typeof ApiUploadFileServerRoute;
 }
 export interface FileServerRoutesByTo {
   "/api/hello": typeof ApiHelloServerRoute;
+  "/api/uploadthing": typeof ApiUploadthingServerRoute;
   "/api/ai/chat": typeof ApiAiChatServerRoute;
   "/api/auth/$": typeof ApiAuthSplatServerRoute;
   "/api/upload/file": typeof ApiUploadFileServerRoute;
@@ -303,18 +334,30 @@ export interface FileServerRoutesByTo {
 export interface FileServerRoutesById {
   __root__: typeof rootServerRouteImport;
   "/api/hello": typeof ApiHelloServerRoute;
+  "/api/uploadthing": typeof ApiUploadthingServerRoute;
   "/api/ai/chat": typeof ApiAiChatServerRoute;
   "/api/auth/$": typeof ApiAuthSplatServerRoute;
   "/api/upload/file": typeof ApiUploadFileServerRoute;
 }
 export interface FileServerRouteTypes {
   fileServerRoutesByFullPath: FileServerRoutesByFullPath;
-  fullPaths: "/api/hello" | "/api/ai/chat" | "/api/auth/$" | "/api/upload/file";
+  fullPaths:
+    | "/api/hello"
+    | "/api/uploadthing"
+    | "/api/ai/chat"
+    | "/api/auth/$"
+    | "/api/upload/file";
   fileServerRoutesByTo: FileServerRoutesByTo;
-  to: "/api/hello" | "/api/ai/chat" | "/api/auth/$" | "/api/upload/file";
+  to:
+    | "/api/hello"
+    | "/api/uploadthing"
+    | "/api/ai/chat"
+    | "/api/auth/$"
+    | "/api/upload/file";
   id:
     | "__root__"
     | "/api/hello"
+    | "/api/uploadthing"
     | "/api/ai/chat"
     | "/api/auth/$"
     | "/api/upload/file";
@@ -322,6 +365,7 @@ export interface FileServerRouteTypes {
 }
 export interface RootServerRouteChildren {
   ApiHelloServerRoute: typeof ApiHelloServerRoute;
+  ApiUploadthingServerRoute: typeof ApiUploadthingServerRoute;
   ApiAiChatServerRoute: typeof ApiAiChatServerRoute;
   ApiAuthSplatServerRoute: typeof ApiAuthSplatServerRoute;
   ApiUploadFileServerRoute: typeof ApiUploadFileServerRoute;
@@ -385,13 +429,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AppAppRouteImport;
       parentRoute: typeof AppRoute;
     };
-    "/api/uploadthing": {
-      id: "/api/uploadthing";
-      path: "/api/uploadthing";
-      fullPath: "/api/uploadthing";
-      preLoaderRoute: typeof ApiUploadthingRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
     "/(auth)/signup": {
       id: "/(auth)/signup";
       path: "/signup";
@@ -413,6 +450,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AppAppIndexRouteImport;
       parentRoute: typeof AppAppRoute;
     };
+    "/app/_app/sleep": {
+      id: "/app/_app/sleep";
+      path: "/sleep";
+      fullPath: "/app/sleep";
+      preLoaderRoute: typeof AppAppSleepRouteImport;
+      parentRoute: typeof AppAppRoute;
+    };
     "/app/_app/settings": {
       id: "/app/_app/settings";
       path: "/settings";
@@ -432,6 +476,20 @@ declare module "@tanstack/react-router" {
       path: "/members";
       fullPath: "/app/members";
       preLoaderRoute: typeof AppAppMembersRouteImport;
+      parentRoute: typeof AppAppRoute;
+    };
+    "/app/_app/medicines": {
+      id: "/app/_app/medicines";
+      path: "/medicines";
+      fullPath: "/app/medicines";
+      preLoaderRoute: typeof AppAppMedicinesRouteImport;
+      parentRoute: typeof AppAppRoute;
+    };
+    "/app/_app/home": {
+      id: "/app/_app/home";
+      path: "/home";
+      fullPath: "/app/home";
+      preLoaderRoute: typeof AppAppHomeRouteImport;
       parentRoute: typeof AppAppRoute;
     };
     "/app/_app/exercise": {
@@ -473,6 +531,13 @@ declare module "@tanstack/react-router" {
 }
 declare module "@tanstack/react-start/server" {
   interface ServerFileRoutesByPath {
+    "/api/uploadthing": {
+      id: "/api/uploadthing";
+      path: "/api/uploadthing";
+      fullPath: "/api/uploadthing";
+      preLoaderRoute: typeof ApiUploadthingServerRouteImport;
+      parentRoute: typeof rootServerRouteImport;
+    };
     "/api/hello": {
       id: "/api/hello";
       path: "/api/hello";
@@ -547,9 +612,12 @@ interface AppAppRouteChildren {
   AppAppChatsRoute: typeof AppAppChatsRoute;
   AppAppDietRoute: typeof AppAppDietRoute;
   AppAppExerciseRoute: typeof AppAppExerciseRoute;
+  AppAppHomeRoute: typeof AppAppHomeRoute;
+  AppAppMedicinesRoute: typeof AppAppMedicinesRoute;
   AppAppMembersRoute: typeof AppAppMembersRoute;
   AppAppRecordsRoute: typeof AppAppRecordsRoute;
   AppAppSettingsRoute: typeof AppAppSettingsRoute;
+  AppAppSleepRoute: typeof AppAppSleepRoute;
   AppAppIndexRoute: typeof AppAppIndexRoute;
   AppAppChatChatIdRoute: typeof AppAppChatChatIdRoute;
 }
@@ -559,9 +627,12 @@ const AppAppRouteChildren: AppAppRouteChildren = {
   AppAppChatsRoute: AppAppChatsRoute,
   AppAppDietRoute: AppAppDietRoute,
   AppAppExerciseRoute: AppAppExerciseRoute,
+  AppAppHomeRoute: AppAppHomeRoute,
+  AppAppMedicinesRoute: AppAppMedicinesRoute,
   AppAppMembersRoute: AppAppMembersRoute,
   AppAppRecordsRoute: AppAppRecordsRoute,
   AppAppSettingsRoute: AppAppSettingsRoute,
+  AppAppSleepRoute: AppAppSleepRoute,
   AppAppIndexRoute: AppAppIndexRoute,
   AppAppChatChatIdRoute: AppAppChatChatIdRoute,
 };
@@ -584,7 +655,6 @@ const rootRouteChildren: RootRouteChildren = {
   authRouteRoute: authRouteRouteWithChildren,
   AboutRouteRoute: AboutRouteRouteWithChildren,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
-  ApiUploadthingRoute: ApiUploadthingRoute,
   AppRoute: AppRouteWithChildren,
 };
 export const routeTree = rootRouteImport
@@ -592,6 +662,7 @@ export const routeTree = rootRouteImport
   ._addFileTypes<FileRouteTypes>();
 const rootServerRouteChildren: RootServerRouteChildren = {
   ApiHelloServerRoute: ApiHelloServerRoute,
+  ApiUploadthingServerRoute: ApiUploadthingServerRoute,
   ApiAiChatServerRoute: ApiAiChatServerRoute,
   ApiAuthSplatServerRoute: ApiAuthSplatServerRoute,
   ApiUploadFileServerRoute: ApiUploadFileServerRoute,
