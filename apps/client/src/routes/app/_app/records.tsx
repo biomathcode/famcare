@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from '@tanstack/react-start';
+import FileUpload from "~/components/file-upload";
+import FileUploadTwo from "~/components/file-upload-two";
 
 //TODO add document upload using 
 // pnpm dlx shadcn@latest add https://originui.com/r/comp-549.json
@@ -32,6 +34,8 @@ function RouteComponent() {
 
 
     return <div className="space-y-4 p-4">
+        <FileUploadTwo />
+
         {files.map((file: any) => (
             <div
                 key={file.id}
@@ -54,5 +58,6 @@ function RouteComponent() {
                 </p>
             </div>
         ))}
+
     </div>
 }

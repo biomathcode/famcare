@@ -13,7 +13,7 @@ import { user } from './auth-schema';
 
 
 export const healthRecord = mysqlTable("health_record", {
-    id: varchar("id", { length: 36 }).primaryKey(),
+    id: varchar("id", { length: 36 }).primaryKey().default(sql`(UUID())`),
     userId: varchar("user_id", { length: 36 })
         .notNull()
         .references(() => user.id, { onDelete: "cascade" }),

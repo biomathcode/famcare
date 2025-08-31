@@ -25,7 +25,7 @@ export const member = mysqlTable("member", {
 });
 
 export const diet = mysqlTable("diet", {
-    id: varchar("id", { length: 36 }).primaryKey(),
+    id: varchar("id", { length: 36 }).primaryKey().default(sql`(UUID())`),
     userId: varchar("user_id", { length: 36 })
         .notNull()
         .references(() => user.id, { onDelete: "cascade" }),
@@ -36,7 +36,7 @@ export const diet = mysqlTable("diet", {
 });
 
 export const healthMetric = mysqlTable("health_metric", {
-    id: varchar("id", { length: 36 }).primaryKey(),
+    id: varchar("id", { length: 36 }).primaryKey().default(sql`(UUID())`),
     userId: varchar("user_id", { length: 36 })
         .notNull()
         .references(() => user.id, { onDelete: "cascade" }),
@@ -47,7 +47,7 @@ export const healthMetric = mysqlTable("health_metric", {
 });
 
 export const exerciseGoal = mysqlTable("exercise_goal", {
-    id: varchar("id", { length: 36 }).primaryKey(),
+    id: varchar("id", { length: 36 }).primaryKey().default(sql`(UUID())`),
     userId: varchar("user_id", { length: 36 })
         .notNull()
         .references(() => user.id, { onDelete: "cascade" }),
@@ -59,7 +59,7 @@ export const exerciseGoal = mysqlTable("exercise_goal", {
 
 
 export const sleepGoal = mysqlTable("sleep_goal", {
-    id: varchar("id", { length: 36 }).primaryKey(),
+    id: varchar("id", { length: 36 }).primaryKey().default(sql`(UUID())`),
     userId: varchar("user_id", { length: 36 })
         .notNull()
         .references(() => user.id, { onDelete: "cascade" }),

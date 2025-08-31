@@ -14,9 +14,8 @@ import {
     chatSession,
 } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
-import { nanoid } from "nanoid";  // ✅ import nanoid
+import { nanoid } from "nanoid";
 
-// 🔹 Generic CRUD helpers
 function createCrud<T extends { id: string }>(table: any) {
     return {
         // CREATE

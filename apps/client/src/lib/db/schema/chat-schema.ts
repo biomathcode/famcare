@@ -14,7 +14,7 @@ import { generateId } from 'ai';
 import { user } from './auth-schema';
 
 export const chatSession = mysqlTable("chat_session", {
-    id: varchar("id", { length: 36 }).primaryKey(),
+    id: varchar("id", { length: 36 }).primaryKey().default(sql`(UUID())`),
     userId: varchar("user_id", { length: 36 })
         .notNull()
         .references(() => user.id, { onDelete: "cascade" }),
@@ -23,7 +23,7 @@ export const chatSession = mysqlTable("chat_session", {
 });
 
 export const chatMessage = mysqlTable("chat_message", {
-    id: varchar("id", { length: 36 }).primaryKey(),
+    id: varchar("id", { length: 36 }).primaryKey().default(sql`(UUID())`),
     userId: varchar("user_id", { length: 36 })
         .notNull()
         .references(() => user.id, { onDelete: "cascade" }),

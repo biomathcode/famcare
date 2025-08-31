@@ -5,3 +5,5 @@ export * from "./chat-schema";
 export * from "./medicine-schema";
 
 export * from "./event-schema";
+
+export * from "./media-schema";

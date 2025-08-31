@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Shield, Zap } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export function CtaSection() {
   return (

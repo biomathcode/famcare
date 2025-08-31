@@ -9,7 +9,7 @@ import { sql } from "drizzle-orm";
 import { user } from './auth-schema';
 
 export const medicine = mysqlTable("medicine", {
-    id: varchar("id", { length: 36 }).primaryKey(),
+    id: varchar("id", { length: 36 }).primaryKey().default(sql`(UUID())`),
     userId: varchar("user_id", { length: 36 })
         .notNull()
         .references(() => user.id, { onDelete: "cascade" }),
@@ -21,7 +21,7 @@ export const medicine = mysqlTable("medicine", {
 
 
 export const medicineSchedule = mysqlTable("medicine_schedule", {
-    id: varchar("id", { length: 36 }).primaryKey(),
+    id: varchar("id", { length: 36 }).primaryKey().default(sql`(UUID())`),
     medicineId: varchar("medicine_id", { length: 36 })
         .notNull()
         .references(() => medicine.id, { onDelete: "cascade" }),

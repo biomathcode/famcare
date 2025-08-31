@@ -30,7 +30,10 @@ TODO:
 ### Onboarding Flow -> 
 User -> Logs in -> Add Family Members -> Add Medical Records for the members -> Can generate chat, exercise, diet plan for the members -> Can create medical schedule for the members -> Can create google calendar event for the medical schedule for the members
 
-
+### Health Care Information 
+- Search for the medicine online 
+- Search for real life side effects experienced by other users
+- Search for the medicine interaction with other medicines api  
 
 
 ### Flow b/w user and AI

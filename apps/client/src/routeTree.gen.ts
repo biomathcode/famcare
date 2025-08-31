@@ -19,6 +19,7 @@ import { Route as IndexRouteImport } from "./routes/index";
 import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index";
 import { Route as AboutIndexRouteImport } from "./routes/about/index";
 import { Route as AppAppRouteImport } from "./routes/app/_app";
+import { Route as ApiMediaRouteImport } from "./routes/api/media";
 import { Route as authSignupRouteImport } from "./routes/(auth)/signup";
 import { Route as authLoginRouteImport } from "./routes/(auth)/login";
 import { Route as AppAppIndexRouteImport } from "./routes/app/_app/index";
@@ -79,6 +80,11 @@ const AboutIndexRoute = AboutIndexRouteImport.update({
 const AppAppRoute = AppAppRouteImport.update({
   id: "/_app",
   getParentRoute: () => AppRoute,
+} as any);
+const ApiMediaRoute = ApiMediaRouteImport.update({
+  id: "/api/media",
+  path: "/api/media",
+  getParentRoute: () => rootRouteImport,
 } as any);
 const authSignupRoute = authSignupRouteImport.update({
   id: "/signup",
@@ -182,6 +188,7 @@ export interface FileRoutesByFullPath {
   "/dashboard": typeof DashboardRouteRouteWithChildren;
   "/login": typeof authLoginRoute;
   "/signup": typeof authSignupRoute;
+  "/api/media": typeof ApiMediaRoute;
   "/app": typeof AppAppRouteWithChildren;
   "/about/": typeof AboutIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
@@ -202,6 +209,7 @@ export interface FileRoutesByTo {
   "/": typeof authRouteRouteWithChildren;
   "/login": typeof authLoginRoute;
   "/signup": typeof authSignupRoute;
+  "/api/media": typeof ApiMediaRoute;
   "/app": typeof AppAppIndexRoute;
   "/about": typeof AboutIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
@@ -225,6 +233,7 @@ export interface FileRoutesById {
   "/dashboard": typeof DashboardRouteRouteWithChildren;
   "/(auth)/login": typeof authLoginRoute;
   "/(auth)/signup": typeof authSignupRoute;
+  "/api/media": typeof ApiMediaRoute;
   "/app": typeof AppRouteWithChildren;
   "/app/_app": typeof AppAppRouteWithChildren;
   "/about/": typeof AboutIndexRoute;
@@ -250,6 +259,7 @@ export interface FileRouteTypes {
     | "/dashboard"
     | "/login"
     | "/signup"
+    | "/api/media"
     | "/app"
     | "/about/"
     | "/dashboard/"
@@ -270,6 +280,7 @@ export interface FileRouteTypes {
     | "/"
     | "/login"
     | "/signup"
+    | "/api/media"
     | "/app"
     | "/about"
     | "/dashboard"
@@ -292,6 +303,7 @@ export interface FileRouteTypes {
     | "/dashboard"
     | "/(auth)/login"
     | "/(auth)/signup"
+    | "/api/media"
     | "/app"
     | "/app/_app"
     | "/about/"
@@ -315,6 +327,7 @@ export interface RootRouteChildren {
   authRouteRoute: typeof authRouteRouteWithChildren;
   AboutRouteRoute: typeof AboutRouteRouteWithChildren;
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren;
+  ApiMediaRoute: typeof ApiMediaRoute;
   AppRoute: typeof AppRouteWithChildren;
 }
 export interface FileServerRoutesByFullPath {
@@ -428,6 +441,13 @@ declare module "@tanstack/react-router" {
       fullPath: "/app";
       preLoaderRoute: typeof AppAppRouteImport;
       parentRoute: typeof AppRoute;
+    };
+    "/api/media": {
+      id: "/api/media";
+      path: "/api/media";
+      fullPath: "/api/media";
+      preLoaderRoute: typeof ApiMediaRouteImport;
+      parentRoute: typeof rootRouteImport;
     };
     "/(auth)/signup": {
       id: "/(auth)/signup";
@@ -655,6 +675,7 @@ const rootRouteChildren: RootRouteChildren = {
   authRouteRoute: authRouteRouteWithChildren,
   AboutRouteRoute: AboutRouteRouteWithChildren,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
+  ApiMediaRoute: ApiMediaRoute,
   AppRoute: AppRouteWithChildren,
 };
 export const routeTree = rootRouteImport

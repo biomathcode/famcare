@@ -77,7 +77,7 @@ const getFileIcon = (file: { file: File | { type: string; name: string } }) => {
   return <FileIcon className="size-4 opacity-60" />
 }
 
-export default function Component() {
+export default function FileUpload() {
   const maxSize = 100 * 1024 * 1024 // 10MB default
   const maxFiles = 10
 
