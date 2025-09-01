@@ -1,21 +1,18 @@
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useRouterState } from "@tanstack/react-router";
+import { navItems } from "./nav-items";
 
 export function SiteHeader() {
   const routerState = useRouterState();
   const pathname = routerState.location.pathname;
 
-  const getPageTitle = (path: string) => {
-    if (path === "/app") return "Dashboard";
-    if (path === "/app/calendar") return "Calendar";
-    if (path === "/app/records") return "Health Records";
-    if (path.startsWith("/app/link/")) {
-      return `Link`;
-    }
-    // Add more path mappings as needed
-    return "Dashboard";
-  };
+  // Match navItems for title
+  const currentNav = navItems.find((item) =>
+    pathname.startsWith(item.path)
+  );
+
+  const pageTitle = currentNav?.title ?? "Dashboard";
 
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
@@ -25,7 +22,12 @@ export function SiteHeader() {
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-4"
         />
-        <h1 className="text-base font-medium">{getPageTitle(pathname)}</h1>
+        <h1 className="flex items-center gap-2 text-base font-medium">
+          {currentNav?.icon && (
+            <currentNav.icon className="w-4 h-4 text-muted-foreground" />
+          )}
+          {pageTitle}
+        </h1>
       </div>
     </header>
   );

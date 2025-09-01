@@ -18,6 +18,10 @@ import { toast } from "sonner";
 import { diet } from "~/lib/db/schema";
 import { api } from "~/lib/api";
 
+import { MemberPicker } from "@/components/member-picker";
+
+
+
 export const createDiet = createServerFn({
   method: "POST",
   response: "raw",
@@ -99,6 +103,23 @@ function RouteComponent() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-4 mt-6"
         >
+          <FormField
+            control={form.control}
+            name="memberId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Select Member</FormLabel>
+                <FormControl>
+                  <MemberPicker
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="Choose a member..."
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="mealType"

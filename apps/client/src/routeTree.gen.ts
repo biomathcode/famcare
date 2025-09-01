@@ -33,7 +33,7 @@ import { Route as AppAppDietRouteImport } from "./routes/app/_app/diet";
 import { Route as AppAppChatsRouteImport } from "./routes/app/_app/chats";
 import { Route as AppAppCalendarRouteImport } from "./routes/app/_app/calendar";
 import { Route as AppAppChatChatIdRouteImport } from "./routes/app/_app/chat.$chatId";
-import { ServerRoute as ApiUploadthingServerRouteImport } from "./routes/api/uploadthing";
+import { ServerRoute as ApiUploadServerRouteImport } from "./routes/api/upload";
 import { ServerRoute as ApiMediaServerRouteImport } from "./routes/api/media";
 import { ServerRoute as ApiHelloServerRouteImport } from "./routes/api/hello";
 import { ServerRoute as ApiUploadFileServerRouteImport } from "./routes/api/upload.file";
@@ -151,9 +151,9 @@ const AppAppChatChatIdRoute = AppAppChatChatIdRouteImport.update({
   path: "/chat/$chatId",
   getParentRoute: () => AppAppRoute,
 } as any);
-const ApiUploadthingServerRoute = ApiUploadthingServerRouteImport.update({
-  id: "/api/uploadthing",
-  path: "/api/uploadthing",
+const ApiUploadServerRoute = ApiUploadServerRouteImport.update({
+  id: "/api/upload",
+  path: "/api/upload",
   getParentRoute: () => rootServerRouteImport,
 } as any);
 const ApiMediaServerRoute = ApiMediaServerRouteImport.update({
@@ -167,9 +167,9 @@ const ApiHelloServerRoute = ApiHelloServerRouteImport.update({
   getParentRoute: () => rootServerRouteImport,
 } as any);
 const ApiUploadFileServerRoute = ApiUploadFileServerRouteImport.update({
-  id: "/api/upload/file",
-  path: "/api/upload/file",
-  getParentRoute: () => rootServerRouteImport,
+  id: "/file",
+  path: "/file",
+  getParentRoute: () => ApiUploadServerRoute,
 } as any);
 const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
   id: "/api/auth/$",
@@ -326,7 +326,7 @@ export interface RootRouteChildren {
 export interface FileServerRoutesByFullPath {
   "/api/hello": typeof ApiHelloServerRoute;
   "/api/media": typeof ApiMediaServerRoute;
-  "/api/uploadthing": typeof ApiUploadthingServerRoute;
+  "/api/upload": typeof ApiUploadServerRouteWithChildren;
   "/api/ai/chat": typeof ApiAiChatServerRoute;
   "/api/auth/$": typeof ApiAuthSplatServerRoute;
   "/api/upload/file": typeof ApiUploadFileServerRoute;
@@ -334,7 +334,7 @@ export interface FileServerRoutesByFullPath {
 export interface FileServerRoutesByTo {
   "/api/hello": typeof ApiHelloServerRoute;
   "/api/media": typeof ApiMediaServerRoute;
-  "/api/uploadthing": typeof ApiUploadthingServerRoute;
+  "/api/upload": typeof ApiUploadServerRouteWithChildren;
   "/api/ai/chat": typeof ApiAiChatServerRoute;
   "/api/auth/$": typeof ApiAuthSplatServerRoute;
   "/api/upload/file": typeof ApiUploadFileServerRoute;
@@ -343,7 +343,7 @@ export interface FileServerRoutesById {
   __root__: typeof rootServerRouteImport;
   "/api/hello": typeof ApiHelloServerRoute;
   "/api/media": typeof ApiMediaServerRoute;
-  "/api/uploadthing": typeof ApiUploadthingServerRoute;
+  "/api/upload": typeof ApiUploadServerRouteWithChildren;
   "/api/ai/chat": typeof ApiAiChatServerRoute;
   "/api/auth/$": typeof ApiAuthSplatServerRoute;
   "/api/upload/file": typeof ApiUploadFileServerRoute;
@@ -353,7 +353,7 @@ export interface FileServerRouteTypes {
   fullPaths:
     | "/api/hello"
     | "/api/media"
-    | "/api/uploadthing"
+    | "/api/upload"
     | "/api/ai/chat"
     | "/api/auth/$"
     | "/api/upload/file";
@@ -361,7 +361,7 @@ export interface FileServerRouteTypes {
   to:
     | "/api/hello"
     | "/api/media"
-    | "/api/uploadthing"
+    | "/api/upload"
     | "/api/ai/chat"
     | "/api/auth/$"
     | "/api/upload/file";
@@ -369,7 +369,7 @@ export interface FileServerRouteTypes {
     | "__root__"
     | "/api/hello"
     | "/api/media"
-    | "/api/uploadthing"
+    | "/api/upload"
     | "/api/ai/chat"
     | "/api/auth/$"
     | "/api/upload/file";
@@ -378,10 +378,9 @@ export interface FileServerRouteTypes {
 export interface RootServerRouteChildren {
   ApiHelloServerRoute: typeof ApiHelloServerRoute;
   ApiMediaServerRoute: typeof ApiMediaServerRoute;
-  ApiUploadthingServerRoute: typeof ApiUploadthingServerRoute;
+  ApiUploadServerRoute: typeof ApiUploadServerRouteWithChildren;
   ApiAiChatServerRoute: typeof ApiAiChatServerRoute;
   ApiAuthSplatServerRoute: typeof ApiAuthSplatServerRoute;
-  ApiUploadFileServerRoute: typeof ApiUploadFileServerRoute;
 }
 
 declare module "@tanstack/react-router" {
@@ -544,11 +543,11 @@ declare module "@tanstack/react-router" {
 }
 declare module "@tanstack/react-start/server" {
   interface ServerFileRoutesByPath {
-    "/api/uploadthing": {
-      id: "/api/uploadthing";
-      path: "/api/uploadthing";
-      fullPath: "/api/uploadthing";
-      preLoaderRoute: typeof ApiUploadthingServerRouteImport;
+    "/api/upload": {
+      id: "/api/upload";
+      path: "/api/upload";
+      fullPath: "/api/upload";
+      preLoaderRoute: typeof ApiUploadServerRouteImport;
       parentRoute: typeof rootServerRouteImport;
     };
     "/api/media": {
@@ -567,10 +566,10 @@ declare module "@tanstack/react-start/server" {
     };
     "/api/upload/file": {
       id: "/api/upload/file";
-      path: "/api/upload/file";
+      path: "/file";
       fullPath: "/api/upload/file";
       preLoaderRoute: typeof ApiUploadFileServerRouteImport;
-      parentRoute: typeof rootServerRouteImport;
+      parentRoute: typeof ApiUploadServerRoute;
     };
     "/api/auth/$": {
       id: "/api/auth/$";
@@ -670,6 +669,18 @@ const AppRouteChildren: AppRouteChildren = {
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren);
 
+interface ApiUploadServerRouteChildren {
+  ApiUploadFileServerRoute: typeof ApiUploadFileServerRoute;
+}
+
+const ApiUploadServerRouteChildren: ApiUploadServerRouteChildren = {
+  ApiUploadFileServerRoute: ApiUploadFileServerRoute,
+};
+
+const ApiUploadServerRouteWithChildren = ApiUploadServerRoute._addFileChildren(
+  ApiUploadServerRouteChildren,
+);
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   authRouteRoute: authRouteRouteWithChildren,
@@ -683,10 +694,9 @@ export const routeTree = rootRouteImport
 const rootServerRouteChildren: RootServerRouteChildren = {
   ApiHelloServerRoute: ApiHelloServerRoute,
   ApiMediaServerRoute: ApiMediaServerRoute,
-  ApiUploadthingServerRoute: ApiUploadthingServerRoute,
+  ApiUploadServerRoute: ApiUploadServerRouteWithChildren,
   ApiAiChatServerRoute: ApiAiChatServerRoute,
   ApiAuthSplatServerRoute: ApiAuthSplatServerRoute,
-  ApiUploadFileServerRoute: ApiUploadFileServerRoute,
 };
 export const serverRouteTree = rootServerRouteImport
   ._addFileChildren(rootServerRouteChildren)

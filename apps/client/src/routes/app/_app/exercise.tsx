@@ -2,6 +2,8 @@ import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
 import {
   Form,
   FormField,
@@ -10,10 +12,11 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
+import { MemberPicker } from "@/components/member-picker";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { toast } from "sonner";
 import { exerciseGoal } from "~/lib/db/schema";
 import { api } from "~/lib/api";
 
@@ -97,6 +100,23 @@ function RouteComponent() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-4 mt-6"
         >
+          <FormField
+            control={form.control}
+            name="memberId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Select Member</FormLabel>
+                <FormControl>
+                  <MemberPicker
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="Choose a member..."
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="type"

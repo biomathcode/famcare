@@ -84,7 +84,10 @@ async function getCroppedImg(
   }
 }
 
-export default function Component() {
+export default function ProfileUpload({ value, onChange }: {
+  value?: string | null
+  onChange?: (url: string | null) => void
+}) {
   const [
     { files, isDragging },
     {
@@ -93,7 +96,7 @@ export default function Component() {
       handleDragOver,
       handleDrop,
       openFileDialog,
-      removeFile,
+      // removeFile,
       getInputProps,
     },
   ] = useFileUpload({
@@ -103,7 +106,6 @@ export default function Component() {
   const previewUrl = files[0]?.preview || null
   const fileId = files[0]?.id
 
-  const [finalImageUrl, setFinalImageUrl] = useState<string | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   // Ref to track the previous file ID to detect new uploads
@@ -121,65 +123,40 @@ export default function Component() {
   }, [])
 
   const handleApply = async () => {
-    // Check if we have the necessary data
-    if (!previewUrl || !fileId || !croppedAreaPixels) {
-      console.error("Missing data for apply:", {
-        previewUrl,
-        fileId,
-        croppedAreaPixels,
-      })
-      // Remove file if apply is clicked without crop data?
-      if (fileId) {
-        removeFile(fileId)
-        setCroppedAreaPixels(null)
-      }
-      return
-    }
-
+    if (!previewUrl || !fileId || !croppedAreaPixels) return
     try {
-      // 1. Get the cropped image blob using the helper
       const croppedBlob = await getCroppedImg(previewUrl, croppedAreaPixels)
+      if (!croppedBlob) throw new Error("Failed to generate cropped image blob")
 
-      if (!croppedBlob) {
-        throw new Error("Failed to generate cropped image blob.")
-      }
+      const formData = new FormData()
+      formData.append("file", croppedBlob, "profile.jpg")
 
-      // 2. Create a NEW object URL from the cropped blob
-      const newFinalUrl = URL.createObjectURL(croppedBlob)
+      const res = await fetch("/api/upload", { method: "POST", body: formData })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || "Upload failed")
 
-      // 3. Revoke the OLD finalImageUrl if it exists
-      if (finalImageUrl) {
-        URL.revokeObjectURL(finalImageUrl)
-      }
 
-      // 4. Set the final avatar state to the NEW URL
-      setFinalImageUrl(newFinalUrl)
-
-      // 5. Close the dialog (don't remove the file yet)
+      // notify parent
+      onChange?.(data.url)
       setIsDialogOpen(false)
     } catch (error) {
-      console.error("Error during apply:", error)
-      // Close the dialog even if cropping fails
+      console.error("Upload error:", error)
       setIsDialogOpen(false)
     }
   }
 
   const handleRemoveFinalImage = () => {
-    if (finalImageUrl) {
-      URL.revokeObjectURL(finalImageUrl)
-    }
-    setFinalImageUrl(null)
+    onChange?.(null) // ✅ clears the value in form
   }
 
   useEffect(() => {
-    const currentFinalUrl = finalImageUrl
-    // Cleanup function
+    const currentUrl = value
     return () => {
-      if (currentFinalUrl && currentFinalUrl.startsWith("blob:")) {
-        URL.revokeObjectURL(currentFinalUrl)
+      if (currentUrl && currentUrl.startsWith("blob:")) {
+        URL.revokeObjectURL(currentUrl)
       }
     }
-  }, [finalImageUrl])
+  }, [value])
 
   // Effect to open dialog when a *new* file is ready
   useEffect(() => {
@@ -198,6 +175,7 @@ export default function Component() {
       <div className="relative inline-flex">
         {/* Drop area - uses finalImageUrl */}
         <button
+          type="button"
           className="border-input hover:bg-accent/50 data-[dragging=true]:bg-accent/50 focus-visible:border-ring focus-visible:ring-ring/50 relative flex size-16 items-center justify-center overflow-hidden rounded-full border border-dashed transition-colors outline-none focus-visible:ring-[3px] has-disabled:pointer-events-none has-disabled:opacity-50 has-[img]:border-none"
           onClick={openFileDialog}
           onDragEnter={handleDragEnter}
@@ -205,12 +183,12 @@ export default function Component() {
           onDragOver={handleDragOver}
           onDrop={handleDrop}
           data-dragging={isDragging || undefined}
-          aria-label={finalImageUrl ? "Change image" : "Upload image"}
+          aria-label={value ? "Change image" : "Upload image"}
         >
-          {finalImageUrl ? (
+          {value ? (
             <img
               className="size-full object-cover"
-              src={finalImageUrl}
+              src={value}
               alt="User avatar"
               width={64}
               height={64}
@@ -223,7 +201,7 @@ export default function Component() {
           )}
         </button>
         {/* Remove button - depends on finalImageUrl */}
-        {finalImageUrl && (
+        {value && (
           <Button
             onClick={handleRemoveFinalImage}
             size="icon"
@@ -316,22 +294,8 @@ export default function Component() {
         role="region"
         className="text-muted-foreground mt-2 text-xs"
       >
-        Avatar{" "}
-        <a
-          href="https://github.com/origin-space/originui/tree/main/docs/use-file-upload.md"
-          className="hover:text-foreground underline"
-          target="_blank"
-        >
-          uploader
-        </a>{" "}
-        with{" "}
-        <a
-          href="https://github.com/origin-space/image-cropper"
-          className="hover:text-foreground underline"
-          target="_blank"
-        >
-          cropper
-        </a>
+        Click on the Profile button to add your image
+
       </p>
     </div>
   )
