@@ -2,11 +2,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from '@tanstack/react-start';
 import FileUpload from "~/components/file-upload";
 import FileUploadTwo from "~/components/file-upload-two";
+import OCRDemo from "~/components/ocr";
+import { useState } from "react";
 
 //TODO add document upload using 
 // pnpm dlx shadcn@latest add https://originui.com/r/comp-549.json
 
-import { useState } from "react";
 
 function FileUploadForm() {
     const [file, setFile] = useState<File | null>(null);
@@ -117,6 +118,9 @@ function RouteComponent() {
 
     return <div className="space-y-4 p-4">
         <FileUploadTwo />
+
+
+        <OCRDemo />
 
 
         <div>

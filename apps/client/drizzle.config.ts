@@ -4,7 +4,7 @@ import { env } from "~/env/server";
 export default {
   out: "./drizzle",
   schema: "./src/lib/db/schema/index.ts",
-  breakpoints: true,
+  breakpoints: false,
   verbose: true,
   strict: true,
   dialect: "mysql",

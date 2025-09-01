@@ -38,9 +38,6 @@ export const chatMessage = mysqlTable("chat_message", {
 
 
 
-
-
-
 export const chat = mysqlTable("chat", {
     id: varchar("id", { length: 36 }) // UUID length
         .primaryKey()

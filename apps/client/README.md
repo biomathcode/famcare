@@ -40,6 +40,11 @@ User -> Logs in -> Add Family Members -> Add Medical Records for the members -> 
 user -> uploaded image -> then we ask for member -> create a new member or update the existing member -> then we create a medical record for the member -> then we create medical schedule -> then we create a google ice calendar event for the medical schedule for the member/ 
 
 
+## Search read more 
+https://docs.pingcap.com/tidbcloud/vector-search-hybrid-search/
+
+
+
 
 what are vector embeddings -> ?  
 https://www.pinecone.io/learn/vector-database/
