@@ -105,6 +105,16 @@ export const uploadPDF = createServerFn("POST", async ({ request }) => {
 ```
 
 
+### AI tools
+- Search Medicine information
+- Search Side effects of the medicine using OpenFDA api
+- Create Members Diet, Medicines, Exercise plan
+- Create Member Medical Schedule 
+
+Saving Chat can be p3 or p4 priority
+
+
+
 
 
 ### Onboarding Flow -> 

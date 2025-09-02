@@ -10,8 +10,6 @@ import {
 } from '@/components/ai-elements/message';
 
 import { GlobeIcon, MicIcon } from 'lucide-react';
-
-
 import {
     PromptInput,
     PromptInputButton,
@@ -36,6 +34,10 @@ import { Loader } from "~/components/ai-elements/loader";
 import { api } from "~/lib/api";
 
 
+
+
+
+
 export const saveChat = createServerFn<{ data: { userId: string; sessionId: string; role: string; content: string } }>().handler(async ({ data }) => {
     await api.chatMessages.create({
         role: data.role,
@@ -50,6 +52,82 @@ export const getChatMessages = createServerFn().handler(async ({ data }) => {
         .then(rows => rows.filter(row => row.sessionId === data.sessionId));
 });
 
+
+// weather display
+
+type WeatherProps = {
+    temperature: number;
+    weather: string;
+    location: string;
+};
+
+export const Weather = ({ temperature, weather, location }: WeatherProps) => {
+    return (
+        <div className="flex flex-col p-4 bg-sky-400 rounded-lg gap-2">
+            <div className="flex flex-row justify-between">
+                <div>
+                    <div className="text capitalize text-sky-100 mb-1 text-sm">Thursday, March 7</div>
+                    <div className="flex flex-row items-center gap-2">
+                        <div className="text-4xl text-sky-50">47°</div>
+                        <div className="size-8 rounded-full bg-yellow-200"></div>
+                    </div>
+                </div>
+                <div>
+                    <div className="capitalize text-sky-50 text-sm">sunny</div>
+                </div>
+            </div>
+            <div className="flex flex-row justify-between">
+                <div className="flex flex-col items-center">
+                    <div className="text-xs mb-2 text-sky-200">7am</div>
+                    <div className="w-6 h-6 rounded-full bg-yellow-200">
+                    </div>
+                    <div className="text-xs text-sky-50 mt-1">48°</div>
+                </div>
+                <div className="flex flex-col items-center">
+                    <div className="text-xs mb-2 text-sky-200">8am</div>
+                    <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
+                    <div className="text-xs text-sky-50 mt-1">50°</div>
+                </div>
+                <div className="flex flex-col items-center">
+                    <div className="text-xs mb-2 text-sky-200">9am</div>
+                    <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
+                    <div className="text-xs text-sky-50 mt-1">52°</div>
+                </div>
+                <div className="flex flex-col items-center">
+                    <div className="text-xs mb-2 text-sky-200">10am</div>
+                    <div className="relative">
+                        <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
+                        <div className="w-4 h-3 rounded-full bg-zinc-300 absolute bottom-0 -right-1"></div>
+                    </div>
+                    <div className="text-xs text-sky-50 mt-1">54°</div>
+                </div>
+                <div className="flex flex-col items-center">
+                    <div className="text-xs mb-2 text-sky-200">11am</div>
+                    <div className="relative">
+                        <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
+                        <div className="w-4 h-3 rounded-full bg-zinc-300 absolute bottom-0 -right-1"></div>
+                    </div>
+                    <div className="text-xs text-sky-50 mt-1">56°</div>
+                </div>
+                <div className="flex flex-col items-center">
+                    <div className="text-xs mb-2 text-sky-200">12pm</div>
+                    <div className="relative">
+                        <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
+                        <div className="w-4 h-3 rounded-full bg-zinc-300 absolute bottom-0 -right-1"></div>
+                    </div>
+                    <div className="text-xs text-sky-50 mt-1">58°</div>
+                </div>
+                <div className="flex flex-col items-center">
+                    <div className="text-xs mb-2 text-sky-200">1pm</div>
+                    <div className="relative">
+                        <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
+                        <div className="w-4 h-3 rounded-full bg-zinc-300 absolute bottom-0 -right-1"></div>
+                    </div>
+                    <div className="text-xs text-sky-50 mt-1">60°</div>
+                </div>
+            </div>
+        </div>);
+};
 
 export const Route = createFileRoute("/app/_app/chat/$chatId")({
     component: Chat,

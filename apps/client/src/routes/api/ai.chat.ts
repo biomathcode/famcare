@@ -1,5 +1,4 @@
 import { createServerFileRoute } from '@tanstack/react-start/server'
-import { anthropic } from '@ai-sdk/anthropic'
 import { convertToModelMessages, stepCountIs, streamText } from 'ai'
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
 

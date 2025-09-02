@@ -21,7 +21,7 @@ function createCrud<T extends { id: string }>(table: any) {
     return {
         // CREATE
         async create(data) {
-            const id = nanoid(36); // ✅ auto-generate id if not passed
+            const id = nanoid(36);
 
             const insertData = {
                 ...data,
@@ -98,6 +98,6 @@ export const api = {
     healthMetrics: createCrud(healthMetric),
     exerciseGoals: createCrud(exerciseGoal),
     sleepGoals: createCrud(sleepGoal),
-    chatSession: createCrud(chatSession),  // ✅ chatSession CRUD
+    chatSession: createCrud(chatSession),
     media: createCrud(media),
 };

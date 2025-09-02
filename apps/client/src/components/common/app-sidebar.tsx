@@ -33,10 +33,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     queryFn: getChatSessions
   });
 
-
-
-  console.log("items", chatSessions)
-
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -56,7 +52,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain />
-        <Collapsible>
+        <Collapsible
+          defaultOpen
+          className="group/collapsible"
+        >
           <SidebarGroup>
             <SidebarGroupLabel
               asChild

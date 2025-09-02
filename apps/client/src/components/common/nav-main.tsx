@@ -1,7 +1,6 @@
 import {
   IconCirclePlusFilled,
 } from "@tabler/icons-react";
-
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -10,17 +9,12 @@ import {
   SidebarMenuItem,
 } from "~/components/ui/sidebar";
 import { useNavigate, useRouteContext, Link } from "@tanstack/react-router";
-
 import { createChatSession } from '@/lib/api/chatSession';
-
 import { navItems } from './nav-items'
-
-
 
 export function NavMain() {
   const nav = useNavigate();
   const { user } = useRouteContext({ from: '/app' });
-
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
