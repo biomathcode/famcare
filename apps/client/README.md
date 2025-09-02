@@ -22,10 +22,90 @@ Use This to persist chat history and other data into the database
 - [] https://github.com/vercel-labs/ai-sdk-persistence-db
 
 
-TODO: Add A Member selector ui basically add all members and select one in a form field 
-TODO: Add Profile pic upload for member
-TODO: List Sleep, Exercise, Diet plans for the members
-TODO: 
+TODO: Work Vector Search 
+TODO: Add ai tools for medicine search, side effects, interactions, save medicines and create a schedule for the medicines
+TODO: Save previous chat history and show in the previous chat section
+TODO: Improve the UI/UX
+TODO: Create the landing page
+
+### Vector Search 
+file upload on the media schema
+Creating chunks of the data
+Creating vector embeddings for the chunks
+Saving the vector embeddings in the vector db
+Searching the vector db using the query
+
+
+```ts
+import { mysqlTable, varchar, text, float, int } from "drizzle-orm/mysql-core";
+import { sql } from "drizzle-orm";
+
+export const pdfChunks = mysqlTable("pdf_chunks", {
+  id: int("id").primaryKey().autoincrement(),
+  docId: varchar("doc_id", { length: 36 }).notNull(),
+  chunk: text("chunk").notNull(),
+  embedding: text("embedding").notNull(), // store JSON.stringify([...])
+  order: int("order").notNull(),
+});
+```
+
+
+api 
+
+
+```ts
+// routes/api/upload.ts
+import { createServerFn } from "@tanstack/start";
+import { db } from "@/db/client";
+import { pdfChunks } from "@/db/schema";
+import pdf from "pdf-parse";
+import { CohereClient } from "cohere-ai";
+import { eq } from "drizzle-orm";
+import { randomUUID } from "crypto";
+
+const cohere = new CohereClient({ apiKey: process.env.COHERE_API_KEY! });
+
+export const uploadPDF = createServerFn("POST", async ({ request }) => {
+  const formData = await request.formData();
+  const file = formData.get("file") as File;
+
+  if (!file) throw new Error("No file uploaded");
+
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const data = await pdf(buffer);
+
+  // chunk text
+  const words = data.text.split(/\s+/);
+  const chunkSize = 200;
+  const chunks: string[] = [];
+  for (let i = 0; i < words.length; i += chunkSize) {
+    chunks.push(words.slice(i, i + chunkSize).join(" "));
+  }
+
+  // embed with Cohere
+  const embeddings = await cohere.embed({
+    texts: chunks,
+    model: "embed-multilingual-v3.0",
+  });
+
+  const docId = randomUUID();
+
+  await db.insert(pdfChunks).values(
+    chunks.map((c, i) => ({
+      docId,
+      chunk: c,
+      order: i,
+      embedding: JSON.stringify(embeddings.embeddings[i]),
+    }))
+  );
+
+  return { docId, chunks: chunks.length };
+});
+
+```
+
+
+
 
 ### Onboarding Flow -> 
 User -> Logs in -> Add Family Members -> Add Medical Records for the members -> Can generate chat, exercise, diet plan for the members -> Can create medical schedule for the members -> Can create google calendar event for the medical schedule for the members

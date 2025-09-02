@@ -15,6 +15,13 @@
       "when": 1756670075535,
       "tag": "0001_shocking_warstar",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1756770361682,
+      "tag": "0002_blue_mikhail_rasputin",
+      "breakpoints": false
     }
   ]
 }

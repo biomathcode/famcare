@@ -32,6 +32,8 @@ import { Route as AppAppExerciseRouteImport } from "./routes/app/_app/exercise";
 import { Route as AppAppDietRouteImport } from "./routes/app/_app/diet";
 import { Route as AppAppChatsRouteImport } from "./routes/app/_app/chats";
 import { Route as AppAppCalendarRouteImport } from "./routes/app/_app/calendar";
+import { Route as ApiAiUploadRouteImport } from "./routes/api/ai.upload";
+import { Route as ApiAiQueryRouteImport } from "./routes/api/ai.query";
 import { Route as AppAppChatChatIdRouteImport } from "./routes/app/_app/chat.$chatId";
 import { ServerRoute as ApiUploadServerRouteImport } from "./routes/api/upload";
 import { ServerRoute as ApiMediaServerRouteImport } from "./routes/api/media";
@@ -146,6 +148,16 @@ const AppAppCalendarRoute = AppAppCalendarRouteImport.update({
   path: "/calendar",
   getParentRoute: () => AppAppRoute,
 } as any);
+const ApiAiUploadRoute = ApiAiUploadRouteImport.update({
+  id: "/api/ai/upload",
+  path: "/api/ai/upload",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const ApiAiQueryRoute = ApiAiQueryRouteImport.update({
+  id: "/api/ai/query",
+  path: "/api/ai/query",
+  getParentRoute: () => rootRouteImport,
+} as any);
 const AppAppChatChatIdRoute = AppAppChatChatIdRouteImport.update({
   id: "/chat/$chatId",
   path: "/chat/$chatId",
@@ -191,6 +203,8 @@ export interface FileRoutesByFullPath {
   "/app": typeof AppAppRouteWithChildren;
   "/about/": typeof AboutIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
+  "/api/ai/query": typeof ApiAiQueryRoute;
+  "/api/ai/upload": typeof ApiAiUploadRoute;
   "/app/calendar": typeof AppAppCalendarRoute;
   "/app/chats": typeof AppAppChatsRoute;
   "/app/diet": typeof AppAppDietRoute;
@@ -211,6 +225,8 @@ export interface FileRoutesByTo {
   "/app": typeof AppAppIndexRoute;
   "/about": typeof AboutIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
+  "/api/ai/query": typeof ApiAiQueryRoute;
+  "/api/ai/upload": typeof ApiAiUploadRoute;
   "/app/calendar": typeof AppAppCalendarRoute;
   "/app/chats": typeof AppAppChatsRoute;
   "/app/diet": typeof AppAppDietRoute;
@@ -235,6 +251,8 @@ export interface FileRoutesById {
   "/app/_app": typeof AppAppRouteWithChildren;
   "/about/": typeof AboutIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
+  "/api/ai/query": typeof ApiAiQueryRoute;
+  "/api/ai/upload": typeof ApiAiUploadRoute;
   "/app/_app/calendar": typeof AppAppCalendarRoute;
   "/app/_app/chats": typeof AppAppChatsRoute;
   "/app/_app/diet": typeof AppAppDietRoute;
@@ -259,6 +277,8 @@ export interface FileRouteTypes {
     | "/app"
     | "/about/"
     | "/dashboard/"
+    | "/api/ai/query"
+    | "/api/ai/upload"
     | "/app/calendar"
     | "/app/chats"
     | "/app/diet"
@@ -279,6 +299,8 @@ export interface FileRouteTypes {
     | "/app"
     | "/about"
     | "/dashboard"
+    | "/api/ai/query"
+    | "/api/ai/upload"
     | "/app/calendar"
     | "/app/chats"
     | "/app/diet"
@@ -302,6 +324,8 @@ export interface FileRouteTypes {
     | "/app/_app"
     | "/about/"
     | "/dashboard/"
+    | "/api/ai/query"
+    | "/api/ai/upload"
     | "/app/_app/calendar"
     | "/app/_app/chats"
     | "/app/_app/diet"
@@ -322,6 +346,8 @@ export interface RootRouteChildren {
   AboutRouteRoute: typeof AboutRouteRouteWithChildren;
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren;
   AppRoute: typeof AppRouteWithChildren;
+  ApiAiQueryRoute: typeof ApiAiQueryRoute;
+  ApiAiUploadRoute: typeof ApiAiUploadRoute;
 }
 export interface FileServerRoutesByFullPath {
   "/api/hello": typeof ApiHelloServerRoute;
@@ -532,6 +558,20 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AppAppCalendarRouteImport;
       parentRoute: typeof AppAppRoute;
     };
+    "/api/ai/upload": {
+      id: "/api/ai/upload";
+      path: "/api/ai/upload";
+      fullPath: "/api/ai/upload";
+      preLoaderRoute: typeof ApiAiUploadRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/api/ai/query": {
+      id: "/api/ai/query";
+      path: "/api/ai/query";
+      fullPath: "/api/ai/query";
+      preLoaderRoute: typeof ApiAiQueryRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     "/app/_app/chat/$chatId": {
       id: "/app/_app/chat/$chatId";
       path: "/chat/$chatId";
@@ -687,6 +727,8 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRouteRoute: AboutRouteRouteWithChildren,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
   AppRoute: AppRouteWithChildren,
+  ApiAiQueryRoute: ApiAiQueryRoute,
+  ApiAiUploadRoute: ApiAiUploadRoute,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
