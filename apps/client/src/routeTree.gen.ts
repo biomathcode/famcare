@@ -30,7 +30,6 @@ import { Route as AppAppMedicinesRouteImport } from "./routes/app/_app/medicines
 import { Route as AppAppHomeRouteImport } from "./routes/app/_app/home";
 import { Route as AppAppExerciseRouteImport } from "./routes/app/_app/exercise";
 import { Route as AppAppDietRouteImport } from "./routes/app/_app/diet";
-import { Route as AppAppChatsRouteImport } from "./routes/app/_app/chats";
 import { Route as AppAppCalendarRouteImport } from "./routes/app/_app/calendar";
 import { Route as ApiAiUploadRouteImport } from "./routes/api/ai.upload";
 import { Route as ApiAiQueryRouteImport } from "./routes/api/ai.query";
@@ -138,11 +137,6 @@ const AppAppDietRoute = AppAppDietRouteImport.update({
   path: "/diet",
   getParentRoute: () => AppAppRoute,
 } as any);
-const AppAppChatsRoute = AppAppChatsRouteImport.update({
-  id: "/chats",
-  path: "/chats",
-  getParentRoute: () => AppAppRoute,
-} as any);
 const AppAppCalendarRoute = AppAppCalendarRouteImport.update({
   id: "/calendar",
   path: "/calendar",
@@ -206,7 +200,6 @@ export interface FileRoutesByFullPath {
   "/api/ai/query": typeof ApiAiQueryRoute;
   "/api/ai/upload": typeof ApiAiUploadRoute;
   "/app/calendar": typeof AppAppCalendarRoute;
-  "/app/chats": typeof AppAppChatsRoute;
   "/app/diet": typeof AppAppDietRoute;
   "/app/exercise": typeof AppAppExerciseRoute;
   "/app/home": typeof AppAppHomeRoute;
@@ -228,7 +221,6 @@ export interface FileRoutesByTo {
   "/api/ai/query": typeof ApiAiQueryRoute;
   "/api/ai/upload": typeof ApiAiUploadRoute;
   "/app/calendar": typeof AppAppCalendarRoute;
-  "/app/chats": typeof AppAppChatsRoute;
   "/app/diet": typeof AppAppDietRoute;
   "/app/exercise": typeof AppAppExerciseRoute;
   "/app/home": typeof AppAppHomeRoute;
@@ -254,7 +246,6 @@ export interface FileRoutesById {
   "/api/ai/query": typeof ApiAiQueryRoute;
   "/api/ai/upload": typeof ApiAiUploadRoute;
   "/app/_app/calendar": typeof AppAppCalendarRoute;
-  "/app/_app/chats": typeof AppAppChatsRoute;
   "/app/_app/diet": typeof AppAppDietRoute;
   "/app/_app/exercise": typeof AppAppExerciseRoute;
   "/app/_app/home": typeof AppAppHomeRoute;
@@ -280,7 +271,6 @@ export interface FileRouteTypes {
     | "/api/ai/query"
     | "/api/ai/upload"
     | "/app/calendar"
-    | "/app/chats"
     | "/app/diet"
     | "/app/exercise"
     | "/app/home"
@@ -302,7 +292,6 @@ export interface FileRouteTypes {
     | "/api/ai/query"
     | "/api/ai/upload"
     | "/app/calendar"
-    | "/app/chats"
     | "/app/diet"
     | "/app/exercise"
     | "/app/home"
@@ -327,7 +316,6 @@ export interface FileRouteTypes {
     | "/api/ai/query"
     | "/api/ai/upload"
     | "/app/_app/calendar"
-    | "/app/_app/chats"
     | "/app/_app/diet"
     | "/app/_app/exercise"
     | "/app/_app/home"
@@ -544,13 +532,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AppAppDietRouteImport;
       parentRoute: typeof AppAppRoute;
     };
-    "/app/_app/chats": {
-      id: "/app/_app/chats";
-      path: "/chats";
-      fullPath: "/app/chats";
-      preLoaderRoute: typeof AppAppChatsRouteImport;
-      parentRoute: typeof AppAppRoute;
-    };
     "/app/_app/calendar": {
       id: "/app/_app/calendar";
       path: "/calendar";
@@ -668,7 +649,6 @@ const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
 
 interface AppAppRouteChildren {
   AppAppCalendarRoute: typeof AppAppCalendarRoute;
-  AppAppChatsRoute: typeof AppAppChatsRoute;
   AppAppDietRoute: typeof AppAppDietRoute;
   AppAppExerciseRoute: typeof AppAppExerciseRoute;
   AppAppHomeRoute: typeof AppAppHomeRoute;
@@ -683,7 +663,6 @@ interface AppAppRouteChildren {
 
 const AppAppRouteChildren: AppAppRouteChildren = {
   AppAppCalendarRoute: AppAppCalendarRoute,
-  AppAppChatsRoute: AppAppChatsRoute,
   AppAppDietRoute: AppAppDietRoute,
   AppAppExerciseRoute: AppAppExerciseRoute,
   AppAppHomeRoute: AppAppHomeRoute,

@@ -1,8 +1,13 @@
 import * as React from "react";
-import { IconInnerShadowTop } from "@tabler/icons-react";
+import { IconInnerShadowTop, IconMessage } from "@tabler/icons-react";
 
 import { NavMain } from "@/components/common/nav-main";
 import { NavUser } from "@/components/common/nav-user";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 import {
   Sidebar,
   SidebarContent,
@@ -11,9 +16,27 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupContent,
+
 } from "@/components/ui/sidebar";
+import { ChevronRight } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+
+import { getChatSessions } from "~/lib/db/queries";
+
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: chatSessions } = useQuery({
+    queryKey: ['chatSessions'],
+    queryFn: getChatSessions
+  });
+
+
+
+  console.log("items", chatSessions)
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -33,6 +56,39 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain />
+        <Collapsible>
+          <SidebarGroup>
+            <SidebarGroupLabel
+              asChild
+              className="group/label text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sm"
+            >
+              <CollapsibleTrigger>
+                <div className="flex gap-2 items-center ">
+                  <IconMessage size={16} />
+                  Previous Chat
+                </div>
+
+
+                <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
+              </CollapsibleTrigger>
+            </SidebarGroupLabel>
+            <CollapsibleContent>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {chatSessions?.map((chat) => (
+                    <SidebarMenuItem key={chat.title}>
+                      <SidebarMenuButton asChild isActive={chat.isActive}>
+                        <a href={"/app/chat/" + chat.id}>{chat.title}</a>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </CollapsibleContent>
+          </SidebarGroup>
+        </Collapsible>
+
+
       </SidebarContent>
       <SidebarFooter>
         <NavUser />

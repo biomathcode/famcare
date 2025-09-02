@@ -3,7 +3,6 @@ import {
     IconFileText,
     IconUsers,
     IconSettings,
-    IconMessage,
     IconCalendarWeek,
     IconSalad,
     IconTreadmill,
@@ -12,11 +11,7 @@ import {
 } from "@tabler/icons-react";
 
 export const navItems = [
-    {
-        title: "Previous Chats",
-        path: "/app/chats",
-        icon: IconMessage,
-    },
+
     {
         title: "Dashboard",
         path: "/app/home",
@@ -50,12 +45,6 @@ export const navItems = [
         icon: IconCalendarWeek,
     },
 
-    {
-        title: "Settings",
-        path: "/app/settings",
-
-        icon: IconSettings,
-    },
 
     {
         title: "Medicines",
@@ -67,5 +56,12 @@ export const navItems = [
         path: "/app/sleep",
         icon: IconBed,
 
-    }
+    },
+
+    {
+        title: "Settings",
+        path: "/app/settings",
+
+        icon: IconSettings,
+    },
 ];
