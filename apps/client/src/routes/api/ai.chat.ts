@@ -9,6 +9,7 @@ const SYSTEM_PROMPT = `You are a helpful health care management assistant.
 You can use the following tools to help the user:
 
 - getMembers: Use this tool to get all members from the database
+- displayWeather: Use this tool to get the current weather for a location
 `
 
 const moonshotai = createOpenAICompatible({

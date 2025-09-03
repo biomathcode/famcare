@@ -1,8 +1,7 @@
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from '@tanstack/react-start';
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
-import { IconSend } from "@tabler/icons-react";
 import { useState } from "react";
 import {
     Message,
@@ -48,8 +47,11 @@ export const saveChat = createServerFn<{ data: { userId: string; sessionId: stri
 });
 
 export const getChatMessages = createServerFn().handler(async ({ data }) => {
-    return await api.chatMessages.findAll()
-        .then(rows => rows.filter(row => row.sessionId === data.sessionId));
+    const rows = await api.chatMessages.findAll();
+
+    return rows
+        .filter((row) => row.sessionId === data.sessionId)
+        .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
 });
 
 
@@ -66,32 +68,33 @@ export const Weather = ({ temperature, weather, location }: WeatherProps) => {
         <div className="flex flex-col p-4 bg-sky-400 rounded-lg gap-2">
             <div className="flex flex-row justify-between">
                 <div>
-                    <div className="text capitalize text-sky-100 mb-1 text-sm">Thursday, March 7</div>
+                    <div className="text capitalize text-sky-100 mb-1 text-sm">{location}</div>
                     <div className="flex flex-row items-center gap-2">
-                        <div className="text-4xl text-sky-50">47°</div>
+                        <div className="text-4xl text-sky-50">{temperature}°</div>
                         <div className="size-8 rounded-full bg-yellow-200"></div>
                     </div>
                 </div>
                 <div>
-                    <div className="capitalize text-sky-50 text-sm">sunny</div>
+                    <div className="capitalize text-sky-50 text-sm">{weather}</div>
                 </div>
             </div>
+            {/* The hourly forecast below is static, you can update it to use props if you have hourly data */}
             <div className="flex flex-row justify-between">
+                {/* Example static hourly forecast */}
                 <div className="flex flex-col items-center">
                     <div className="text-xs mb-2 text-sky-200">7am</div>
-                    <div className="w-6 h-6 rounded-full bg-yellow-200">
-                    </div>
-                    <div className="text-xs text-sky-50 mt-1">48°</div>
+                    <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
+                    <div className="text-xs text-sky-50 mt-1">{temperature + 1}°</div>
                 </div>
                 <div className="flex flex-col items-center">
                     <div className="text-xs mb-2 text-sky-200">8am</div>
                     <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
-                    <div className="text-xs text-sky-50 mt-1">50°</div>
+                    <div className="text-xs text-sky-50 mt-1">{temperature + 3}°</div>
                 </div>
                 <div className="flex flex-col items-center">
                     <div className="text-xs mb-2 text-sky-200">9am</div>
                     <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
-                    <div className="text-xs text-sky-50 mt-1">52°</div>
+                    <div className="text-xs text-sky-50 mt-1">{temperature + 5}°</div>
                 </div>
                 <div className="flex flex-col items-center">
                     <div className="text-xs mb-2 text-sky-200">10am</div>
@@ -99,7 +102,7 @@ export const Weather = ({ temperature, weather, location }: WeatherProps) => {
                         <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
                         <div className="w-4 h-3 rounded-full bg-zinc-300 absolute bottom-0 -right-1"></div>
                     </div>
-                    <div className="text-xs text-sky-50 mt-1">54°</div>
+                    <div className="text-xs text-sky-50 mt-1">{temperature + 7}°</div>
                 </div>
                 <div className="flex flex-col items-center">
                     <div className="text-xs mb-2 text-sky-200">11am</div>
@@ -107,7 +110,7 @@ export const Weather = ({ temperature, weather, location }: WeatherProps) => {
                         <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
                         <div className="w-4 h-3 rounded-full bg-zinc-300 absolute bottom-0 -right-1"></div>
                     </div>
-                    <div className="text-xs text-sky-50 mt-1">56°</div>
+                    <div className="text-xs text-sky-50 mt-1">{temperature + 9}°</div>
                 </div>
                 <div className="flex flex-col items-center">
                     <div className="text-xs mb-2 text-sky-200">12pm</div>
@@ -115,7 +118,7 @@ export const Weather = ({ temperature, weather, location }: WeatherProps) => {
                         <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
                         <div className="w-4 h-3 rounded-full bg-zinc-300 absolute bottom-0 -right-1"></div>
                     </div>
-                    <div className="text-xs text-sky-50 mt-1">58°</div>
+                    <div className="text-xs text-sky-50 mt-1">{temperature + 11}°</div>
                 </div>
                 <div className="flex flex-col items-center">
                     <div className="text-xs mb-2 text-sky-200">1pm</div>
@@ -123,10 +126,11 @@ export const Weather = ({ temperature, weather, location }: WeatherProps) => {
                         <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
                         <div className="w-4 h-3 rounded-full bg-zinc-300 absolute bottom-0 -right-1"></div>
                     </div>
-                    <div className="text-xs text-sky-50 mt-1">60°</div>
+                    <div className="text-xs text-sky-50 mt-1">{temperature + 13}°</div>
                 </div>
             </div>
-        </div>);
+        </div>
+    );
 };
 
 export const Route = createFileRoute("/app/_app/chat/$chatId")({
@@ -143,6 +147,14 @@ const models = [
     { id: 'claude-opus-4-20250514', name: 'Claude 4 Opus' },
 ];
 
+function safeJSONParse(str: string) {
+    try {
+        return JSON.parse(str);
+    } catch {
+        return { message: { parts: [{ type: "text", text: str }] } }; // fallback if it's just raw text
+    }
+}
+
 export default function Chat() {
 
     const [text, setText] = useState<string>('');
@@ -157,13 +169,30 @@ export default function Chat() {
 
     const { chats } = Route.useLoaderData<{ chats: any[] }>(); // ✅ get from loader
 
+    console.log("chats", chats,)
+
+
+
+
 
     // 🔹 Transform DB chats into useChat format
-    const initialMessages = chats.map((c) => ({
-        id: c.id,
-        role: c.role,
-        parts: [{ type: "text", text: c.content }],
-    }));
+    const initialMessages = chats.map((c) => {
+
+        const message = safeJSONParse(c.content);
+
+        console.log('message', message);
+
+        const parts = message.message.parts;
+
+        console.log('parts', parts);
+        return {
+            id: c.id,
+            role: c.role,
+            parts: parts,
+        }
+    });
+
+    console.log("initialMessage", initialMessages)
 
     const { messages, sendMessage, status, regenerate, } = useChat({
         messages: initialMessages,
@@ -222,28 +251,49 @@ export default function Chat() {
                         <Message from={role} key={index}>
                             <MessageContent>
                                 {parts.map((part, i) => {
+                                    console.log("parts", part)
                                     switch (part.type) {
                                         case 'text':
                                             return <Response key={`${role}-${i}`}>{part.text}</Response>;
+
+                                        case 'tool-displayWeather':
+                                            switch (part.state) {
+                                                case 'input-available':
+                                                    return <div key={index}>Loading weather...</div>;
+                                                case 'output-available':
+                                                    return (
+                                                        <div key={index}>
+                                                            <Weather {...part.output} />
+                                                        </div>
+                                                    );
+                                                case 'output-error':
+                                                    return <div key={index}>Error: {part.errorText}</div>;
+                                                default:
+                                                    return null;
+                                            }
+                                        default:
+                                            return null;
+
                                     }
                                 })}
                             </MessageContent>
                         </Message>
                     ))}
                 </ConversationContent>
+                {
+                    status === 'submitted' && (
+                        <Message from="assistant">
+                            <MessageContent>
+                                <div className="flex items-center gap-2">
+                                    <Loader />
+                                    Steaming the Response
+                                </div>
+                            </MessageContent>
+                        </Message>
+                    )
+                }
             </Conversation>
-            {
-                status === 'submitted' && (
-                    <Message from="assistant">
-                        <MessageContent>
-                            <div className="flex items-center gap-2">
-                                <Loader />
-                                Steaming the Response
-                            </div>
-                        </MessageContent>
-                    </Message>
-                )
-            }
+
 
             <PromptInput onSubmit={handleSubmit} className=" absolute bottom-0  mt-4  ">
                 <PromptInputTextarea

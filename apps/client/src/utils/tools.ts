@@ -2,6 +2,10 @@ import { tool } from "ai";
 import { z } from "zod";
 import { api } from "~/lib/api";
 
+//TODO: Add tools for getting data from openFDA
+//TODO: Add tools for save diet, exercise, sleep, medicines plan for members
+//TODO: 
+
 
 const getMembers = tool({
     description: "Use this tool to get all members from the database",
