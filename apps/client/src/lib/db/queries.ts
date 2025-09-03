@@ -19,5 +19,9 @@ export const getChatMessages = createServerFn().handler(async ({ data }) => {
         .from(chatMessage)
         .where(eq(chatMessage.sessionId, data.sessionId))
         .orderBy(asc(chatMessage.createdAt));
+});
 
+export const getMembers = createServerFn({ method: "GET" }).handler(async () => {
+    const members = await api.members.findAll();
+    return members;
 });

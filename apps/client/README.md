@@ -16,6 +16,11 @@ Click Create Chat -> db chat session in created -> incremental save the chat_mes
 -[] Create Exercise plan 
 -[] Create Diet plan
 -[] Add Calendar View 
+-[] Add validation in forms
+-[] Add loading states
+-[] Add error handling
+
+- Take inspiration from https://github.com/vercel-labs/ai-sdk-preview-internal-knowledge-base/blob/main/app/(chat)/api/files/upload/route.ts
 
 Use This to persist chat history and other data into the database 
 

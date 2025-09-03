@@ -29,6 +29,7 @@ import { member } from "~/lib/db/schema";
 
 export const createMembers = createServerFn({ method: 'POST' })
     .handler(async ({ data }) => {
+        console.log("data", data)
         if (!data.userId) throw new Error("userId is required");
         const newmember = await api.members.create(
             data
@@ -106,11 +107,14 @@ function RouteComponent() {
     async function onSubmit(values: MemberInput) {
         console.log('submitted', values);
         try {
-            await createMembers({ data: values }).then(() => {
-                router.invalidate();
+            await createMembers({
+                data: { ...values, userId: user?.id },
             });
+
             toast.success("Member added successfully");
             form.reset();
+            router.invalidate();
+
         } catch (err) {
             toast.error("Failed to add member");
             console.error(err);
@@ -143,7 +147,7 @@ function RouteComponent() {
 
 
 
-                <MemberForm onSubmit={onSubmit} />
+                <MemberForm form={form} onSubmit={onSubmit} />
             </Card>
 
 
@@ -163,22 +167,14 @@ const memberSchema = z.object({
 
 export type MemberFormValues = z.infer<typeof memberSchema>
 
+
 interface MemberFormProps {
-    onSubmit: (values: MemberFormValues) => void
-    defaultValues?: Partial<MemberFormValues>
+    form: ReturnType<typeof useForm<MemberFormValues>>;
+    onSubmit: (values: MemberFormValues) => void;
 }
 
-export function MemberForm({ onSubmit, defaultValues }: MemberFormProps) {
-    const form = useForm<MemberFormValues>({
-        defaultValues: {
-            imageUrl: "",
-            name: "",
-            relation: "",
-            dob: "",
-            gender: undefined,
-            ...defaultValues,
-        },
-    })
+export function MemberForm({ onSubmit, form }: MemberFormProps) {
+
 
     return (
         <Form {...form}>

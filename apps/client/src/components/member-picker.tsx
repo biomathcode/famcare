@@ -20,18 +20,10 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 
-import { createServerFn } from "@tanstack/react-start";
-import { api } from "~/lib/api";
+import { getMembers } from "~/lib/db/queries";
+import { useQuery } from "@tanstack/react-query";
 
-type MemberInput = {
-    id: string;
-    name: string;
-    relation: string;
-    dob: string;
-    gender: string;
-    userId?: string;
-    imageUrl?: string;
-};
+
 
 type MemberPickerProps = {
     value?: string;
@@ -40,10 +32,7 @@ type MemberPickerProps = {
     disabled?: boolean;
 };
 
-export const getMembers = createServerFn({ method: "GET" }).handler(async () => {
-    const members = await api.members.findAll();
-    return members;
-});
+
 
 export function MemberPicker({
     value,
@@ -52,15 +41,10 @@ export function MemberPicker({
     disabled = false,
 }: MemberPickerProps) {
     const [open, setOpen] = useState(false);
-    const [members, setMembers] = useState<MemberInput[]>([]);
-    const [loading, setLoading] = useState(false);
-
-    React.useEffect(() => {
-        setLoading(true);
-        getMembers()
-            .then((data) => setMembers(data ?? []))
-            .finally(() => setLoading(false));
-    }, []);
+    const { data: members = [], isLoading: loading } = useQuery({
+        queryKey: ["members"],
+        queryFn: getMembers,
+    });
 
     const selectedMember = members.find((m) => m.id === value);
 
