@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { LoginPopup } from "@/components/auth/login-popup";
 import { UserCircle } from "@/components/auth/user-icon";
+import LogoIcon from "../logo";
 // import { authClient } from "@/components/auth/client";
 
 export function Navigation() {
@@ -17,9 +18,7 @@ export function Navigation() {
           {/* Company Logo/Name */}
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">
-                SL
-              </span>
+              <LogoIcon />
             </div>
             <span className="font-semibold text-foreground">FamCare</span>
           </div>

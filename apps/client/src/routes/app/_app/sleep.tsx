@@ -17,6 +17,7 @@ import { sleepGoal } from "~/lib/db/schema";
 import { api } from "~/lib/api";
 
 import { MemberPicker } from "@/components/member-picker";
+import { getSleepGoals } from "~/lib/db/queries";
 
 
 export const createSleepGoal = createServerFn({
@@ -27,12 +28,10 @@ export const createSleepGoal = createServerFn({
     await api.sleepGoals.create(data);
 });
 
-export const getSleepGoals = createServerFn({ method: "GET" }).handler(
-    async () => {
-        const goals = await api.sleepGoals.findAll();
-        return goals;
-    }
-);
+
+
+//TODO: Add Woke up and Slept one Time, date and member and display to show the sleep cycle of each of the members
+//
 
 type SleepGoalInput = z.infer<typeof sleepGoal>;
 
@@ -82,8 +81,9 @@ function RouteComponent() {
             <h2 className="text-xl font-semibold mb-4">Add Sleep Goal</h2>
             <ul className="space-y-2">
                 {goals.map((g) => (
-                    <li key={g.id} className="p-2 border rounded">
-                        <p className="font-medium">{g.targetHours} hours</p>
+                    <li key={g.sleepGoal.id} className="p-2 border rounded">
+                        <p className="font-medium">{g?.member?.name}</p>
+                        <p className="font-medium">{g?.sleepGoal?.targetHours} hours</p>
                     </li>
                 ))}
             </ul>

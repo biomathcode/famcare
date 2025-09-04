@@ -18,6 +18,9 @@ import { medicine } from "~/lib/db/schema";
 import { api } from "~/lib/api";
 import { MemberPicker } from "@/components/member-picker";
 
+//TODO: Add Options for scheduling like daily, weekly, monthly
+//TODO: Add Dosage options like daily 2times, weekly -> set day of the week, Monthly -> Select Dates
+//TODO: 
 
 export const createMedicine = createServerFn({
     method: "POST",

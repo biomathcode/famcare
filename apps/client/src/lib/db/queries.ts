@@ -2,6 +2,8 @@ import { db } from "@/lib/db";
 import {
 
     chatMessage,
+    member,
+    sleepGoal,
 
 } from "@/lib/db/schema";
 import { eq, asc } from "drizzle-orm";
@@ -25,3 +27,20 @@ export const getMembers = createServerFn({ method: "GET" }).handler(async () => 
     const members = await api.members.findAll();
     return members;
 });
+
+
+export const getSleepGoals = createServerFn({ method: "GET" }).handler(
+    async () => {
+        const goals = await db.select({
+            sleepGoal,
+            member
+        })
+            .from(sleepGoal)
+            .leftJoin(member, eq(sleepGoal.memberId, member.id));
+
+
+
+
+        return goals;
+    }
+);

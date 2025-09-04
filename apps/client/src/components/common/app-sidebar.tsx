@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IconInnerShadowTop, IconMessage } from "@tabler/icons-react";
+import { IconMessage } from "@tabler/icons-react";
 
 import { NavMain } from "@/components/common/nav-main";
 import { NavUser } from "@/components/common/nav-user";

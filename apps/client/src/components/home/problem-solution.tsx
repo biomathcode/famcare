@@ -1,12 +1,13 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  AlertTriangle,
-  TrendingDown,
-  DollarSign,
+  FileWarning,
+  Pill,
+  CalendarX,
   CheckCircle,
-  TrendingUp,
-  Shield,
+  Brain,
+  HeartPulse,
+  Users,
 } from "lucide-react";
 
 export function ProblemSolution() {
@@ -20,42 +21,45 @@ export function ProblemSolution() {
               The Problem
             </Badge>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-6">
-              Broken Links = Lost Revenue
+              Managing Family Health is Overwhelming
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Every day, businesses lose thousands of dollars because their
-              links stop working. Product pages go offline, domains expire, and
-              redirect chains break—leaving customers frustrated and revenue
-              flowing to competitors.
+              Families struggle to keep track of medical records, medicine
+              schedules, and health goals across multiple members. Important
+              details are often forgotten, leading to missed doses, unmanaged
+              conditions, and unnecessary stress.
             </p>
 
             <div className="space-y-4">
               <div className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-destructive mt-0.5 flex-shrink-0" />
+                <FileWarning className="h-5 w-5 text-destructive mt-0.5 flex-shrink-0" />
                 <div>
-                  <h3 className="font-semibold mb-1">27% Revenue Loss</h3>
+                  <h3 className="font-semibold mb-1">
+                    Scattered Medical Records
+                  </h3>
                   <p className="text-sm text-muted-foreground">
-                    Average revenue lost due to broken affiliate and marketing
-                    links
+                    Prescriptions, test reports, and history stored in different
+                    places are hard to access when needed.
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <TrendingDown className="h-5 w-5 text-destructive mt-0.5 flex-shrink-0" />
+                <Pill className="h-5 w-5 text-destructive mt-0.5 flex-shrink-0" />
                 <div>
-                  <h3 className="font-semibold mb-1">Poor User Experience</h3>
+                  <h3 className="font-semibold mb-1">Missed Medicines</h3>
                   <p className="text-sm text-muted-foreground">
-                    Dead links damage trust and drive customers to competitors
+                    Missed doses and irregular schedules reduce treatment
+                    effectiveness and harm recovery.
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <DollarSign className="h-5 w-5 text-destructive mt-0.5 flex-shrink-0" />
+                <CalendarX className="h-5 w-5 text-destructive mt-0.5 flex-shrink-0" />
                 <div>
-                  <h3 className="font-semibold mb-1">Hidden Costs</h3>
+                  <h3 className="font-semibold mb-1">Untracked Health Goals</h3>
                   <p className="text-sm text-muted-foreground">
-                    Manual link checking wastes time and still misses critical
-                    failures
+                    Sleep, diet, and exercise plans are rarely tracked, making
+                    long-term health management nearly impossible.
                   </p>
                 </div>
               </div>
@@ -66,49 +70,63 @@ export function ProblemSolution() {
           <div>
             <Badge className="mb-4 px-3 py-1">The Solution</Badge>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-6">
-              AI-Powered Link Protection
+              AI-Powered Family Health Management
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Our intelligent platform continuously monitors your links,
-              automatically detects failures, and keeps your revenue flowing
-              with smart backup routing and instant alerts.
+              Our platform organizes all your family’s health data in one place
+              and uses AI to generate personalized health insights, reminders,
+              and care plans—so you never miss what matters most.
             </p>
 
             <div className="space-y-4 mb-8">
               <div className="flex items-start gap-3">
+                <Users className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                <div>
+                  <h3 className="font-semibold mb-1">
+                    Centralized Member Profiles
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    Manage medical details, history, and schedules for each
+                    family member in one dashboard.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
                 <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                 <div>
-                  <h3 className="font-semibold mb-1">24/7 AI Monitoring</h3>
+                  <h3 className="font-semibold mb-1">Smart Reminders</h3>
                   <p className="text-sm text-muted-foreground">
-                    Continuous monitoring catches broken links within minutes,
-                    not days
+                    AI-driven medicine schedules and calendar integration keep
+                    you on track without the stress.
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <TrendingUp className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                <Brain className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                 <div>
-                  <h3 className="font-semibold mb-1">Smart Backup Routing</h3>
+                  <h3 className="font-semibold mb-1">
+                    Personalized AI Health Plans
+                  </h3>
                   <p className="text-sm text-muted-foreground">
-                    Automatically route traffic to backup destinations when
-                    primary links fail
+                    Get tailored diet, exercise, and sleep recommendations for
+                    each family member.
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <Shield className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                <HeartPulse className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                 <div>
-                  <h3 className="font-semibold mb-1">Revenue Recovery</h3>
+                  <h3 className="font-semibold mb-1">Long-Term Tracking</h3>
                   <p className="text-sm text-muted-foreground">
-                    Convert failed clicks into sales with intelligent fallback
-                    strategies
+                    Track health goals and progress over time for a healthier
+                    future.
                   </p>
                 </div>
               </div>
             </div>
 
             <Button size="lg" className="w-full sm:w-auto">
-              Start Protecting Your Revenue
+              Start Managing Family Health
             </Button>
           </div>
         </div>

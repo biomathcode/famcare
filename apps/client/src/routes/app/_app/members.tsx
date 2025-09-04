@@ -17,15 +17,15 @@ import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-
 import { format } from "date-fns"
-
-
 import { api } from "~/lib/api";
 import ProfileUpload from "~/components/profile-upload";
 import { Trash2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { member } from "~/lib/db/schema";
+
+//TODO: Add diseases field in the form 
+
 
 export const createMembers = createServerFn({ method: 'POST' })
     .handler(async ({ data }) => {
@@ -134,7 +134,7 @@ function RouteComponent() {
     }
 
     return (
-        <div className=" p-6 w-full flex justify-around gap-2">
+        <div className=" p-6 w-full flex md:flex-row justify-around gap-2 flex-col">
             <MembersCards
                 members={members}
                 handleDelete={handleDelete}
@@ -142,7 +142,7 @@ function RouteComponent() {
             />
 
 
-            <Card className="p-6 w-md">
+            <Card className="p-6  w-full sm:w-1/3    ">
                 <h2 className="text-xl font-semibold mb-4">Add Member</h2>
 
 
@@ -271,19 +271,19 @@ export function MemberForm({ onSubmit, form }: MemberFormProps) {
 export function MembersCards({ members, handleDelete }: { members: MemberInput[], handleDelete: (id: string) => void }) {
 
     return (
-        <div className="flex flex-col gap-2 p-2">
+        <div className="flex flex-col gap-2 p-2 flex-wrap w-2/3">
             <div className="flex flex-col mb-2">
                 <h1 className="text-2xl font-semibold ">Members </h1>
                 <div>
                     {members.length + " total"}
                 </div>
             </div>
-            <div className="flex wrap gap-2  ">
+            <div className="flex flex-wrap gap-2  ">
                 {members.map((member) => (
                     <Card key={member.id} className="shadow-md max-h-fit max-w-md w-3xs py-4  ">
                         <CardHeader className="flex flex-row items-center gap-3 space-y-0">
                             <Avatar className="h-10 w-10">
-                                <AvatarImage src={member.imageUrl || "/placeholder.svg"} alt={`Avatar of ${name}`} />
+                                <AvatarImage src={member.imageUrl || "/placeholder.svg"} alt={`Avatar of ${member.name}`} />
                                 <AvatarFallback>{member.name
                                     .split(" ")
                                     .map((p) => p[0])

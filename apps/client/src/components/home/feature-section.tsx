@@ -6,50 +6,73 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Link, Globe, Shield, BarChart3, Zap, Brain } from "lucide-react";
+import {
+  Users,
+  ClipboardPlus,
+  Calendar,
+  Brain,
+  Activity,
+  Stethoscope,
+  MessageSquare,
+  ImagePlus,
+} from "lucide-react";
 
 const features = [
   {
-    icon: Link,
-    title: "Smart Link Creation",
+    icon: Users,
+    title: "Family Member Management",
     description:
-      "Create beautiful, trackable short links in seconds with custom domains and branded URLs.",
-    badge: "Core Feature",
+      "Easily onboard your family by creating member profiles with personal and medical details.",
+    badge: "Core",
   },
   {
-    icon: Globe,
-    title: "Geo-based Routing",
+    icon: ClipboardPlus,
+    title: "Medical Records",
     description:
-      "One link, multiple destinations. Route users to different pages based on their location automatically.",
-    badge: "Advanced",
+      "Securely store prescriptions, reports, and health history for each family member in one place.",
+    badge: "Health",
+  },
+  {
+    icon: Calendar,
+    title: "Medical Schedules & Reminders",
+    description:
+      "Create medicine schedules and sync them with Google Calendar so you never miss a dose.",
+    badge: "Scheduler",
   },
   {
     icon: Brain,
-    title: "AI Link Monitoring",
+    title: "AI Health Assistant",
     description:
-      "Our AI continuously monitors your link destinations to detect broken pages and inactive products.",
+      "Chat with AI to generate diet, exercise, and sleep plans personalized for each family member.",
     badge: "AI Powered",
   },
   {
-    icon: BarChart3,
-    title: "Advanced Analytics",
+    icon: Activity,
+    title: "Health Tracking",
     description:
-      "Deep insights into click performance, conversion rates, and user behavior across all your links.",
+      "Monitor metrics like sleep, exercise, and diet goals. Track progress for the entire family.",
     badge: "Analytics",
   },
   {
-    icon: Shield,
-    title: "Revenue Protection",
+    icon: MessageSquare,
+    title: "Chat Sessions",
     description:
-      "Get instant alerts when links break so you can fix them before losing customers and revenue.",
-    badge: "Protection",
+      "Start AI chat sessions to ask questions, store conversations, and revisit family health insights.",
+    badge: "Interactive",
   },
   {
-    icon: Zap,
-    title: "Lightning Fast",
+    icon: ImagePlus,
+    title: "Upload & Analyze Reports",
     description:
-      "Sub-100ms redirect times with our global CDN ensures your users never wait.",
-    badge: "Performance",
+      "Upload medical images and documents, assign them to a member, and let AI generate structured insights.",
+    badge: "AI + Media",
+  },
+  {
+    icon: Stethoscope,
+    title: "Medicine Information",
+    description:
+      "Search medicines, check real-life side effects, and understand interactions with other medicines.",
+    badge: "Research",
   },
 ];
 
@@ -63,11 +86,11 @@ export function FeaturesSection() {
             Features
           </Badge>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-            Everything you need to protect your revenue
+            Organize Your Family Health with AI
           </h2>
           <p className="text-lg text-muted-foreground">
-            Powerful features designed to keep your links working and your
-            revenue flowing
+            From medical records to AI-powered health plans, everything you need
+            to keep your family healthy and stress-free.
           </p>
         </div>
 

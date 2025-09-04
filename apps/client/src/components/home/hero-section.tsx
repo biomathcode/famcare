@@ -18,7 +18,7 @@ export function HeroSection() {
   return (
 
 
-    <section className="relative   py-20 sm:py-28">
+    <section className="relative  w-full  py-20 sm:py-28">
       {/* Background decoration */}
       <div className="absolute inset-0 bg-grid-white/[0.02] -z-10" />
       <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent -z-10" />
