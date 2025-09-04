@@ -143,8 +143,8 @@ export const Route = createFileRoute("/app/_app/chat/$chatId")({
 
 
 const models = [
-    { id: 'gpt-4o', name: 'GPT-4o' },
-    { id: 'claude-opus-4-20250514', name: 'Claude 4 Opus' },
+    { id: 'kimi-k2-0711-preview', name: 'Kimi-k2' },
+    // { id: 'claude-opus-4-20250514', name: 'Claude 4 Opus' },
 ];
 
 function safeJSONParse(str: string) {

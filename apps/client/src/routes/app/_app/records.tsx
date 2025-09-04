@@ -5,8 +5,7 @@ import FileUploadTwo from "~/components/file-upload-two";
 import OCRDemo from "~/components/ocr";
 import { useState } from "react";
 
-//TODO add document upload using 
-// pnpm dlx shadcn@latest add https://originui.com/r/comp-549.json
+
 
 
 function FileUploadForm() {
@@ -117,10 +116,10 @@ function RouteComponent() {
 
 
     return <div className="space-y-4 p-4">
-        <FileUploadTwo />
+        {/* <FileUploadTwo />
 
 
-        <OCRDemo />
+        <OCRDemo /> */}
 
 
         <div>
@@ -129,16 +128,18 @@ function RouteComponent() {
         {files.map((file: any) => (
             <div
                 key={file.id}
-                className="border rounded-xl p-4 shadow-sm bg-white"
+                className="border rounded-xl p-4 shadow-sm "
             >
-                <h2 className="font-semibold text-lg">{file.filename}</h2>
+                <h2 className="font-semibold text-lg">{file.title}</h2>
                 <p className="text-sm text-gray-600">ID: {file.id}</p>
                 <p className="text-sm text-gray-600">
-                    Size: {(file.bytes / 1024).toFixed(2)} KB
+                    {JSON.stringify(file)}
+                    Size: {(file.size).toFixed(2)} MB
                 </p>
-                <p className="text-sm text-gray-600">Type: {file.file_type}</p>
+                <p className="text-sm text-gray-600">Type: {file.type}</p>
                 <p className="text-sm text-gray-600">
-                    Created: {new Date(file.created_at * 1000).toLocaleString()}
+                    Created: {new Date(Date.parse(file.createdAt)).toLocaleString()
+                    }
                 </p>
                 <p
                     className={`text-sm font-medium ${file.status === "ok" ? "text-green-600" : "text-red-600"

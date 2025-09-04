@@ -119,6 +119,9 @@ export const uploadPDF = createServerFn("POST", async ({ request }) => {
 Saving Chat can be p3 or p4 priority
 
 
+## Adding Event to google Calendar
+https://calendar.google.com/calendar/r?cid=https://example.com/events.ics
+
 
 
 

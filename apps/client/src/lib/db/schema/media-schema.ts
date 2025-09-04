@@ -4,24 +4,29 @@ import { mysqlTable, varchar, text, float, timestamp, int, customType } from "dr
 import { user } from './auth-schema';
 
 
-
-// 1. Create a reusable `vector` custom type
 export const vector = customType<{
-    data: ArrayBuffer;
+    data: number[];
     config: { length: number };
     configRequired: true;
-    driverData: Buffer;
+    driverData: string;
 }>({
     dataType(config) {
         return `VECTOR(${config.length})`;
     },
-    fromDriver(value) {
-        // Convert database Buffer back to ArrayBuffer
-        return (value as Buffer).buffer as ArrayBuffer;
+    toDriver(value: number[]) {
+        // TiDB expects `[x,y,z]`
+        return `[${value.join(",")}]`;
     },
-    toDriver(value) {
-        // Convert ArrayBuffer to Buffer for driver
-        return Buffer.from(value);
+    fromDriver(value: string) {
+        // TiDB returns "[0.1,0.2,...]"
+        try {
+            return JSON.parse(value) as number[];
+        } catch {
+            return value
+                .replace(/^\[|\]$/g, "")
+                .split(",")
+                .map(Number);
+        }
     },
 });
 
@@ -51,6 +56,6 @@ export const mediaChunks = mysqlTable("media_chunks", {
         .notNull()
         .references(() => media.id, { onDelete: "cascade" }),
     chunk: text("chunk").notNull(),
-    embedding: vector("embedding", { length: 1024 }).notNull(),
+    embedding: vector("embedding", { length: 768 }).notNull(),
     order: int("order").notNull(),
 })

@@ -2,6 +2,7 @@ import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
+import { Label } from '@/components/ui/label'
 import {
     Form,
     FormField,
@@ -31,7 +32,10 @@ export const createSleepGoal = createServerFn({
 
 
 //TODO: Add Woke up and Slept one Time, date and member and display to show the sleep cycle of each of the members
-//
+//TODO: Idea here to record sleep timing of each and every member for the member
+
+//TODO: show radial chart for everyday of each of the members -> percentage of sleep complete for this members
+//TODO:  
 
 type SleepGoalInput = z.infer<typeof sleepGoal>;
 
@@ -57,6 +61,8 @@ function RouteComponent() {
         defaultValues: {
             targetHours: 0,
             userId: user?.id,
+            wakeUpTime: '',
+            bedTime: '',
         },
     });
 
@@ -133,6 +139,8 @@ function RouteComponent() {
                             </FormItem>
                         )}
                     />
+
+
 
                     <Button type="submit" className="w-full">
                         Add Sleep Goal
