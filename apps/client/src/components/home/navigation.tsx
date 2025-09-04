@@ -21,7 +21,7 @@ export function Navigation() {
                 SL
               </span>
             </div>
-            <span className="font-semibold text-foreground">FamCamp</span>
+            <span className="font-semibold text-foreground">FamCare</span>
           </div>
           {isPending ? (
             <div className="h-8 w-8 rounded-full bg-muted animate-pulse" />

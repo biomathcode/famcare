@@ -25,6 +25,7 @@ import { ChevronRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 import { getChatSessions } from "~/lib/db/queries";
+import LogoIcon from "../logo";
 
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -43,8 +44,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <a href="#">
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">FamCamp</span>
+                <LogoIcon />
+                {/* <IconInnerShadowTop className="!size-5" /> */}
+                <span className="text-base font-semibold">FamCare</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
