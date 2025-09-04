@@ -3,11 +3,10 @@ import { json } from '@tanstack/react-start'
 import { getPdfContentFromUrl } from "~/lib/utils";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { embedMany } from "ai";
-import { json } from '@tanstack/react-start'
 import { openai } from "@ai-sdk/openai";
 
 
-export const ServerRoute = createServerFileRoute('/api/hello').methods({
+export const ServerRoute = createServerFileRoute('/api/ai/upload').methods({
   GET: async () => {
 
     return json({ message: `Hello, ` });

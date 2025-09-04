@@ -24,7 +24,7 @@ export function CtaSection() {
               type="email"
               className="h-12 text-base flex-1"
             />
-            <Link to="/app" >
+            <Link to="/app/home" >
 
               <Button size="lg" className="h-12 px-8 sm:px-6">
                 Start Free Trial

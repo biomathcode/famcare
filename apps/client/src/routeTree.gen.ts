@@ -31,7 +31,6 @@ import { Route as AppAppHomeRouteImport } from "./routes/app/_app/home";
 import { Route as AppAppExerciseRouteImport } from "./routes/app/_app/exercise";
 import { Route as AppAppDietRouteImport } from "./routes/app/_app/diet";
 import { Route as AppAppCalendarRouteImport } from "./routes/app/_app/calendar";
-import { Route as ApiAiUploadRouteImport } from "./routes/api/ai.upload";
 import { Route as ApiAiQueryRouteImport } from "./routes/api/ai.query";
 import { Route as AppAppChatChatIdRouteImport } from "./routes/app/_app/chat.$chatId";
 import { ServerRoute as ApiUploadServerRouteImport } from "./routes/api/upload";
@@ -39,6 +38,7 @@ import { ServerRoute as ApiMediaServerRouteImport } from "./routes/api/media";
 import { ServerRoute as ApiHelloServerRouteImport } from "./routes/api/hello";
 import { ServerRoute as ApiUploadFileServerRouteImport } from "./routes/api/upload.file";
 import { ServerRoute as ApiAuthSplatServerRouteImport } from "./routes/api/auth/$";
+import { ServerRoute as ApiAiUploadServerRouteImport } from "./routes/api/ai.upload";
 import { ServerRoute as ApiAiChatServerRouteImport } from "./routes/api/ai.chat";
 
 const AppRouteImport = createFileRoute("/app")();
@@ -142,11 +142,6 @@ const AppAppCalendarRoute = AppAppCalendarRouteImport.update({
   path: "/calendar",
   getParentRoute: () => AppAppRoute,
 } as any);
-const ApiAiUploadRoute = ApiAiUploadRouteImport.update({
-  id: "/api/ai/upload",
-  path: "/api/ai/upload",
-  getParentRoute: () => rootRouteImport,
-} as any);
 const ApiAiQueryRoute = ApiAiQueryRouteImport.update({
   id: "/api/ai/query",
   path: "/api/ai/query",
@@ -182,6 +177,11 @@ const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
   path: "/api/auth/$",
   getParentRoute: () => rootServerRouteImport,
 } as any);
+const ApiAiUploadServerRoute = ApiAiUploadServerRouteImport.update({
+  id: "/api/ai/upload",
+  path: "/api/ai/upload",
+  getParentRoute: () => rootServerRouteImport,
+} as any);
 const ApiAiChatServerRoute = ApiAiChatServerRouteImport.update({
   id: "/api/ai/chat",
   path: "/api/ai/chat",
@@ -198,7 +198,6 @@ export interface FileRoutesByFullPath {
   "/about/": typeof AboutIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
   "/api/ai/query": typeof ApiAiQueryRoute;
-  "/api/ai/upload": typeof ApiAiUploadRoute;
   "/app/calendar": typeof AppAppCalendarRoute;
   "/app/diet": typeof AppAppDietRoute;
   "/app/exercise": typeof AppAppExerciseRoute;
@@ -219,7 +218,6 @@ export interface FileRoutesByTo {
   "/about": typeof AboutIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
   "/api/ai/query": typeof ApiAiQueryRoute;
-  "/api/ai/upload": typeof ApiAiUploadRoute;
   "/app/calendar": typeof AppAppCalendarRoute;
   "/app/diet": typeof AppAppDietRoute;
   "/app/exercise": typeof AppAppExerciseRoute;
@@ -244,7 +242,6 @@ export interface FileRoutesById {
   "/about/": typeof AboutIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
   "/api/ai/query": typeof ApiAiQueryRoute;
-  "/api/ai/upload": typeof ApiAiUploadRoute;
   "/app/_app/calendar": typeof AppAppCalendarRoute;
   "/app/_app/diet": typeof AppAppDietRoute;
   "/app/_app/exercise": typeof AppAppExerciseRoute;
@@ -269,7 +266,6 @@ export interface FileRouteTypes {
     | "/about/"
     | "/dashboard/"
     | "/api/ai/query"
-    | "/api/ai/upload"
     | "/app/calendar"
     | "/app/diet"
     | "/app/exercise"
@@ -290,7 +286,6 @@ export interface FileRouteTypes {
     | "/about"
     | "/dashboard"
     | "/api/ai/query"
-    | "/api/ai/upload"
     | "/app/calendar"
     | "/app/diet"
     | "/app/exercise"
@@ -314,7 +309,6 @@ export interface FileRouteTypes {
     | "/about/"
     | "/dashboard/"
     | "/api/ai/query"
-    | "/api/ai/upload"
     | "/app/_app/calendar"
     | "/app/_app/diet"
     | "/app/_app/exercise"
@@ -335,13 +329,13 @@ export interface RootRouteChildren {
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren;
   AppRoute: typeof AppRouteWithChildren;
   ApiAiQueryRoute: typeof ApiAiQueryRoute;
-  ApiAiUploadRoute: typeof ApiAiUploadRoute;
 }
 export interface FileServerRoutesByFullPath {
   "/api/hello": typeof ApiHelloServerRoute;
   "/api/media": typeof ApiMediaServerRoute;
   "/api/upload": typeof ApiUploadServerRouteWithChildren;
   "/api/ai/chat": typeof ApiAiChatServerRoute;
+  "/api/ai/upload": typeof ApiAiUploadServerRoute;
   "/api/auth/$": typeof ApiAuthSplatServerRoute;
   "/api/upload/file": typeof ApiUploadFileServerRoute;
 }
@@ -350,6 +344,7 @@ export interface FileServerRoutesByTo {
   "/api/media": typeof ApiMediaServerRoute;
   "/api/upload": typeof ApiUploadServerRouteWithChildren;
   "/api/ai/chat": typeof ApiAiChatServerRoute;
+  "/api/ai/upload": typeof ApiAiUploadServerRoute;
   "/api/auth/$": typeof ApiAuthSplatServerRoute;
   "/api/upload/file": typeof ApiUploadFileServerRoute;
 }
@@ -359,6 +354,7 @@ export interface FileServerRoutesById {
   "/api/media": typeof ApiMediaServerRoute;
   "/api/upload": typeof ApiUploadServerRouteWithChildren;
   "/api/ai/chat": typeof ApiAiChatServerRoute;
+  "/api/ai/upload": typeof ApiAiUploadServerRoute;
   "/api/auth/$": typeof ApiAuthSplatServerRoute;
   "/api/upload/file": typeof ApiUploadFileServerRoute;
 }
@@ -369,6 +365,7 @@ export interface FileServerRouteTypes {
     | "/api/media"
     | "/api/upload"
     | "/api/ai/chat"
+    | "/api/ai/upload"
     | "/api/auth/$"
     | "/api/upload/file";
   fileServerRoutesByTo: FileServerRoutesByTo;
@@ -377,6 +374,7 @@ export interface FileServerRouteTypes {
     | "/api/media"
     | "/api/upload"
     | "/api/ai/chat"
+    | "/api/ai/upload"
     | "/api/auth/$"
     | "/api/upload/file";
   id:
@@ -385,6 +383,7 @@ export interface FileServerRouteTypes {
     | "/api/media"
     | "/api/upload"
     | "/api/ai/chat"
+    | "/api/ai/upload"
     | "/api/auth/$"
     | "/api/upload/file";
   fileServerRoutesById: FileServerRoutesById;
@@ -394,6 +393,7 @@ export interface RootServerRouteChildren {
   ApiMediaServerRoute: typeof ApiMediaServerRoute;
   ApiUploadServerRoute: typeof ApiUploadServerRouteWithChildren;
   ApiAiChatServerRoute: typeof ApiAiChatServerRoute;
+  ApiAiUploadServerRoute: typeof ApiAiUploadServerRoute;
   ApiAuthSplatServerRoute: typeof ApiAuthSplatServerRoute;
 }
 
@@ -539,13 +539,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AppAppCalendarRouteImport;
       parentRoute: typeof AppAppRoute;
     };
-    "/api/ai/upload": {
-      id: "/api/ai/upload";
-      path: "/api/ai/upload";
-      fullPath: "/api/ai/upload";
-      preLoaderRoute: typeof ApiAiUploadRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
     "/api/ai/query": {
       id: "/api/ai/query";
       path: "/api/ai/query";
@@ -597,6 +590,13 @@ declare module "@tanstack/react-start/server" {
       path: "/api/auth/$";
       fullPath: "/api/auth/$";
       preLoaderRoute: typeof ApiAuthSplatServerRouteImport;
+      parentRoute: typeof rootServerRouteImport;
+    };
+    "/api/ai/upload": {
+      id: "/api/ai/upload";
+      path: "/api/ai/upload";
+      fullPath: "/api/ai/upload";
+      preLoaderRoute: typeof ApiAiUploadServerRouteImport;
       parentRoute: typeof rootServerRouteImport;
     };
     "/api/ai/chat": {
@@ -707,7 +707,6 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
   AppRoute: AppRouteWithChildren,
   ApiAiQueryRoute: ApiAiQueryRoute,
-  ApiAiUploadRoute: ApiAiUploadRoute,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
@@ -717,6 +716,7 @@ const rootServerRouteChildren: RootServerRouteChildren = {
   ApiMediaServerRoute: ApiMediaServerRoute,
   ApiUploadServerRoute: ApiUploadServerRouteWithChildren,
   ApiAiChatServerRoute: ApiAiChatServerRoute,
+  ApiAiUploadServerRoute: ApiAiUploadServerRoute,
   ApiAuthSplatServerRoute: ApiAuthSplatServerRoute,
 };
 export const serverRouteTree = rootServerRouteImport

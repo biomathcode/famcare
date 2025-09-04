@@ -52,7 +52,7 @@ export function HeroSection() {
             <div className="flex gap-2 w-full sm:w-auto max-w-md">
 
               {data ? (
-                <Link to="/app">
+                <Link to="/app/home">
 
                   <Button
                     size="lg"
