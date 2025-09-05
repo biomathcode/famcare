@@ -1,6 +1,8 @@
 import { tool } from "ai";
 import { z } from "zod";
 import { api } from "~/lib/api";
+import { db } from "~/lib/db";
+import { exerciseGoal } from "~/lib/db/schema";
 
 //TODO: Add tools for getting data from openFDA
 //TODO: Add tools for save diet, exercise, sleep, medicines plan for members
@@ -29,10 +31,39 @@ export const weatherTool = tool({
     },
 })
 
-export default async function getTools() {
+
+export const createExerciseGoalTool = (userId: string) =>
+    tool({
+        description: "Create an exercise goal for a member",
+        inputSchema: z.object({
+            memberId: z.string(),
+            type: z.string(),
+            target: z.number(),
+            unit: z.string(),
+        }),
+        execute: async ({ memberId, type, target, unit }) => {
+            const [inserted] = await db
+                .insert(exerciseGoal)
+                .values({
+                    userId, // ✅ injected from auth context
+                    memberId,
+                    type,
+                    target,
+                    unit,
+                })
+            return inserted
+        },
+    })
+
+
+
+
+
+export default async function getTools(ctx: { userId: string }) {
     return {
         getMembers,
         displayWeather: weatherTool,
+        createExerciseGoal: createExerciseGoalTool(ctx.userId),
 
     };
 }

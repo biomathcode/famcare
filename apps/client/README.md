@@ -21,6 +21,7 @@ Click Create Chat -> db chat session in created -> incremental save the chat_mes
 -[] Add error handling
 -[] Add Support for input files in the chat system- https://ai-sdk.dev/cookbook/guides/multi-modal-chatbot
 -[] Refactor and save the data in the chat system backend and not on the frontend
+- [] Add Q/A system using the uploaded Files
 
 - Take inspiration from https://github.com/vercel-labs/ai-sdk-preview-internal-knowledge-base/blob/main/app/(chat)/api/files/upload/route.ts
 

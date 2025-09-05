@@ -3,6 +3,7 @@ import { convertToModelMessages, stepCountIs, streamText } from 'ai'
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
 
 import getTools from '@/utils/tools'
+import { auth } from '~/lib/auth/auth'
 
 const SYSTEM_PROMPT = `You are a helpful health care management assistant.
 
@@ -24,7 +25,15 @@ export const ServerRoute = createServerFileRoute('/api/ai/chat').methods({
         try {
             const { messages } = await request.json()
 
-            const tools = await getTools()
+            const session = await auth.api.getSession({ headers: request.headers });
+
+            if (!session) {
+                throw new Response("Unauthorized", { status: 401 });
+            }
+
+            const userId = session.user.id;
+
+            const tools = await getTools({ userId })
 
             const model = moonshotai('kimi-k2-0711-preview')
 

@@ -149,7 +149,6 @@ function RouteComponent() {
                 <h2 className="font-semibold text-lg">{file.title}</h2>
                 <p className="text-sm text-gray-600">ID: {file.id}</p>
                 <p className="text-sm text-gray-600">
-                    {JSON.stringify(file)}
                     Size: {(file.size).toFixed(2)} MB
                 </p>
                 <p className="text-sm text-gray-600">Type: {file.type}</p>
