@@ -118,6 +118,56 @@ export const createMedicineTool = (userId: string) =>
 
 
 
+export const getDrugLabelTool = tool({
+    description: "Retrieve labeling info for a drug (adverse reactions, indications, warnings)",
+    inputSchema: z.object({
+        query: z.string().describe("Drug name, e.g., 'ibuprofen'"),
+        limit: z.number().optional().default(1),
+    }),
+    execute: async ({ query, limit }) => {
+        const params = new URLSearchParams({
+            search: `openfda.generic_name:${query}`,
+            limit: limit.toString(),
+            api_key: process.env.OPEN_FDA_API_KEY!,
+        });
+        const res = await fetch(`https://api.fda.gov/drug/label.json?${params}`);
+        return await res.json();
+    },
+});
+
+export const getAdverseEventsTool = tool({
+    description: "Retrieve reported side effects (adverse events) for a drug",
+    inputSchema: z.object({
+        query: z.string().describe("Drug name or reaction, e.g., 'headache'"),
+        limit: z.number().optional().default(5),
+    }),
+    execute: async ({ query, limit }) => {
+        const params = new URLSearchParams({
+            search: `reactionmeddrapt:${query}`,
+            limit: limit.toString(),
+            api_key: process.env.OPEN_FDA_API_KEY!,
+        });
+        const res = await fetch(`https://api.fda.gov/drug/event.json?${params}`);
+        return await res.json();
+    },
+});
+
+export const getDrugRecallsTool = tool({
+    description: "Retrieve drug recall information or enforcement data",
+    inputSchema: z.object({
+        query: z.string().describe("Drug name, recall reason, etc."),
+        limit: z.number().optional().default(5),
+    }),
+    execute: async ({ query, limit }) => {
+        const params = new URLSearchParams({
+            search: query,
+            limit: limit.toString(),
+            api_key: process.env.OPEN_FDA_API_KEY!,
+        });
+        const res = await fetch(`https://api.fda.gov/drug/enforcement.json?${params}`);
+        return await res.json();
+    },
+});
 
 
 
@@ -129,6 +179,9 @@ export default async function getTools(ctx: { userId: string }) {
         createExerciseGoal: createExerciseGoalTool(ctx.userId),
         createDietTool: createDietTool(ctx.userId),
         createMedicineTool: createMedicineTool(ctx.userId),
+        getDrugLabel: getDrugLabelTool,
+        getAdverseEvents: getAdverseEventsTool,
+        getDrugRecalls: getDrugRecallsTool,
     };
 }
 

@@ -5,6 +5,9 @@ import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
 import getTools from '@/utils/tools'
 import { auth } from '~/lib/auth/auth'
 
+//TODO: Add Events
+//TODO: Add RAG features
+
 const SYSTEM_PROMPT = `You are a helpful health care management assistant.
 
 You can use the following tools to help the user:
@@ -14,6 +17,9 @@ You can use the following tools to help the user:
 - createExerciseGoalTool: Use this tool to create an exercise goal for a member
 - createDietTool: Use this tool to create a diet plan for a member
 - createMedicine: Use this tool to log a medicine entry for a member
+- getDrugLabel: view drug labeling info
+- getAdverseEvents: lookup reported side effects
+- getDrugRecalls: check recall or enforcement reports
 
 `
 

@@ -2,32 +2,36 @@
 Organize your Family Health using AI 
 
 
+### Story behind building this app
+i moved back my parents house, and i have become responsible for managing family health, medicines, diet and exercise plans. I wanted to build an app which can help me manage all these things in one place. I also wanted to use AI to help me with the same. AI can be a great organizing tool as well as a research tool to find information about medicines, side effects, interactions etc. Also to save medical history, records and their medicine Schedules. 
+
+
 ## Chat Session Flow-> 
 Click Create Chat -> db chat session in created -> incremental save the chat_message with session id -> fetch chat message by session id -> display chat message in the chat window
 
 
 ### TODOS
--[] Add File Records
--[] Add File Upload
--[] Create Vector embeddings and use ai
--[] Add Feature using tidb
--[] Add User Profile
--[] Add User Settings
--[] Create Exercise plan 
--[] Create Diet plan
+-[x] Add File Records
+-[x] Add File Upload
+-[x] Create Vector embeddings and use ai
+-[x] Add Feature using tidb
+-[x] Add User Profile
+-[x] Add User Settings
+-[x] Create Exercise plan 
+-[x] Create Diet plan
 -[] Add Calendar View 
 -[] Add validation in forms
 -[] Add loading states
 -[] Add error handling
 -[] Add Support for input files in the chat system- https://ai-sdk.dev/cookbook/guides/multi-modal-chatbot
 -[] Refactor and save the data in the chat system backend and not on the frontend
-- [] Add Q/A system using the uploaded Files
+-[] Add Q/A system using the uploaded Files
 
 - Take inspiration from https://github.com/vercel-labs/ai-sdk-preview-internal-knowledge-base/blob/main/app/(chat)/api/files/upload/route.ts
 
 Use This to persist chat history and other data into the database 
 
-- [] https://github.com/vercel-labs/ai-sdk-persistence-db
+- [x] https://github.com/vercel-labs/ai-sdk-persistence-db
 
 
 TODO: Work Vector Search 
@@ -210,70 +214,4 @@ A minimal starter template for 🏝️ TanStack Start. [→ Preview here](https:
 - [Drizzle ORM](https://orm.drizzle.team/) + PostgreSQL
 - [Better Auth](https://www.better-auth.com/)
 
-## Getting Started
 
-We use **pnpm** by default, but you can modify the scripts in [package.json](./package.json) to use your preferred package manager.
-
-1. [Use this template](https://github.com/new?template_name=react-tanstarter&template_owner=dotnize) or clone this repository with gitpick:
-
-   ```bash
-   npx gitpick dotnize/react-tanstarter myapp
-   cd myapp
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   pnpm install
-   ```
-
-3. Create a `.env` file based on [`.env.example`](./.env.example).
-
-4. Push the schema to your database with drizzle-kit:
-
-   ```bash
-   pnpm db push
-   ```
-
-   https://orm.drizzle.team/docs/migrations
-
-5. Run the development server:
-
-   ```bash
-   pnpm dev
-   ```
-
-   The development server should now be running at [http://localhost:3000](http://localhost:3000).
-
-## Issue watchlist
-
-- [React Compiler docs](https://react.dev/learn/react-compiler), [Working Group](https://github.com/reactwg/react-compiler/discussions) - React Compiler is in RC.
-- [Start BETA Tracking](https://github.com/TanStack/router/discussions/2863) - TanStack Start is in beta and may still undergo major changes.
-- [TanStack/react-devtools/CHANGELOG.md](https://github.com/TanStack/devtools/blob/main/packages/react-devtools/CHANGELOG.md) - TanStack Devtools is in alpha and may still have breaking changes.
-
-## Goodies
-
-#### Scripts
-
-These scripts in [package.json](./package.json#L5) use **pnpm** by default, but you can modify them to use your preferred package manager.
-
-- **`auth:generate`** - Regenerate the [auth db schema](./src/lib/db/schema/auth.schema.ts) if you've made changes to your Better Auth [config](./src/lib/auth/auth.ts).
-- **`db`** - Run drizzle-kit commands. (e.g. `pnpm db generate` to generate a migration)
-- **`ui`** - The shadcn/ui CLI. (e.g. `pnpm ui add button` to add the button component)
-- **`format`**, **`lint`**, **`check-types`** - Run Prettier, ESLint, and check TypeScript types respectively.
-  - **`check`** - Run all three above. (e.g. `pnpm check`)
-- **`deps`** - Selectively upgrade dependencies via taze.
-
-#### Utilities
-
-- [`auth/middleware.ts`](./src/lib/auth/middleware.ts) - Sample middleware for forcing authentication on server functions. (see [#5](https://github.com/dotnize/react-tanstarter/issues/5#issuecomment-2615905686) and [#17](https://github.com/dotnize/react-tanstarter/issues/17#issuecomment-2853482062))
-- [`theme-toggle.tsx`](./src/components/theme-toggle.tsx), [`theme-provider.tsx`](./src/components/theme-provider.tsx) - A theme toggle and provider for toggling between light and dark mode. ([#7](https://github.com/dotnize/react-tanstarter/issues/7#issuecomment-3141530412))
-
-## License
-
-Code in this template is public domain via [Unlicense](./LICENSE). Feel free to remove or replace for your own project.
-
-## Also check out
-
-- [create-tsrouter-app](https://github.com/TanStack/create-tsrouter-app/tree/main/cli/create-tsrouter-app) - The official CLI tool from the TanStack team to create Router/Start applications.
-- [CarlosZiegler/fullstack-start-template](https://github.com/CarlosZiegler/fullstack-start-template) - A more batteries-included boilerplate that provides a solid foundation for building modern web apps.
