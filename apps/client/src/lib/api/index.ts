@@ -13,6 +13,7 @@ import {
     sleepGoal,
     chatSession,
     media,
+    mediaChunks,
 } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
@@ -100,4 +101,5 @@ export const api = {
     sleepGoals: createCrud(sleepGoal),
     chatSession: createCrud(chatSession),
     media: createCrud(media),
+    mediaChunks: createCrud(mediaChunks),
 };

@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 
 export function CtaSection() {
   return (
-    <section className="py-20 sm:py-28 bg-gradient-to-br from-primary/10 via-primary/5 to-background">
+    <section className="py-20 sm:py-2 ">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-6">
@@ -26,7 +26,7 @@ export function CtaSection() {
             />
             <Link to="/app/home" >
 
-              <Button size="lg" className="h-12 px-8 sm:px-6">
+              <Button size="lg" className="h-12 px-8 sm:px-6 bg-orange-600 hover:bg-orange-700">
                 Start Free Trial
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>

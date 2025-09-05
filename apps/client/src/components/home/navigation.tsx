@@ -17,10 +17,10 @@ export function Navigation() {
         <div className="flex items-center justify-between">
           {/* Company Logo/Name */}
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-md">
               <LogoIcon />
             </div>
-            <span className="font-semibold text-foreground">FamCare</span>
+            <span className="font-semibold text-foreground text-xl">FamCare</span>
           </div>
           {isPending ? (
             <div className="h-8 w-8 rounded-full bg-muted animate-pulse" />

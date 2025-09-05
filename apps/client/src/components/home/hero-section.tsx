@@ -37,7 +37,7 @@ export function HeroSection() {
           {/* Main headline */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
             Take care of Family Health {" "} <br />
-            <span className="bg-gradient-to-r from-primary via-primary to-purple-600 bg-clip-text text-transparent">
+            <span className=" bg-orange-600 bg-clip-text text-transparent">
               Using AI
             </span>
           </h1>
@@ -56,7 +56,7 @@ export function HeroSection() {
 
                   <Button
                     size="lg"
-                    className="h-11 px-6"
+                    className="h-11 px-6 bg-orange-600 hover:bg-orange-700"
                     onClick={handleStartFree}
                   >
                     Start Free

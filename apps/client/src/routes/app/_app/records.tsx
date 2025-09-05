@@ -4,6 +4,13 @@ import FileUpload from "~/components/file-upload";
 import FileUploadTwo from "~/components/file-upload-two";
 import OCRDemo from "~/components/ocr";
 import { useState } from "react";
+import { api } from "~/lib/api";
+
+//Step 1-> Upload Media
+//Step 2 -> parsing
+//Step 3 -> Create Chunks
+//Step 4 -> Creating Embeddings
+//Step 5 -> Creating Vectors & Saving to db 
 
 
 
@@ -89,6 +96,11 @@ function FileUploadForm() {
 }
 
 
+const getChunks = createServerFn({ method: "GET" }).
+    handler(async () => {
+        return await api.mediaChunks.findAll()
+    });
+
 
 
 const getFiles = createServerFn({ method: "GET" }).
@@ -103,23 +115,27 @@ const getFiles = createServerFn({ method: "GET" }).
 export const Route = createFileRoute("/app/_app/records")({
     component: RouteComponent,
     loader: async () => {
+        const { files } = await getFiles();
 
-        return await getFiles();
+        const chunks = await getChunks();
+
+        return {
+            files,
+            chunks
+        }
 
 
     }
 });
 
 function RouteComponent() {
-    const { files } = Route.useLoaderData();
+    const { files, chunks } = Route.useLoaderData();
 
 
+    console.log('chunks', chunks, files)
 
     return <div className="space-y-4 p-4">
-        {/* <FileUploadTwo />
 
-
-        <OCRDemo /> */}
 
 
         <div>
@@ -146,6 +162,9 @@ function RouteComponent() {
                         }`}
                 >
                     Status: {file.status}
+                </p>
+                <p>
+                    No. of chunks for this file {chunks.filter((e) => e.mediaId === file.id).length}
                 </p>
             </div>
         ))}
