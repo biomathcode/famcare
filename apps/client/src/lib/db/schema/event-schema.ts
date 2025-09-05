@@ -3,15 +3,9 @@ import {
     varchar,
     text,
     timestamp,
-
 } from "drizzle-orm/mysql-core";
 import { sql } from "drizzle-orm";
-
-
 import { user } from './auth-schema';
-
-
-
 
 export const event = mysqlTable("event", {
     id: varchar("id", { length: 36 }) // UUID length

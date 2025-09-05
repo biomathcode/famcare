@@ -2,7 +2,7 @@ import { tool } from "ai";
 import { z } from "zod";
 import { api } from "~/lib/api";
 import { db } from "~/lib/db";
-import { exerciseGoal } from "~/lib/db/schema";
+import { diet, exerciseGoal, medicine } from "~/lib/db/schema";
 
 //TODO: Add tools for getting data from openFDA
 //TODO: Add tools for save diet, exercise, sleep, medicines plan for members
@@ -55,6 +55,69 @@ export const createExerciseGoalTool = (userId: string) =>
         },
     })
 
+//“Add breakfast for Ramesh: 2 eggs, toast, and juice (~350 calories).”
+
+//“Log dinner for Sita: paneer curry with rice (~500 calories).”
+export const createDietTool = (userId: string) =>
+    tool({
+        description: "Create a diet entry for a member",
+        inputSchema: z.object({
+            memberId: z.string().describe("The ID of the member"),
+            mealType: z
+                .enum(["breakfast", "lunch", "dinner", "snack"])
+                .describe("Type of meal"),
+            description: z
+                .string()
+                .describe("Details about the meal (e.g., '2 chapatis with dal and salad')"),
+            calories: z.number().optional().describe("Approximate calories for the meal"),
+        }),
+        execute: async ({ memberId, mealType, description, calories }) => {
+            console.log("Tool createDiet called ✅");
+
+            const [inserted] = await db
+                .insert(diet)
+                .values({
+                    userId, // from auth context
+                    memberId,
+                    mealType,
+                    description,
+                    calories,
+                })
+            return inserted;
+        },
+    });
+
+//“Add Paracetamol 500mg for Sita, dosage 1 pill twice daily for fever.”
+//“Log Vitamin D drops for Ramesh, 5ml once a day.”
+export const createMedicineTool = (userId: string) =>
+    tool({
+        description: "Log a medicine for a member",
+        inputSchema: z.object({
+            memberId: z.string().describe("The ID of the member"),
+            name: z.string().describe("The name of the medicine"),
+            description: z.string().optional().describe("Details about the medicine (e.g., purpose, instructions)"),
+            dosage: z.string().describe("Dosage information (e.g., 1 pill, 5ml, twice a day)"),
+        }),
+        execute: async ({ memberId, name, description, dosage }) => {
+            console.log("Tool createMedicine called ✅");
+
+            const [inserted] = await db
+                .insert(medicine)
+                .values({
+                    userId, // injected from auth context
+                    memberId,
+                    name,
+                    description,
+                    dosage,
+                })
+
+
+            return inserted;
+        },
+    });
+
+
+
 
 
 
@@ -64,6 +127,8 @@ export default async function getTools(ctx: { userId: string }) {
         getMembers,
         displayWeather: weatherTool,
         createExerciseGoal: createExerciseGoalTool(ctx.userId),
-
+        createDietTool: createDietTool(ctx.userId),
+        createMedicineTool: createMedicineTool(ctx.userId),
     };
 }
+
