@@ -19,6 +19,8 @@ Click Create Chat -> db chat session in created -> incremental save the chat_mes
 -[] Add validation in forms
 -[] Add loading states
 -[] Add error handling
+-[] Add Support for input files in the chat system- https://ai-sdk.dev/cookbook/guides/multi-modal-chatbot
+-[] Refactor and save the data in the chat system backend and not on the frontend
 
 - Take inspiration from https://github.com/vercel-labs/ai-sdk-preview-internal-knowledge-base/blob/main/app/(chat)/api/files/upload/route.ts
 
@@ -108,6 +110,47 @@ export const uploadPDF = createServerFn("POST", async ({ request }) => {
 });
 
 ```
+
+
+### Retrieval Generation Using the AI SDK 
+
+```ts
+export const findRelevantContent = async (userQuery: string) => {
+  const userQueryEmbedded = await generateEmbedding(userQuery);
+  const similarity = sql<number>`1 - (${cosineDistance(
+    embeddings.embedding,
+    userQueryEmbedded,
+  )})`;
+  const similarGuides = await db
+    .select({ name: embeddings.content, similarity })
+    .from(embeddings)
+    .where(gt(similarity, 0.5))
+    .orderBy(t => desc(t.similarity))
+    .limit(4);
+  return similarGuides;
+};
+
+```
+
+
+
+```ts
+  const result = streamText({
+    model: openai('gpt-4o'),
+    messages: convertToModelMessages(messages),
+    stopWhen: stepCountIs(5),
+     tools: {
+        getInformation: tool({
+        description: `get information from your knowledge base to answer questions.`,
+        inputSchema: z.object({
+          question: z.string().describe('the users question'),
+        }),
+        execute: async ({ question }) => findRelevantContent(question),
+      }),
+    },
+
+```
+
 
 
 ### AI tools

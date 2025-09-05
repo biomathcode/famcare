@@ -4,13 +4,17 @@ import { json } from "@tanstack/react-start";
 import { db } from "@/lib/db";
 import { mediaChunks } from "@/lib/db/schema";
 import { sql } from "drizzle-orm";
-import OpenAI from "openai";
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
+import { generateText } from "ai";
 
 // Init Moonshot client via OpenAI SDK
-const moonshotai = new OpenAI({
+
+const moonshotai = createOpenAICompatible({
   apiKey: process.env.MOONSHOTAI_API_KEY!,
-  baseURL: "https://api.moonshot.ai/v1", // Moonshot endpoint
-});
+  name: 'moonshotai',
+  baseURL: 'https://api.moonshot.ai/v1',
+
+})
 
 export const ServerRoute = createServerFileRoute("/api/ai/query").methods({
   POST: async ({ request }) => {
@@ -64,28 +68,39 @@ export const ServerRoute = createServerFileRoute("/api/ai/query").methods({
     console.log("Search rows:", rows[0], chunks);
 
 
-    // 4. Call Moonshot (OpenAI SDK)
-    const completion = await moonshotai.chat.completions.create({
-      model: "moonshot-v1-8k'", // replace with the correct model name
-      messages: [
-        {
-          role: "system",
-          content: "You are an assistant that answers questions using provided context.",
-        },
-        {
-          role: "user",
-          content: `Context:\n${chunks}\n\nQuestion: ${query}`,
-        },
-      ],
-      temperature: 0.2,
+    const model = moonshotai('kimi-k2-0711-preview')
+
+    const { text } = await generateText({
+      model,
+
+      prompt: query,
+      system: `You are an question answer assistant. 
+  Context:\n${chunks}\n\n
+  `,
     });
 
-    const answer = completion.choices[0]?.message?.content;
+    // // 4. Call Moonshot (OpenAI SDK)
+    // const completion = await moonshotai.chat.completions.create({
+    //   model: "moonshot-v1-8k'", // replace with the correct model name
+    //   messages: [
+    //     {
+    //       role: "system",
+    //       content: "You are an assistant that answers questions using provided context.",
+    //     },
+    //     {
+    //       role: "user",
+    //       content: `Context:\n${chunks}\n\nQuestion: ${query}`,
+    //     },
+    //   ],
+    //   temperature: 0.2,
+    // });
+
+    // const answer = completion.choices[0]?.message?.content;
 
     return json({
       query,
-      answer,
-      sources: rows, // return top chunks for debugging
+      answer: text,
+      // sources: rows, // return top chunks for debugging
     });
   },
 });
