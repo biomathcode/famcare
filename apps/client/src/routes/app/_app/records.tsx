@@ -102,7 +102,7 @@ const getChunks = createServerFn({ method: "GET" }).
 
 const getFiles = createServerFn({ method: "GET" }).
     handler(async () => {
-        const res = await fetch('http://localhost:3000/api/media');
+        const res = await fetch('api/media');
         // Make sure to use the correct absolute URL or use fetch from server context
         if (!res.ok) throw new Error('Failed to fetch files');
         const files = await res.json();
