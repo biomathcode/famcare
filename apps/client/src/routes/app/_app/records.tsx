@@ -102,17 +102,13 @@ const getChunks = createServerFn({ method: "GET" }).
 
 const getFiles = createServerFn({ method: "GET" }).
     handler(async () => {
-        const res = await fetch('api/media');
-        // Make sure to use the correct absolute URL or use fetch from server context
-        if (!res.ok) throw new Error('Failed to fetch files');
-        const files = await res.json();
-        return { files };
+        return await api.media.findAll();
     });
 
 export const Route = createFileRoute("/app/_app/records")({
     component: RouteComponent,
     loader: async () => {
-        const { files } = await getFiles();
+        const files = await getFiles();
 
         const chunks = await getChunks();
 

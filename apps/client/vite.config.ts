@@ -25,9 +25,9 @@ export default defineConfig({
 
       // https://tanstack.com/start/latest/docs/framework/react/hosting#deployment
       // target: "node-server",
-      // target: "cloudflare-module",
+      target: "cloudflare-module",
       // target: "netlify"
-      target: "vercel",
+      // target: "vercel",
     }),
     viteReact({
       // https://react.dev/learn/react-compiler
