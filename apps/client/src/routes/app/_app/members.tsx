@@ -23,8 +23,10 @@ import ProfileUpload from "~/components/profile-upload";
 import { Trash2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { member } from "~/lib/db/schema";
+import { ConditionPicker } from "~/components/condition-picker";
 
 //TODO: Add diseases field in the form 
+
 
 
 export const createMembers = createServerFn({ method: 'POST' })
@@ -193,6 +195,27 @@ export function MemberForm({ onSubmit, form }: MemberFormProps) {
                     )}
                 />
 
+
+                <FormField
+                    control={form.control}
+                    name="condition"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Select Condition</FormLabel>
+                            <FormControl>
+                                <ConditionPicker
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    placeholder="Choose a condition..."
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+
+
                 <FormField
                     control={form.control}
                     name="name"
@@ -257,6 +280,8 @@ export function MemberForm({ onSubmit, form }: MemberFormProps) {
                         </FormItem>
                     )}
                 />
+
+
 
                 <Button type="submit" className="w-full">
                     Add Member

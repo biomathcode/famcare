@@ -136,7 +136,7 @@ function LoginForm() {
               className="w-full"
               type="button"
               // disabled={isLoading}
-              disabled={true} // TODO disabled just for the preview deployment at https://tanstarter.nize.ph
+              disabled={true}
               onClick={() =>
                 authClient.signIn.social(
                   {

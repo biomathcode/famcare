@@ -8,6 +8,8 @@ import { CalendarProvider } from "@/components/event-calendar/calendar-context";
 
 
 function RouteComponent() {
+
+
   return <div>
     <CalendarProvider>
       <BigCalendar />

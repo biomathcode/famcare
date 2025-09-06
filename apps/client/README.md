@@ -19,24 +19,22 @@ Click Create Chat -> db chat session in created -> incremental save the chat_mes
 -[x] Add User Settings
 -[x] Create Exercise plan 
 -[x] Create Diet plan
--[] Add Calendar View 
--[] Add validation in forms
--[] Add loading states
--[] Add error handling
--[] Add Support for input files in the chat system- https://ai-sdk.dev/cookbook/guides/multi-modal-chatbot
--[] Refactor and save the data in the chat system backend and not on the frontend
--[] Add Q/A system using the uploaded Files
+-[] Add Calendar View - p0
+-[] Add validation in forms - p0
+-[] Add loading states - p1
+-[] Add error handling - p2
+-[] Add Support for input files in the chat system- https://ai-sdk.dev/cookbook/guides/multi-modal-chatbot - p1
+-[x] Refactor and save the data in the chat system backend and not on the frontend
+-[] Add Q/A system using the uploaded Files - p1
 
-- Take inspiration from https://github.com/vercel-labs/ai-sdk-preview-internal-knowledge-base/blob/main/app/(chat)/api/files/upload/route.ts
+
 
 Use This to persist chat history and other data into the database 
 
 - [x] https://github.com/vercel-labs/ai-sdk-persistence-db
 
 
-TODO: Work Vector Search 
 TODO: Add ai tools for medicine search, side effects, interactions, save medicines and create a schedule for the medicines
-TODO: Save previous chat history and show in the previous chat section
 TODO: Improve the UI/UX
 TODO: Create the landing page
 

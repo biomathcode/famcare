@@ -6,7 +6,6 @@ import getTools from '@/utils/tools'
 import { auth } from '~/lib/auth/auth'
 
 //TODO: Add Events
-//TODO: Add RAG features
 
 const SYSTEM_PROMPT = `You are a helpful health care management assistant.
 

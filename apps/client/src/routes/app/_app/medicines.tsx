@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import { medicine } from "~/lib/db/schema";
 import { api } from "~/lib/api";
 import { MemberPicker } from "@/components/member-picker";
+import { MedicinePicker } from "~/components/medicine-picker";
 
 //TODO: Add Options for scheduling like daily, weekly, monthly
 //TODO: Add Dosage options like daily 2times, weekly -> set day of the week, Monthly -> Select Dates
@@ -27,6 +28,7 @@ export const createMedicine = createServerFn({
     response: "raw",
 }).handler(async ({ data }) => {
     if (!data.userId) throw new Error("userId is required");
+    console.log('post data', data)
     await api.medicines.create(data);
 });
 
@@ -120,7 +122,28 @@ function RouteComponent() {
                             </FormItem>
                         )}
                     />
+
+
                     <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Select Member</FormLabel>
+                                <FormControl>
+                                    <MedicinePicker
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        placeholder="Choose a medicine..."
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+
+                    {/* <FormField
                         control={form.control}
                         name="name"
                         render={({ field }) => (
@@ -132,7 +155,7 @@ function RouteComponent() {
                                 <FormMessage />
                             </FormItem>
                         )}
-                    />
+                    /> */}
 
                     <FormField
                         control={form.control}
