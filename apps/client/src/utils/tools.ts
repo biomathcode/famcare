@@ -21,16 +21,7 @@ const getMembers = tool({
     }
 })
 
-export const weatherTool = tool({
-    description: 'Display the weather for a location',
-    inputSchema: z.object({
-        location: z.string().describe('The location to get the weather for'),
-    }),
-    execute: async function ({ location }) {
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        return { weather: 'Sunny', temperature: 75, location };
-    },
-})
+
 
 
 export const createExerciseGoalTool = (userId: string) =>
@@ -233,7 +224,7 @@ export const findRelevantContent = tool({
 export default async function getTools(ctx: { userId: string }) {
     return {
         getMembers,
-        displayWeather: weatherTool,
+
         createExerciseGoal: createExerciseGoalTool(ctx.userId),
         createDietTool: createDietTool(ctx.userId),
         createMedicineTool: createMedicineTool(ctx.userId),

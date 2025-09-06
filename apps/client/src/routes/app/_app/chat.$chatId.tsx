@@ -8,6 +8,12 @@ import {
     MessageContent,
 } from '@/components/ai-elements/message';
 
+import {
+    Reasoning,
+    ReasoningContent,
+    ReasoningTrigger,
+} from '@/components/ai-elements/reasoning';
+
 import { GlobeIcon, MicIcon } from 'lucide-react';
 import {
     PromptInput,
@@ -55,83 +61,7 @@ export const getChatMessages = createServerFn().handler(async ({ data }) => {
 });
 
 
-// weather display
 
-type WeatherProps = {
-    temperature: number;
-    weather: string;
-    location: string;
-};
-
-export const Weather = ({ temperature, weather, location }: WeatherProps) => {
-    return (
-        <div className="flex flex-col p-4 bg-sky-400 rounded-lg gap-2">
-            <div className="flex flex-row justify-between">
-                <div>
-                    <div className="text capitalize text-sky-100 mb-1 text-sm">{location}</div>
-                    <div className="flex flex-row items-center gap-2">
-                        <div className="text-4xl text-sky-50">{temperature}°</div>
-                        <div className="size-8 rounded-full bg-yellow-200"></div>
-                    </div>
-                </div>
-                <div>
-                    <div className="capitalize text-sky-50 text-sm">{weather}</div>
-                </div>
-            </div>
-            {/* The hourly forecast below is static, you can update it to use props if you have hourly data */}
-            <div className="flex flex-row justify-between">
-                {/* Example static hourly forecast */}
-                <div className="flex flex-col items-center">
-                    <div className="text-xs mb-2 text-sky-200">7am</div>
-                    <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
-                    <div className="text-xs text-sky-50 mt-1">{temperature + 1}°</div>
-                </div>
-                <div className="flex flex-col items-center">
-                    <div className="text-xs mb-2 text-sky-200">8am</div>
-                    <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
-                    <div className="text-xs text-sky-50 mt-1">{temperature + 3}°</div>
-                </div>
-                <div className="flex flex-col items-center">
-                    <div className="text-xs mb-2 text-sky-200">9am</div>
-                    <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
-                    <div className="text-xs text-sky-50 mt-1">{temperature + 5}°</div>
-                </div>
-                <div className="flex flex-col items-center">
-                    <div className="text-xs mb-2 text-sky-200">10am</div>
-                    <div className="relative">
-                        <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
-                        <div className="w-4 h-3 rounded-full bg-zinc-300 absolute bottom-0 -right-1"></div>
-                    </div>
-                    <div className="text-xs text-sky-50 mt-1">{temperature + 7}°</div>
-                </div>
-                <div className="flex flex-col items-center">
-                    <div className="text-xs mb-2 text-sky-200">11am</div>
-                    <div className="relative">
-                        <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
-                        <div className="w-4 h-3 rounded-full bg-zinc-300 absolute bottom-0 -right-1"></div>
-                    </div>
-                    <div className="text-xs text-sky-50 mt-1">{temperature + 9}°</div>
-                </div>
-                <div className="flex flex-col items-center">
-                    <div className="text-xs mb-2 text-sky-200">12pm</div>
-                    <div className="relative">
-                        <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
-                        <div className="w-4 h-3 rounded-full bg-zinc-300 absolute bottom-0 -right-1"></div>
-                    </div>
-                    <div className="text-xs text-sky-50 mt-1">{temperature + 11}°</div>
-                </div>
-                <div className="flex flex-col items-center">
-                    <div className="text-xs mb-2 text-sky-200">1pm</div>
-                    <div className="relative">
-                        <div className="w-6 h-6 rounded-full bg-yellow-200"></div>
-                        <div className="w-4 h-3 rounded-full bg-zinc-300 absolute bottom-0 -right-1"></div>
-                    </div>
-                    <div className="text-xs text-sky-50 mt-1">{temperature + 13}°</div>
-                </div>
-            </div>
-        </div>
-    );
-};
 
 export const Route = createFileRoute("/app/_app/chat/$chatId")({
     component: Chat,
@@ -256,21 +186,20 @@ export default function Chat() {
                                         case 'text':
                                             return <Response key={`${role}-${i}`}>{part.text}</Response>;
 
-                                        case 'tool-displayWeather':
+                                        case 'tool-findRelevantContent':
                                             switch (part.state) {
                                                 case 'input-available':
-                                                    return <div key={index}>Loading weather...</div>;
+                                                    return <div key={index}>Scanning documents...</div>;
                                                 case 'output-available':
-                                                    return (
-                                                        <div key={index}>
-                                                            <Weather {...part.output} />
-                                                        </div>
-                                                    );
+                                                    return <Response key={`${role}-${i}`}>{part.text}</Response>
                                                 case 'output-error':
                                                     return <div key={index}>Error: {part.errorText}</div>;
                                                 default:
                                                     return null;
+
                                             }
+
+
                                         default:
                                             return null;
 
@@ -292,6 +221,7 @@ export default function Chat() {
                         </Message>
                     )
                 }
+                <ConversationScrollButton className="bottom-40" />
             </Conversation>
 
 
