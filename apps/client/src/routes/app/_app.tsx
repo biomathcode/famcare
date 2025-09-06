@@ -11,14 +11,9 @@ export const Route = createFileRoute("/app/_app")({
             throw redirect({ to: "/login" });
         }
     },
-    loader: async () => {
-        const res = await fetch("/api/hello"); // call your server route
-        if (!res.ok) throw new Error("Failed to fetch");
-        return res.json();
-    }
+
 });
 function RouteComponent() {
-    const data = Route.useLoaderData();
 
 
     return (
