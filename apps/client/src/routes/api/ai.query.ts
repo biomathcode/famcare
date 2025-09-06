@@ -45,27 +45,29 @@ export const ServerRoute = createServerFileRoute("/api/ai/query").methods({
     const queryEmbedding = embeddingsData.data[0].embedding as number[];
 
     // 2. Build CAST for TiDB vector search
-    const embeddingLiteral = `CAST('[${queryEmbedding.join(",")}]' AS VECTOR(768))`;
+    const embeddingLiteral = [JSON.stringify(queryEmbedding)]
 
-    // 3. Similarity search
-    const rows = await db.execute(
-      sql/*sql*/ `
-        SELECT 
-          id,
-          media_id,
-          chunk,
-          \`order\`,
-          vec_cosine_distance(embedding, ${sql.raw(embeddingLiteral)}) AS distance
-        FROM ${mediaChunks}
-        ORDER BY distance
-        LIMIT 3
-      `
+    const { rows } = await db.execute(
+      sql/*sql*/`
+    SELECT 
+      id,
+      media_id,
+      chunk,
+      \`order\`,
+      vec_cosine_distance(
+        embedding,
+        ${embeddingLiteral}
+      ) AS distance
+    FROM ${mediaChunks}
+    ORDER BY distance
+    LIMIT 5
+  `
     );
 
 
-    const chunks = (rows[0] as any[]).map((r) => r.chunk).join("\n\n");
 
-    console.log("Search rows:", rows[0], chunks);
+    const chunks = rows?.map((r) => r.chunk).join("\n\n");
+
 
 
     const model = moonshotai('kimi-k2-0711-preview')

@@ -20,6 +20,8 @@ You can use the following tools to help the user:
 - getDrugLabel: view drug labeling info
 - getAdverseEvents: lookup reported side effects
 - getDrugRecalls: check recall or enforcement reports
+- findRelevantContent: Use this tool to find relevant content from the database
+
 
 `
 

@@ -2,7 +2,8 @@ import { tool } from "ai";
 import { z } from "zod";
 import { api } from "~/lib/api";
 import { db } from "~/lib/db";
-import { diet, exerciseGoal, medicine } from "~/lib/db/schema";
+import { diet, exerciseGoal, mediaChunks, medicine } from "~/lib/db/schema";
+import { sql } from "drizzle-orm";
 
 //TODO: Add tools for getting data from openFDA
 //TODO: Add tools for save diet, exercise, sleep, medicines plan for members
@@ -170,6 +171,63 @@ export const getDrugRecallsTool = tool({
 });
 
 
+//ai query
+export const findRelevantContent = tool({
+    description: `get information from your knowledge base to answer questions.`,
+    inputSchema: z.object({
+        question: z.string().describe('the users question'),
+    }),
+
+    execute: async ({ question }) => {
+
+        console.log('findRelevantContent question', question);
+
+        const embeddingsResult = await fetch("https://api.jina.ai/v1/embeddings", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${process.env.JINA_API_KEY}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                model: "jina-embeddings-v3",
+                task: "retrieval.query",
+                dimensions: 768,
+                embedding_type: "float",
+                input: [question],
+            }),
+        });
+
+        const embeddingsData = await embeddingsResult.json();
+        const queryEmbedding = embeddingsData.data[0].embedding as number[];
+
+        const embeddingLiteral = [JSON.stringify(queryEmbedding)]
+
+        const { rows } = await db.execute(
+            sql/*sql*/`
+            SELECT 
+              id,
+              media_id,
+              chunk,
+              \`order\`,
+              vec_cosine_distance(
+                embedding,
+                ${embeddingLiteral}
+              ) AS distance
+            FROM ${mediaChunks}
+            ORDER BY distance
+            LIMIT 5
+          `
+        );
+
+        const chunks = rows?.map((r) => r.chunk).join("\n\n");
+
+
+        return chunks;
+
+    }
+})
+
+
 
 
 export default async function getTools(ctx: { userId: string }) {
@@ -182,6 +240,7 @@ export default async function getTools(ctx: { userId: string }) {
         getDrugLabel: getDrugLabelTool,
         getAdverseEvents: getAdverseEventsTool,
         getDrugRecalls: getDrugRecallsTool,
+        findRelevantContent: findRelevantContent,
     };
 }
 
