@@ -1,8 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from '@tanstack/react-start';
-import FileUpload from "~/components/file-upload";
-import FileUploadTwo from "~/components/file-upload-two";
-import OCRDemo from "~/components/ocr";
 import { useState } from "react";
 import { api } from "~/lib/api";
 

@@ -31,7 +31,7 @@ function HomePage() {
       <Navigation />
       <div className="flex mx-auto w-full h-screen justify-center items-center">
         <HeroSection />
-        <div className="flex justify-center w-full">
+        {/* <div className="flex justify-center w-full">
           <div className="w-md ">
             <CardCarousel
               images={images}
@@ -40,7 +40,7 @@ function HomePage() {
               showNavigation={true}
             />
           </div>
-        </div>
+        </div> */}
 
       </div>
 
@@ -49,7 +49,7 @@ function HomePage() {
       <FeaturesSection />
       <ProblemSolution />
       <CtaSection />
-      <StackingCardsDemo />
+      {/* <StackingCardsDemo /> */}
 
       {/* <Footer /> */}
     </div>

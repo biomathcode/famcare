@@ -8,6 +8,9 @@ import * as schema from "~/lib/db/schema";
 const driver = mysql.createPool({
   uri: env.DATABASE_URL, // e.g. mysql://user:pass@host:port/dbname
   connectionLimit: 10,
+  ssl: {
+    rejectUnauthorized: true,
+  }
 });
 
 const getDatabase = serverOnly(() =>
