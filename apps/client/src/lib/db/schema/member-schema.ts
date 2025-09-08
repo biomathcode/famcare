@@ -4,7 +4,7 @@ import {
     text,
     timestamp,
     int,
-    float,
+    json,
 } from "drizzle-orm/mysql-core";
 import { sql } from "drizzle-orm";
 
@@ -23,6 +23,8 @@ export const member = mysqlTable("member", {
         .default(sql`CURRENT_TIMESTAMP`)
         .notNull(),
     imageUrl: varchar("image_url", { length: 255 }),
+    conditions: json("conditions")
+
 });
 
 export const diet = mysqlTable("diet", {
@@ -39,19 +41,6 @@ export const diet = mysqlTable("diet", {
     createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
 });
 
-export const healthMetric = mysqlTable("health_metric", {
-    id: varchar("id", { length: 36 }).primaryKey().default(sql`(UUID())`),
-    userId: varchar("user_id", { length: 36 })
-        .notNull()
-        .references(() => user.id, { onDelete: "cascade" }),
-    memberId: varchar("member_id", { length: 36 })
-        .notNull()
-        .references(() => member.id, { onDelete: "cascade" }),
-    type: varchar("type", { length: 50 }).notNull(), // bp, sugar, cholesterol, hemoglobin
-    value: float("value").notNull(),
-    unit: varchar("unit", { length: 20 }), // mg/dl, mmHg
-    recordedAt: timestamp("recorded_at").default(sql`CURRENT_TIMESTAMP`),
-});
 
 export const exerciseGoal = mysqlTable("exercise_goal", {
     id: varchar("id", { length: 36 }).primaryKey().default(sql`(UUID())`),
@@ -76,7 +65,9 @@ export const sleepGoal = mysqlTable("sleep_goal", {
     memberId: varchar("member_id", { length: 36 })
         .notNull()
         .references(() => member.id, { onDelete: "cascade" }),
-    targetHours: float("target_hours").notNull(),
+    wokeUp: timestamp("woke_up").notNull(),
+    sleepTime: timestamp("sleep_time").notNull(),
+    note: text("note"),
     createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`),
 });
 

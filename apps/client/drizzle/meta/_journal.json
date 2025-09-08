@@ -29,6 +29,34 @@
       "when": 1757022124449,
       "tag": "0003_chunky_falcon",
       "breakpoints": false
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1757325941193,
+      "tag": "0004_chubby_grandmaster",
+      "breakpoints": false
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1757326184418,
+      "tag": "0005_ambitious_deathbird",
+      "breakpoints": false
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1757326252432,
+      "tag": "0006_brief_the_renegades",
+      "breakpoints": false
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1757354001039,
+      "tag": "0007_lethal_luckman",
+      "breakpoints": false
     }
   ]
 }

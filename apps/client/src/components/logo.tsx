@@ -85,4 +85,34 @@ const LogoIcon = () => (
         </defs>
     </svg>
 );
+
+
+export const HeartLogoIcon = ({ className }: { className: string }) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="83"
+        height="76"
+        className={className}
+        fill="none"
+        viewBox="0 0 83 76"
+    >
+        <path
+            fill="url(#paint0_linear_310_139)"
+            d="M.632 19.915C-4.784 48.656 25.972 71.409 41.447 76c23.987-5.588 47.586-37.922 40.042-59.478C75.412-.842 53.827-7.03 41.447 10.335 36.998-.044 5.86-7.828.632 19.915"
+        ></path>
+        <defs>
+            <linearGradient
+                id="paint0_linear_310_139"
+                x1="41.46"
+                x2="41.46"
+                y1="0"
+                y2="76"
+                gradientUnits="userSpaceOnUse"
+            >
+                <stop stopColor="#FF5FA8"></stop>
+                <stop offset="1" stopColor="#FF2B24"></stop>
+            </linearGradient>
+        </defs>
+    </svg>
+);
 export default LogoIcon;

@@ -8,7 +8,7 @@ import {
     medicineSchedule,
     member,
     diet,
-    healthMetric,
+
     exerciseGoal,
     sleepGoal,
     chatSession,
@@ -96,7 +96,6 @@ export const api = {
     medicineSchedules: createCrud(medicineSchedule),
     members: createCrud(member),
     diets: createCrud(diet),
-    healthMetrics: createCrud(healthMetric),
     exerciseGoals: createCrud(exerciseGoal),
     sleepGoals: createCrud(sleepGoal),
     chatSession: createCrud(chatSession),

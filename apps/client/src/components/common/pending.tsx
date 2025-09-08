@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 export default function Pending() {
   return (
@@ -41,3 +41,6 @@ export default function Pending() {
     </div>
   );
 }
+
+
+

@@ -18,7 +18,7 @@ import { sleepGoal } from "~/lib/db/schema";
 import { api } from "~/lib/api";
 
 import { MemberPicker } from "@/components/member-picker";
-import { getSleepGoals } from "~/lib/db/queries";
+import { getMembers, getSleepGoals } from "~/lib/db/queries";
 
 
 export const createSleepGoal = createServerFn({
@@ -43,7 +43,8 @@ export const Route = createFileRoute("/app/_app/sleep")({
     component: RouteComponent,
     loader: async () => {
         const goals = await getSleepGoals();
-        return { goals };
+        const members = await getMembers();
+        return { goals, members };
     },
     pendingComponent: LoadingScreen,
 });
@@ -54,7 +55,7 @@ function LoadingScreen() {
 
 function RouteComponent() {
     const context = Route.useRouteContext();
-    const { goals } = Route.useLoaderData();
+    const { goals, members } = Route.useLoaderData();
     const user = context.user;
 
     const form = useForm<SleepGoalInput>({
@@ -83,7 +84,10 @@ function RouteComponent() {
     }
 
     return (
-        <div className="max-w-md mx-auto p-6">
+        <div className="w-full p-6">
+
+            <SleepLayout members={members} />
+
             <h2 className="text-xl font-semibold mb-4">Add Sleep Goal</h2>
             <ul className="space-y-2">
                 {goals.map((g) => (
@@ -149,4 +153,73 @@ function RouteComponent() {
             </Form>
         </div>
     );
+}
+
+
+const SleepLayout = ({ members }) => {
+
+    const timeline = ['12am', "1am", "2am", "4am", "3am", "5am", "6am", "7am", "8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm", "10pm", '11pm']
+
+
+    return (
+        <div className="relative w-full  max-w-fit ">
+            <div className="flex w-full gap-2">
+                <div className="sticky top-0 flex w-[100px]  flex-col ">
+                    <div className="h-10">
+                    </div>
+                    <div className="h-10">
+                        Members
+                    </div>
+
+                    {
+                        members.map((member) =>
+
+                            <div key={member.id} className="flex ">
+                                <div className="flex gap-2 items-center ">
+                                    <img
+                                        src={member.imageUrl}
+                                        className=" rounded-full w-10 h-10 "
+                                    />
+
+                                </div>
+
+
+
+
+                            </div>
+                        )
+                    }
+                </div>
+                <div className="flex w-full flex-col relative overflow-y-auto">
+                    <div className="flex h-10 w-full">
+                        {
+                            ['8 Sep'].map((e) => <div key={e} className=" w-[3072px] translate-x-2 ">
+                                {e}
+                            </div>
+
+                            )
+                        }
+                    </div>
+                    <div className="flex h-10 ">
+                        {timeline.map((e) => {
+                            return <div key={e} className="relative w-16 text-center ">
+                                {e}
+                                <div className="absolute left-1/2 bottom-0 translate-x-1/2  ">|
+                                </div>
+                            </div>
+                        })}
+                    </div>
+                    <div className="absolute left-3/24 top-20 w-4/24 h-4 translate-y-1/2 rounded-md bg-neutral-800">
+
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+    )
 }

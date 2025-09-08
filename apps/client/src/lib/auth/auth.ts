@@ -12,6 +12,7 @@ const getAuthConfig = serverOnly(() =>
       provider: "mysql",
     }),
 
+    trustedOrigins: [process.env.VITE_BASE_URL!, "http://localhost:3000"],
     // https://www.better-auth.com/docs/integrations/tanstack#usage-tips
     plugins: [reactStartCookies()],
 

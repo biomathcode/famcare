@@ -16,6 +16,7 @@ import {
   MessageSquare,
   ImagePlus,
 } from "lucide-react";
+import { SlidingFeatures } from "./sliding-features";
 
 const features = [
   {
@@ -93,6 +94,12 @@ export function FeaturesSection() {
             to keep your family healthy and stress-free.
           </p>
         </div>
+        <div className="py-5">
+          <SlidingFeatures />
+
+        </div>
+
+
 
         {/* Features grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">

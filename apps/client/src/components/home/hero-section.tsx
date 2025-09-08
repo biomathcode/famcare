@@ -1,10 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Globe, Shield, Zap, Sparkles } from "lucide-react";
+import { ArrowRight, Globe, Shield, Zap, Sparkles, HeartIcon } from "lucide-react";
 import authClient from "~/lib/auth/auth-client";
 
 import { LoginPopup } from "@/components/auth/login-popup";
 import { Link } from "@tanstack/react-router";
+import { SlidingFeatures } from "./sliding-features";
+import LogoIcon, { HeartLogoIcon } from "../logo";
+import BigCalendar from "@/components/big-calendar";
+import { CalendarProvider } from "@/components/event-calendar/calendar-context";
 
 export function HeroSection() {
   const { data } = authClient.useSession();
@@ -18,7 +22,7 @@ export function HeroSection() {
   return (
 
 
-    <section className="relative  w-full  py-20 sm:py-28">
+    <section className="relative  w-full pt-10  pb-20 sm:py-28">
       {/* Background decoration */}
       <div className="absolute inset-0 bg-grid-white/[0.02] -z-10" />
       <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent -z-10" />
@@ -36,7 +40,14 @@ export function HeroSection() {
 
           {/* Main headline */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-            Take care of Family Health {" "} <br />
+            <span className=" flex gap-2 items-center justify-center">
+              Take care of Family Health
+
+              <HeartLogoIcon className=" w-10 h-10 animate-pulse " />
+            </span>
+
+
+
             <span className=" bg-orange-600 bg-clip-text text-transparent">
               Using AI
             </span>
@@ -66,30 +77,19 @@ export function HeroSection() {
 
               ) : (
                 <LoginPopup>
-                  <Button size="lg" className="h-11 px-6">
+                  <Button size="lg" className="h-11 px-6  bg-orange-600 hover:bg-orange-700 ">
                     Start Free
-                    <ArrowRight className="ml-1 h-4 w-4" />
+                    <HeartIcon className=" text-white ml-1 h-4 w-4  " />
+
                   </Button>
                 </LoginPopup>
               )}
             </div>
           </div>
 
-          {/* Features preview */}
-          <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <Zap className="h-4 w-4 text-primary" />
-              <span>Instant File Upload</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Globe className="h-4 w-4 text-primary" />
-              <span>Create Medicine Schedule</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Shield className="h-4 w-4 text-primary" />
-              <span>Understand your own health </span>
-            </div>
-          </div>
+
+
+
         </div>
       </div>
     </section>

@@ -9,6 +9,7 @@ import {
   type CalendarEvent,
   type EventColor,
 } from "~/components/event-calendar";
+import { healthSampleEvents } from "./events";
 
 // Etiquettes data for calendar filtering
 export const etiquettes = [
@@ -592,7 +593,7 @@ const sampleEvents: CalendarEvent[] = [
 ];
 
 export default function Component() {
-  const [events, setEvents] = useState<CalendarEvent[]>(sampleEvents);
+  const [events, setEvents] = useState<CalendarEvent[]>(healthSampleEvents);
   const { isColorVisible } = useCalendarContext();
 
   // Filter events based on visible colors
