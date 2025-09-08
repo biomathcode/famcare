@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { exerciseGoal } from "~/lib/db/schema";
 import { api } from "~/lib/api";
+import { LoadingScreen } from "~/components/loading-screen";
 
 export const createExerciseGoal = createServerFn({
   method: "POST",
@@ -46,9 +47,7 @@ export const Route = createFileRoute("/app/_app/exercise")({
   pendingComponent: LoadingScreen,
 });
 
-function LoadingScreen() {
-  return <div>Loading...</div>;
-}
+
 
 function RouteComponent() {
   const context = Route.useRouteContext();

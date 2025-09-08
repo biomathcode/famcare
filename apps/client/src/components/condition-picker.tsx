@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useState } from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -23,8 +23,8 @@ import {
 import { useQuery } from "@tanstack/react-query";
 
 type ConditionPickerProps = {
-    value?: string;
-    onChange?: (value: string) => void;
+    value?: string[];
+    onChange?: (value: string[]) => void;
     placeholder?: string;
     disabled?: boolean;
 };
@@ -37,15 +37,13 @@ async function fetchConditions(query: string) {
         )}&maxList=20`
     );
     const data = await res.json();
-    // data[1] contains the matched condition names
     return (data[3] || []).map((item: string[]) => item[0]);
-
 }
 
 export function ConditionPicker({
-    value,
+    value = [],
     onChange,
-    placeholder = "Search condition...",
+    placeholder = "Search conditions...",
     disabled = false,
 }: ConditionPickerProps) {
     const [open, setOpen] = useState(false);
@@ -54,8 +52,16 @@ export function ConditionPicker({
     const { data: conditions = [], isLoading } = useQuery({
         queryKey: ["conditions", search],
         queryFn: () => fetchConditions(search),
-        enabled: search.length > 1, // start searching after 2 chars
+        enabled: search.length > 1,
     });
+
+    function toggleCondition(cond: string) {
+        if (value.includes(cond)) {
+            onChange?.(value.filter((v) => v !== cond));
+        } else {
+            onChange?.([...value, cond]);
+        }
+    }
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -65,13 +71,34 @@ export function ConditionPicker({
                     role="combobox"
                     disabled={disabled}
                     aria-expanded={open}
-                    className="w-[250px] justify-between"
+                    className="w-[300px] justify-between flex flex-wrap gap-1"
                 >
-                    {value || placeholder}
+                    {value.length > 0 ? (
+                        <div className="flex flex-wrap gap-1">
+                            {value.map((cond) => (
+                                <span
+                                    key={cond}
+                                    className="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full flex items-center"
+                                >
+                                    {cond}
+                                    <X
+                                        className="ml-1 cursor-pointer"
+                                        size={12}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            toggleCondition(cond);
+                                        }}
+                                    />
+                                </span>
+                            ))}
+                        </div>
+                    ) : (
+                        placeholder
+                    )}
                     <ChevronsUpDown className="opacity-50" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[250px] p-0">
+            <PopoverContent className="w-[300px] p-0">
                 <Command>
                     <CommandInput
                         placeholder="Search conditions..."
@@ -90,16 +117,13 @@ export function ConditionPicker({
                                     <CommandItem
                                         key={cond}
                                         value={cond}
-                                        onSelect={(currentValue) => {
-                                            onChange?.(currentValue);
-                                            setOpen(false);
-                                        }}
+                                        onSelect={() => toggleCondition(cond)}
                                     >
                                         {cond}
                                         <Check
                                             className={cn(
                                                 "ml-auto",
-                                                value === cond ? "opacity-100" : "opacity-0"
+                                                value.includes(cond) ? "opacity-100" : "opacity-0"
                                             )}
                                         />
                                     </CommandItem>

@@ -19,6 +19,7 @@ import { diet } from "~/lib/db/schema";
 import { api } from "~/lib/api";
 
 import { MemberPicker } from "@/components/member-picker";
+import { LoadingScreen } from "~/components/loading-screen";
 
 
 
@@ -46,9 +47,7 @@ export const Route = createFileRoute("/app/_app/diet")({
   pendingComponent: LoadingScreen,
 });
 
-function LoadingScreen() {
-  return <div>Loading...</div>;
-}
+
 
 function RouteComponent() {
   const context = Route.useRouteContext();

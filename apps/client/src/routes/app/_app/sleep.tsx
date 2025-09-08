@@ -30,6 +30,7 @@ import z from "zod";
 
 import { createInsertSchema } from "drizzle-zod";
 import { parse } from "date-fns";
+import { LoadingScreen } from "~/components/loading-screen";
 
 
 
@@ -62,10 +63,7 @@ export const createSleepGoal = createServerFn({
             sleepTime: parseDateTimeLocal(data.sleepTime),
             wokeUp: parseDateTimeLocal(data.wokeUp),
         };
-
-
         return await api.sleepGoals.create(payload);
-
         ;
     });
 
@@ -90,9 +88,7 @@ export const Route = createFileRoute("/app/_app/sleep")({
     pendingComponent: LoadingScreen,
 });
 
-function LoadingScreen() {
-    return <div>Loading...</div>;
-}
+
 
 function RouteComponent() {
     const context = Route.useRouteContext();

@@ -26,7 +26,6 @@ function createCrud<T extends { id: string }>(table: any) {
 
             const insertData = {
                 ...data,
-                dob: data.dob ? new Date(data.dob) : null,
 
                 id,
             };
