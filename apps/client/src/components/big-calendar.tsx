@@ -592,8 +592,8 @@ const sampleEvents: CalendarEvent[] = [
   },
 ];
 
-export default function Component() {
-  const [events, setEvents] = useState<CalendarEvent[]>(healthSampleEvents);
+export default function Component({ initialEvents = sampleEvents }: { initialEvents: CalendarEvent[] }) {
+  const [events, setEvents] = useState<CalendarEvent[]>(healthSampleEvents || initialEvents);
   const { isColorVisible } = useCalendarContext();
 
   // Filter events based on visible colors

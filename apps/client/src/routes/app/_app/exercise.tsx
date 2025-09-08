@@ -20,14 +20,23 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { exerciseGoal } from "~/lib/db/schema";
 import { api } from "~/lib/api";
 import { LoadingScreen } from "~/components/loading-screen";
+import { createInsertSchema } from "drizzle-zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+
+const exerciseSchema = createInsertSchema(exerciseGoal)
+
+type ExerciseGoalInput = z.infer<typeof exerciseSchema>;
 
 export const createExerciseGoal = createServerFn({
   method: "POST",
   response: "raw",
-}).handler(async ({ data }) => {
-  if (!data.userId) throw new Error("userId is required");
-  await api.exerciseGoals.create(data);
-});
+})
+  .validator(exerciseSchema)
+  .handler(async ({ data }) => {
+    if (!data.userId) throw new Error("userId is required");
+    return await api.exerciseGoals.create(data);
+  });
 
 export const getExerciseGoals = createServerFn({ method: "GET" }).handler(
   async () => {
@@ -36,7 +45,7 @@ export const getExerciseGoals = createServerFn({ method: "GET" }).handler(
   }
 );
 
-type ExerciseGoalInput = z.infer<typeof exerciseGoal>;
+
 
 export const Route = createFileRoute("/app/_app/exercise")({
   component: RouteComponent,
@@ -61,6 +70,8 @@ function RouteComponent() {
       unit: "",
       userId: user?.id,
     },
+    resolver: zodResolver(exerciseSchema),
+
   });
 
   const router = useRouter();
@@ -122,7 +133,7 @@ function RouteComponent() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Exercise Type</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select onValueChange={field.onChange} value={field?.value ?? ''}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select exercise type" />
@@ -169,7 +180,7 @@ function RouteComponent() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Unit</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select onValueChange={field.onChange} value={field?.value ?? ""}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select unit" />

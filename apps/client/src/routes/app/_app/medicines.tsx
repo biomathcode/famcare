@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { medicine } from "~/lib/db/schema";
+import { medicine, medicineSchedule } from "~/lib/db/schema";
 import { api } from "~/lib/api";
 import { MemberPicker } from "@/components/member-picker";
 import { MedicinePicker } from "~/components/medicine-picker";
@@ -27,31 +27,58 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { createInsertSchema } from "drizzle-zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 //TODO: Add Options for scheduling like daily, weekly, monthly
 //TODO: Add Dosage options like daily 2times, weekly -> set day of the week, Monthly -> Select Dates
 //TODO: 
 
+const createMedicineSchema = createInsertSchema(medicine)
+
+const createMedicineScheduleSchema = createInsertSchema(medicineSchedule, {
+    startDate: z.string(),
+    endDate: z.string(),
+})
+
+type createMedicineScheduleFormData = z.infer<typeof createMedicineScheduleSchema>;
+
+type CreateMedicineFormData = z.infer<typeof createMedicineSchema>;
+
+
+
+
 export const createMedicine = createServerFn({
     method: "POST",
     response: "raw",
-}).handler(async ({ data }) => {
-    if (!data.userId) throw new Error("userId is required");
-    console.log('post data', data)
-    await api.medicines.create(data);
-});
+})
+    .validator(createMedicineSchema)
+    .handler(async ({ data }) => {
+        if (!data.userId) throw new Error("userId is required");
+        console.log('post data', data)
+        return await api.medicines.create(data);
+    });
 
 
 export const createMedicineSchedule = createServerFn({
     method: "POST",
     response: 'raw',
-}).handler(async ({ data }) => {
-    if (!data.userId) throw new Error("userId is required");
-
-
-    console.log('post data', data)
-    await api.medicineSchedules.create(data);
 })
+    .validator(createMedicineScheduleSchema)
+    .handler(async ({ data }) => {
+        if (!data.userId) throw new Error("userId is required");
+
+
+        console.log('post data', data)
+
+        const payload = {
+            ...data,
+            startDate: new Date(data.startDate),
+            endDate: new Date(data.endDate),
+
+        }
+        return await api.medicineSchedules.create(payload);
+    })
 
 export const getMedicines = createServerFn({ method: "GET" }).handler(
     async () => {
@@ -60,7 +87,6 @@ export const getMedicines = createServerFn({ method: "GET" }).handler(
     }
 );
 
-type MedicineInput = z.infer<typeof medicine>;
 
 export const Route = createFileRoute("/app/_app/medicines")({
     component: RouteComponent,
@@ -75,19 +101,15 @@ export const Route = createFileRoute("/app/_app/medicines")({
 
 function MedicineSchedule() {
 
+
     const context = Route.useRouteContext();
     const user = context.user;
-    const form = useForm<{
-        medicineId: string;
-        memberId: string;
-        frequency: string;
-        timesPerDay: number;
-        recurrenceRule: { interval?: number; daysOfWeek?: string[]; daysOfMonth?: number[]; customDates?: string[] };
-        dosage: number;
-        unit: string;
-        startDate: string;
-        endDate?: string;
-    }>({
+
+    const router = useRouter();
+
+
+
+    const form = useForm<createMedicineScheduleFormData>({
         defaultValues: {
             medicineId: "",
             memberId: "",
@@ -98,15 +120,16 @@ function MedicineSchedule() {
             unit: "pill",
             startDate: "",
             endDate: "",
+            userId: user?.id || ""
         },
+        resolver: zodResolver(createMedicineScheduleSchema)
     });
-    async function onSubmit(values: typeof form["defaultValues"]) {
+    async function onSubmit(values: createMedicineScheduleFormData) {
         console.log("submitted", values);
         try {
             const payload = {
                 ...values,
-                startDate: parseDateTimeLocal(values.startDate),
-                endDate: values.endDate ? parseDateTimeLocal(values.endDate) : null,
+
             };
             await createMedicineSchedule({ data: payload }).then(() => {
                 router.invalidate();
@@ -190,7 +213,9 @@ function MedicineSchedule() {
                                 <FormItem>
                                     <FormLabel>Times Per Day</FormLabel>
                                     <FormControl>
-                                        <Input type="number" {...field} min={1} />
+                                        <Input type="number" {...field} min={1}
+                                            value={field?.value || 1}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -205,8 +230,17 @@ function MedicineSchedule() {
                                     <FormLabel>Recurrence Rule (JSON)</FormLabel>
                                     <FormControl>
                                         <Textarea
-                                            {...field}
+                                            value={typeof field.value === 'object' ? JSON.stringify(field.value, null, 2) : field.value ?? ""}
                                             placeholder={`{ "daysOfWeek": ["monday", "tuesday"], "customDates": ["2025-09-06"] }`}
+                                            onChange={(e) => {
+                                                try {
+                                                    const parsed = JSON.parse(e.target.value);
+                                                    field.onChange(parsed);
+                                                } catch {
+                                                    field.onChange(e.target.value); // Allow incomplete input
+                                                }
+                                            }}
+                                            onBlur={field.onBlur}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -221,7 +255,11 @@ function MedicineSchedule() {
                                 <FormItem>
                                     <FormLabel>Dosage</FormLabel>
                                     <FormControl>
-                                        <Input type="number" {...field} min={1} />
+                                        <Input
+
+                                            type="number" {...field} min={1}
+                                            value={field?.value ?? 1}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -235,7 +273,11 @@ function MedicineSchedule() {
                                 <FormItem>
                                     <FormLabel>Unit</FormLabel>
                                     <FormControl>
-                                        <Input {...field} placeholder="pill, ml, etc." />
+                                        <Input {...field} placeholder="pill, ml, etc."
+
+                                            value={field?.value ?? ""}
+
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -293,16 +335,16 @@ function MedicineForm() {
     const router = useRouter();
 
 
-    const form = useForm<MedicineInput>({
+    const form = useForm<CreateMedicineFormData>({
         defaultValues: {
             name: "",
             description: "",
-            dosage: "",
             userId: user?.id,
         },
+        resolver: zodResolver(createMedicineSchema)
     });
 
-    async function onSubmit(values: MedicineInput) {
+    async function onSubmit(values: CreateMedicineFormData) {
         console.log("submitted", values);
         try {
             await createMedicine({ data: values }).then(() => {
@@ -382,6 +424,7 @@ function MedicineForm() {
                                         <Textarea
                                             placeholder="Optional description..."
                                             {...field}
+                                            value={field?.value ?? ""}
                                         />
                                     </FormControl>
                                     <FormMessage />

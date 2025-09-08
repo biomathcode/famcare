@@ -1,5 +1,4 @@
 import {
-    EventCalendar,
     type CalendarEvent,
     // type EventColor,
 } from "~/components/event-calendar";

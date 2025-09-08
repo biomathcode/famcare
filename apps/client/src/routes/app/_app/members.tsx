@@ -4,8 +4,6 @@ import { createServerFn } from '@tanstack/react-start'
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-
 import {
     Form,
     FormField,
@@ -35,12 +33,15 @@ import { createInsertSchema } from "drizzle-zod";
 const memberSchema = createInsertSchema(member, {
     dob: z.string(),
     conditions: z.string().optional(), // Expect stringified JSON
-
 })
 
 
 export type memberFormData = z.infer<typeof memberSchema>;
 
+
+export const memberDeleteSchema = z.object({
+    id: z.string(),
+});
 
 export const createMembers = createServerFn({ method: 'POST' })
     .validator(memberSchema)
@@ -63,6 +64,7 @@ export const getMembers = createServerFn({ method: "GET" })
 
 
 export const deleteMember = createServerFn({ method: "POST" })
+    .validator(memberDeleteSchema)
     .handler(async ({ data }) => {
         if (!data || !data.id) {
             throw new Error("Member id is required for deletion");
@@ -112,7 +114,7 @@ function RouteComponent() {
         console.log('submitted', values);
         try {
             await createMembers({
-                data: { ...values, userId: user?.id },
+                data: { ...values, userId: user?.id || ' ' },
             });
 
             toast.success("Member added successfully");
@@ -140,7 +142,7 @@ function RouteComponent() {
     return (
         <div className=" p-6 w-full flex md:flex-row justify-around gap-2 flex-col">
             <MembersCards
-                members={members}
+                members={members as memberFormData[]}
                 handleDelete={handleDelete}
 
             />
@@ -236,7 +238,7 @@ function RouteComponent() {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Gender</FormLabel>
-                                    <Select onValueChange={field.onChange} value={field.value}>
+                                    <Select onValueChange={field.onChange} value={field?.value ?? " "}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Select gender" />
@@ -278,7 +280,7 @@ function RouteComponent() {
 
 
 
-export function MembersCards({ members, handleDelete }: { members: MemberInput[], handleDelete: (id: string) => void }) {
+export function MembersCards({ members, handleDelete }: { members: memberFormData[], handleDelete: (id: string) => void }) {
 
     return (
         <div className="flex flex-col gap-2 p-2 flex-wrap w-2/3">
@@ -321,7 +323,7 @@ export function MembersCards({ members, handleDelete }: { members: MemberInput[]
                             <Button
                                 variant="destructive"
                                 size="sm"
-                                onClick={() => handleDelete(member.id)}
+                                onClick={() => handleDelete(member.id || '')}
                             >
                                 <Trash2 className="w-4 h-4 mr-1" /> Delete
                             </Button>

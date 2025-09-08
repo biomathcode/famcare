@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -222,7 +223,11 @@ function RouteComponent() {
                                             <Input
                                                 type="text"
                                                 placeholder="Additional note"
-                                                {...field}
+                                                value={field?.value ?? " "}
+                                                onChange={field.onChange}
+                                                onBlur={field.onBlur}
+                                                name={field.name}
+                                                ref={field.ref}
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -245,7 +250,7 @@ function RouteComponent() {
 }
 
 
-const SleepLayout = ({ members }) => {
+const SleepLayout = ({ members }: { members: any }) => {
 
     const timeline = ['12am', "1am", "2am", "4am", "3am", "5am", "6am", "7am", "8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm", "10pm", '11pm']
 
@@ -261,7 +266,7 @@ const SleepLayout = ({ members }) => {
                     </div>
 
                     {
-                        members.map((member) =>
+                        members.map((member: any) =>
 
                             <div key={member.id} className="flex ">
                                 <div className="flex gap-2 items-center ">

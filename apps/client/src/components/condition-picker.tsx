@@ -113,7 +113,7 @@ export function ConditionPicker({
                             <CommandEmpty>No condition found.</CommandEmpty>
                         ) : (
                             <CommandGroup>
-                                {conditions.map((cond) => (
+                                {conditions.map((cond: string) => (
                                     <CommandItem
                                         key={cond}
                                         value={cond}

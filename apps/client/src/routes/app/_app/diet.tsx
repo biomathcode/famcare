@@ -20,23 +20,28 @@ import { api } from "~/lib/api";
 
 import { MemberPicker } from "@/components/member-picker";
 import { LoadingScreen } from "~/components/loading-screen";
+import { createInsertSchema } from "drizzle-zod";
+
+const dietSchema = createInsertSchema(diet)
+
+type DietInput = z.infer<typeof dietSchema>;
 
 
 
 export const createDiet = createServerFn({
   method: "POST",
   response: "raw",
-}).handler(async ({ data }) => {
-  if (!data.userId) throw new Error("userId is required");
-  await api.diets.create(data);
-});
+})
+  .validator(dietSchema)
+  .handler(async ({ data }) => {
+    if (!data.userId) throw new Error("userId is required");
+    return await api.diets.create(data);
+  });
 
 export const getDiets = createServerFn({ method: "GET" }).handler(async () => {
   const diets = await api.diets.findAll();
   return diets;
 });
-
-type DietInput = z.infer<typeof diet>;
 
 export const Route = createFileRoute("/app/_app/diet")({
   component: RouteComponent,
@@ -125,7 +130,7 @@ function RouteComponent() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Meal Type</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select onValueChange={field.onChange} value={field?.value ?? " "}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select meal type" />
@@ -150,7 +155,13 @@ function RouteComponent() {
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="What did you eat?" {...field} />
+                  <Textarea placeholder="What did you eat?"
+
+                    {...field}
+                    value={field?.value ??
+                      ""
+                    }
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
