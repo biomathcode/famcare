@@ -23,7 +23,7 @@ function RouteComponent() {
   console.log("events", event);
 
   const events: CalendarEvent[] = (event as any[]).map((e, ind) => ({
-    id: ind,
+    id: e.id,
     title: e.title,
     description: e.description,
     start: new Date(e.startTime),  // Assuming backend sends startTime as ISO string

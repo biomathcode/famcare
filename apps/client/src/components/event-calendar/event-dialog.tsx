@@ -46,6 +46,8 @@ import {
 import { createEvent, updateEvent, deleteEvent } from '~/lib/db/queries'
 import authClient from "~/lib/auth/auth-client";
 
+//TODO: Drag and Drop updates 
+
 interface EventDialogProps {
   event: CalendarEvent | null;
   isOpen: boolean;
@@ -203,7 +205,19 @@ export function EventDialog({
 
     onSave(payload);
 
-    await createEvent({ data: dbPayload })
+    try {
+      if (event?.id) {
+        // Update existing event
+        await updateEvent({ data: dbPayload });
+      } else {
+        // Create new event
+        await createEvent({ data: dbPayload });
+      }
+    } catch (err) {
+      console.error("Failed to save event:", err);
+      setError("Failed to save event");
+    }
+
   };
 
   const handleDelete = async () => {
