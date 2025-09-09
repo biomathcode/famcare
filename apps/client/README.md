@@ -45,6 +45,9 @@ Creating vector embeddings for the chunks
 Saving the vector embeddings in the vector db
 Searching the vector db using the query
 
+![Vector Rag](./public/vector_rag.png)
+
+
 
 ```ts
 import { mysqlTable, varchar, text, float, int } from "drizzle-orm/mysql-core";

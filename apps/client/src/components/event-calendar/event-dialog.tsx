@@ -5,7 +5,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { RiCalendarLine, RiDeleteBinLine } from "@remixicon/react";
-import { format, isBefore } from "date-fns";
+import { format, isBefore, parse } from "date-fns";
 
 import type { CalendarEvent, EventColor } from "~/components/event-calendar";
 import { cn } from "~/lib/utils";
@@ -43,6 +43,9 @@ import {
   DefaultEndHour,
 } from "~/components/event-calendar/constants";
 
+import { createEvent, updateEvent, deleteEvent } from '~/lib/db/queries'
+import authClient from "~/lib/auth/auth-client";
+
 interface EventDialogProps {
   event: CalendarEvent | null;
   isOpen: boolean;
@@ -71,6 +74,10 @@ export function EventDialog({
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
 
+
+
+  const {
+    data: session, } = authClient.useSession()
   // Debug log to check what event is being passed
   useEffect(() => {
     console.log("EventDialog received event:", event);
@@ -133,7 +140,7 @@ export function EventDialog({
     return options;
   }, []); // Empty dependency array ensures this only runs once
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const start = new Date(startDate);
     const end = new Date(endDate);
 
@@ -171,7 +178,7 @@ export function EventDialog({
     // Use generic title if empty
     const eventTitle = title.trim() ? title : "(no title)";
 
-    onSave({
+    const payload = {
       id: event?.id || "",
       title: eventTitle,
       description,
@@ -180,12 +187,35 @@ export function EventDialog({
       allDay,
       location,
       color,
-    });
+    }
+
+    const dbPayload = {
+      id: event?.id || undefined, // Optional when creating
+      userId: session?.user?.id || " ",
+      title: eventTitle,
+      description,
+      startTime: format(start, "yyyy-MM-dd HH:mm:ss"), // Local time formatted
+      endTime: format(end, "yyyy-MM-dd HH:mm:ss"),     // Local time formatted
+      visibility: "private",
+      location,
+      color,
+    };
+
+    onSave(payload);
+
+    await createEvent({ data: dbPayload })
   };
 
-  const handleDelete = () => {
-    if (event?.id) {
+  const handleDelete = async () => {
+    if (!event?.id) return;
+
+    try {
+      await deleteEvent({ data: { id: event.id } });
       onDelete(event.id);
+      onClose();
+    } catch (err) {
+      console.error(err);
+      setError("Failed to delete event");
     }
   };
 

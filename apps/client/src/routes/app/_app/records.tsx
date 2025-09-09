@@ -113,11 +113,11 @@ export const Route = createFileRoute("/app/_app/records")({
     loader: async () => {
         const files = await getFiles();
 
-        const chunks = await getChunks();
+        // const chunks = await getChunks();
 
         return {
             files,
-            chunks
+            // chunks
         }
 
 
@@ -152,15 +152,25 @@ function RouteComponent() {
                     Created: {new Date(Date.parse(file.createdAt)).toLocaleString()
                     }
                 </p>
-                <p
-                    className={`text-sm font-medium ${file.status === "ok" ? "text-green-600" : "text-red-600"
-                        }`}
-                >
-                    Status: {file.status}
-                </p>
-                <p>
+
+                {file.type === 'application/pdf' ? (
+                    <iframe
+                        src={file.fileUrl}
+                        width="100%"
+                        height="600"
+                        className="border"
+                    ></iframe>
+                ) : file.type.startsWith('image/') ? (
+                    <img src={file.fileUrl} alt={file.title} className="max-w-full h-auto border" />
+                ) : (
+                    <a href={file.fileUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
+                        Open File
+                    </a>
+                )}
+
+                {/* <p>
                     No. of chunks for this file {chunks.filter((e) => e.mediaId === file.id).length}
-                </p>
+                </p> */}
             </div>
         ))}
 

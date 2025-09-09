@@ -593,13 +593,13 @@ const sampleEvents: CalendarEvent[] = [
 ];
 
 export default function Component({ initialEvents = sampleEvents }: { initialEvents?: CalendarEvent[] }) {
-  const [events, setEvents] = useState<CalendarEvent[]>(healthSampleEvents || initialEvents);
+  const [events, setEvents] = useState<CalendarEvent[]>(initialEvents);
   const { isColorVisible } = useCalendarContext();
 
   // Filter events based on visible colors
-  const visibleEvents = useMemo(() => {
-    return events.filter((event) => isColorVisible(event.color));
-  }, [events, isColorVisible]);
+  // const visibleEvents = useMemo(() => {
+  //   return events.filter((event) => isColorVisible(event.color));
+  // }, [events, isColorVisible]);
 
   const handleEventAdd = (event: CalendarEvent) => {
     setEvents([...events, event]);
@@ -617,9 +617,11 @@ export default function Component({ initialEvents = sampleEvents }: { initialEve
     setEvents(events.filter((event) => event.id !== eventId));
   };
 
+  console.log('bigCalendar', events)
+
   return (
     <EventCalendar
-      events={visibleEvents}
+      events={events}
       onEventAdd={handleEventAdd}
       onEventUpdate={handleEventUpdate}
       onEventDelete={handleEventDelete}
