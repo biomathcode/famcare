@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { createServerFn } from '@tanstack/react-start'
 
-import { api } from "@/lib/api";
+import { getEvents, getMembers } from "~/lib/db/queries";
 
 // UI Elements 
 // Total Members
@@ -10,31 +9,51 @@ import { api } from "@/lib/api";
 // Upcoming Events
 // 
 
+//TODO: Show the List of Members
+//TODO: Show Upcoming Events
+//TODO: Show Sleep Cycles
+//TODO: Show Medicines
+//TODO: Show Records
 
-export const getUsers = createServerFn().handler(async () => {
-    const users = await api.users.findAll();
-    return users;
-});
+
+
 
 export const Route = createFileRoute("/app/_app/home")({
     component: RouteComponent,
     loader: async () => {
-        const users = await getUsers();
-        return { users };
+        const members = await getMembers()
+        const events = await getEvents()
+        return {
+            members,
+            events
+        }
     },
 });
 
 function RouteComponent() {
-    const { users } = Route.useLoaderData();
+    const { members,
+        events } = Route.useLoaderData();
 
     return <div className="p-4">
-        <h1 className="text-xl font-bold mb-4">Users</h1>
+        <h1 className="text-xl font-bold mb-4">Members</h1>
+        <div>
+            {JSON.stringify(members)}
+            <div>
+                {members.map((e) => {
+                    return (
+                        <div key={e.id}>
+                            {e.name}
+                        </div>
+                    )
+                })}
+            </div>
+        </div>
+        <div>
+            Events:
+            {JSON.stringify(events)}
+        </div>
         <ul className="space-y-2">
-            {users.map((user) => (
-                <li key={user.id} className="p-2 border rounded">
-                    {user.name} ({user.email})
-                </li>
-            ))}
+
         </ul>
     </div>
 }

@@ -43,7 +43,7 @@ function UserProfilePopup({ data, children }: UserProfilePopupProps) {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader className="text-center space-y-4">
-          <div className="flex flex-col items-center space-y-2">
+          <div className="flex flex-col items-center space-y-2 text-center">
             <Avatar className="h-16 w-16">
               {data?.user.image && (
                 <AvatarImage
