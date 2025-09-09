@@ -4,6 +4,7 @@ import {
 
     chatMessage,
     event,
+    medicine,
     member,
     sleepGoal,
 
@@ -33,6 +34,20 @@ export const getMembers = createServerFn({ method: "GET" }).handler(async () => 
     const members = await api.members.findAll();
     return members;
 });
+
+export const getMedicineByMemberId = createServerFn({ method: "POST" })
+    .validator(z.object({ memberId: z.string() }))
+    .handler(async ({ data }) => {
+
+
+        const medicines = await db.select().from(medicine).where(eq(medicine.memberId, data.memberId));
+
+
+        console.log("medicines By memberId", data.memberId, medicines,)
+
+
+        return medicines;
+    });
 
 
 export const getSleepGoals = createServerFn({ method: "GET" })

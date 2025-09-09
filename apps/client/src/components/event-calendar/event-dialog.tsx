@@ -5,7 +5,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { RiCalendarLine, RiDeleteBinLine } from "@remixicon/react";
-import { format, isBefore, parse } from "date-fns";
+import { format, isBefore } from "date-fns";
 
 import type { CalendarEvent, EventColor } from "~/components/event-calendar";
 import { cn } from "~/lib/utils";

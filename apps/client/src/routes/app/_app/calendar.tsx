@@ -36,18 +36,17 @@ function RouteComponent() {
   console.log('events', events)
 
   return <div>{events &&
-    <CalendarProvider>
-      <BigCalendar initialEvents={[...events,
-      {
-        id: "test",
-        title: "Test Event",
-        start: new Date(),
-        end: new Date(new Date().getTime() + 60 * 60 * 1000),
-        allDay: false,
-        color: "blue",
-      }
-      ]} />
+    <BigCalendar initialEvents={[...events,
+    {
+      id: "test",
+      title: "Test Event",
+      start: new Date(),
+      end: new Date(new Date().getTime() + 60 * 60 * 1000),
+      allDay: false,
+      color: "blue",
+    }
+    ]} />
 
-    </CalendarProvider>
+
   }</div>;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { addDays, setHours, setMinutes, getDay } from "date-fns";
 import { useCalendarContext } from "~/components/event-calendar/calendar-context";
 
@@ -9,7 +9,6 @@ import {
   type CalendarEvent,
   type EventColor,
 } from "~/components/event-calendar";
-import { healthSampleEvents } from "./events";
 
 // Etiquettes data for calendar filtering
 export const etiquettes = [
@@ -596,10 +595,10 @@ export default function Component({ initialEvents = sampleEvents }: { initialEve
   const [events, setEvents] = useState<CalendarEvent[]>(initialEvents);
   const { isColorVisible } = useCalendarContext();
 
-  // Filter events based on visible colors
-  // const visibleEvents = useMemo(() => {
-  //   return events.filter((event) => isColorVisible(event.color));
-  // }, [events, isColorVisible]);
+  //Filter events based on visible colors
+  const visibleEvents = useMemo(() => {
+    return events.filter((event) => isColorVisible(event.color));
+  }, [events, isColorVisible]);
 
   const handleEventAdd = (event: CalendarEvent) => {
     setEvents([...events, event]);
@@ -621,7 +620,7 @@ export default function Component({ initialEvents = sampleEvents }: { initialEve
 
   return (
     <EventCalendar
-      events={events}
+      events={visibleEvents}
       onEventAdd={handleEventAdd}
       onEventUpdate={handleEventUpdate}
       onEventDelete={handleEventDelete}
