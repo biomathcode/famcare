@@ -14,6 +14,7 @@ import {
     chatSession,
     media,
     mediaChunks,
+    event,
 } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
@@ -100,4 +101,5 @@ export const api = {
     chatSession: createCrud(chatSession),
     media: createCrud(media),
     mediaChunks: createCrud(mediaChunks),
+    events: createCrud(event)
 };

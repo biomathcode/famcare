@@ -38,9 +38,11 @@ export const getSleepGoals = createServerFn({ method: "GET" }).handler(
             .from(sleepGoal)
             .leftJoin(member, eq(sleepGoal.memberId, member.id));
 
-
-
-
         return goals;
     }
 );
+
+export const getEvents = createServerFn().handler(async () => {
+    const events = await api.events.findAll();
+    return events;
+});
