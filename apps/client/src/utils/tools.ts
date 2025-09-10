@@ -4,10 +4,12 @@ import { api } from "~/lib/api";
 import { db } from "~/lib/db";
 import { diet, exerciseGoal, mediaChunks, medicine } from "~/lib/db/schema";
 import { sql } from "drizzle-orm";
+import { addMinutes, format } from "date-fns";
+
 
 //TODO: Add tools for getting data from openFDA
 //TODO: Add tools for save diet, exercise, sleep, medicines plan for members
-//TODO: 
+//TODO: FIX event timezone event
 
 
 const getMembers = tool({
@@ -20,6 +22,45 @@ const getMembers = tool({
         return JSON.parse(JSON.stringify(members));
     }
 })
+
+const getDiets = tool({
+    description: "Use this tool to get all the diets from the database",
+    inputSchema: z.object({}),
+    execute: async () => {
+        const diets = await api.diets.findAll();
+        return JSON.stringify(diets);
+    }
+})
+
+
+const getExercises = tool({
+    description: "Use this tool to get all the exercises from the database",
+    inputSchema: z.object({}),
+    execute: async () => {
+        const exercise = await api.exerciseGoals.findAll();
+        return JSON.stringify(exercise);
+    }
+})
+
+
+const getMedicine = tool({
+    description: "Use this tool to get all the medicines from the database",
+    inputSchema: z.object({}),
+    execute: async () => {
+        const exercise = await api.medicines.findAll();
+        return JSON.stringify(exercise);
+    }
+})
+
+const getMedicineSchedule = tool({
+    description: "Use this tool to get all the medicineSchedules from the database",
+    inputSchema: z.object({}),
+    execute: async () => {
+        const exercise = await api.medicineSchedules.findAll();
+        return JSON.stringify(exercise);
+    }
+})
+
 
 
 
@@ -34,7 +75,7 @@ export const createExerciseGoalTool = (userId: string) =>
             unit: z.string(),
         }),
         execute: async ({ memberId, type, target, unit }) => {
-            const [inserted] = await db
+            return await db
                 .insert(exerciseGoal)
                 .values({
                     userId, // ✅ injected from auth context
@@ -43,7 +84,6 @@ export const createExerciseGoalTool = (userId: string) =>
                     target,
                     unit,
                 })
-            return inserted
         },
     })
 
@@ -66,16 +106,25 @@ export const createDietTool = (userId: string) =>
         execute: async ({ memberId, mealType, description, calories }) => {
             console.log("Tool createDiet called ✅");
 
-            const [inserted] = await db
-                .insert(diet)
-                .values({
-                    userId, // from auth context
-                    memberId,
-                    mealType,
-                    description,
-                    calories,
-                })
-            return inserted;
+
+            console.log('diet', memberId, mealType, description, calories);
+
+            try {
+
+                return await db
+                    .insert(diet)
+                    .values({
+                        userId, // from auth context
+                        memberId,
+                        mealType,
+                        description,
+                        calories,
+                    })
+
+            } catch (e) {
+                console.error('Error in createDietTool', e);
+            }
+
         },
     });
 
@@ -93,7 +142,7 @@ export const createMedicineTool = (userId: string) =>
         execute: async ({ memberId, name, description, dosage }) => {
             console.log("Tool createMedicine called ✅");
 
-            const [inserted] = await db
+            return await db
                 .insert(medicine)
                 .values({
                     userId, // injected from auth context
@@ -104,7 +153,6 @@ export const createMedicineTool = (userId: string) =>
                 })
 
 
-            return inserted;
         },
     });
 
@@ -220,18 +268,93 @@ export const findRelevantContent = tool({
 
 
 
+const eventColorEnum = z.enum(["blue", "orange", "violet", "rose", "emerald"]);
+const visibilityEnum = z.enum(["public", "private"]);
+
+export const createEventsTool = (userId: string) =>
+    tool({
+        description: "Create a new event for a member",
+        inputSchema: z.object({
+            memberId: z.string().describe("The ID of the member"),
+            title: z.string().describe("Title of the event"),
+            description: z.string().describe("Detailed description of the event"),
+            startTime: z.string().describe("yyyy-MM-dd HH:mm:ss formate of event start time"),
+            endTime: z.string().describe("yyyy-MM-dd HH:mm:ss formate of event end time"),
+            allDay: z.boolean().optional().describe("Is this an all-day event"),
+            visibility: visibilityEnum
+                .optional()
+                .default("private")
+                .describe("Event visibility (public or private)"),
+            location: z.string().optional().default("").describe("Event location"),
+            color: eventColorEnum
+                .optional()
+                .default("blue")
+                .describe("Color for event display"),
+        }),
+        execute: async ({
+            memberId,
+            title,
+            description,
+            startTime,
+            endTime,
+            visibility,
+            location,
+            color,
+        }) => {
+            console.log("Tool createEvents called ✅", {
+                memberId,
+                title,
+                description,
+                startTime,
+                endTime,
+                visibility,
+                location,
+                color,
+            });
+
+
+
+            const eventData = {
+                userId,       // Injected from auth context
+                memberId,
+                title,
+                description,
+                startTime,  // Correct IST format
+                endTime,
+                visibility,
+                location,
+                color,
+            };
+
+            console.log("eventdata after parsing", eventData)
+
+            try {
+                const newEvent = await api.events.create(eventData);
+                return newEvent;
+            } catch (error) {
+                console.error("Error in createEventsTool:", error);
+                throw new Error("Failed to create event");
+            }
+        },
+    });
+
 
 export default async function getTools(ctx: { userId: string }) {
     return {
         getMembers,
+        getDiets,
+        getExercises,
+        getMedicine,
+        getMedicineSchedule,
 
-        createExerciseGoal: createExerciseGoalTool(ctx.userId),
-        createDietTool: createDietTool(ctx.userId),
-        createMedicineTool: createMedicineTool(ctx.userId),
         getDrugLabel: getDrugLabelTool,
         getAdverseEvents: getAdverseEventsTool,
         getDrugRecalls: getDrugRecallsTool,
+        createExerciseGoal: createExerciseGoalTool(ctx.userId),
+        createDietTool: createDietTool(ctx.userId),
+        createMedicineTool: createMedicineTool(ctx.userId),
         findRelevantContent: findRelevantContent,
+        createEvents: createEventsTool(ctx.userId)
     };
 }
 

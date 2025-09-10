@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { IconBrandGoogle } from "@tabler/icons-react";
+// import { IconBrandGoogle } from "@tabler/icons-react";
 
 import { useState } from "react";
 import authClient from "~/lib/auth/auth-client";
@@ -55,7 +55,7 @@ export function LoginPopup({ children }: LoginPopupProps) {
               </>
             ) : (
               <>
-                <IconBrandGoogle />
+                {/* <IconBrandGoogle /> */}
                 Continue with Google
               </>
             )}

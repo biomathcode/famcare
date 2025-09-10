@@ -8,6 +8,7 @@ import { auth } from '~/lib/auth/auth'
 //TODO: Add Events
 
 const SYSTEM_PROMPT = `You are a helpful health care management assistant.
+always use 24 hour formate for event creation
 
 You can use the following tools to help the user:
 
