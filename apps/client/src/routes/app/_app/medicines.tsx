@@ -41,9 +41,7 @@ import { useState } from "react";
 import { deleteMedicine, getMedicines } from "~/lib/db/queries";
 import { format } from "date-fns";
 
-//TODO: Add Options for scheduling like daily, weekly, monthly
-//TODO: Add Dosage options like daily 2times, weekly -> set day of the week, Monthly -> Select Dates
-//TODO: 
+
 
 const createMedicineSchema = createInsertSchema(medicine)
 

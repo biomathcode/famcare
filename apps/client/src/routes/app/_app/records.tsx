@@ -34,7 +34,6 @@ import { useRouter } from "@tanstack/react-router";
 //Step 5 -> Creating Vectors & Saving to db 
 
 
-//TODO: Add Table here 
 
 
 

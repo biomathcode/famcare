@@ -170,7 +170,7 @@ function SignupForm() {
               className="w-full"
               type="button"
               // disabled={isLoading}
-              disabled={isLoading} // TODO disabled just for the preview deployment at https://tanstarter.nize.ph
+              disabled={isLoading}
               onClick={() =>
                 authClient.signIn.social(
                   {

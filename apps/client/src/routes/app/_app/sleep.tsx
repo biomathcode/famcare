@@ -92,18 +92,6 @@ export const createSleepGoal = createServerFn({
     });
 
 
-//TODO: Add Woke up and Slept one Time, date and member and display to show the sleep cycle of each of the members
-//TODO: Idea here to record sleep timing of each and every member for the member
-
-//TODO: show radial chart for everyday of each of the members -> percentage of sleep complete for this members
-//TODO:  
-//TODO: show the sleep duration at he light of the startTime 
-
-//TODO: Create a Widget to show and record the sleep cycles of members
-//TODO: Radial Chart to show if members are meeting their targe sleeps 
-
-
-
 
 
 export function ChartAreaInteractive({ data }) {

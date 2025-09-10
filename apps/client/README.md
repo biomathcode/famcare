@@ -19,13 +19,19 @@ Click Create Chat -> db chat session in created -> incremental save the chat_mes
 -[x] Add User Settings
 -[x] Create Exercise plan 
 -[x] Create Diet plan
--[] Add Calendar View - p0
--[] Add validation in forms - p0
+-[x] Add Calendar View - p0
+-[x] Add validation in forms - p0
+
+-[] Refactor and save the data in the chat system backend and not on the frontend
 -[] Add loading states - p1
 -[] Add error handling - p2
 -[] Add Support for input files in the chat system- https://ai-sdk.dev/cookbook/guides/multi-modal-chatbot - p1
--[x] Refactor and save the data in the chat system backend and not on the frontend
 -[] Add Q/A system using the uploaded Files - p1
+-[] Add Onboarding flow - p1
+-[] Add Data isolation By userId - p0
+
+
+
 
 
 

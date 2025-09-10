@@ -7,10 +7,6 @@ import { sql } from "drizzle-orm";
 import { addMinutes, format } from "date-fns";
 
 
-//TODO: Add tools for getting data from openFDA
-//TODO: Add tools for save diet, exercise, sleep, medicines plan for members
-//TODO: FIX event timezone event
-
 
 const getMembers = tool({
     description: "Use this tool to get all members from the database",

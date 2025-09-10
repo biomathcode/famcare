@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 import {
@@ -57,16 +58,21 @@ export const Route = createFileRoute("/app/_app/exercise")({
 
 
 function RouteComponent() {
-  const context = Route.useRouteContext();
   const { goals } = Route.useLoaderData();
-
-
 
 
   return (
     <div className="p-6 w-full">
-      <div className="flex w-full justify-between  ">
-        Add Exercise
+      <div className="flex w-full justify-between px-4 py-2 ">
+        <div className="flex flex-col ">
+          <div className="text-2xl font-bold">
+            Add Exercise
+          </div>
+          <div>
+            See and Set Your Exercise Routine
+          </div>
+        </div>
+
         <ExerciseForm />
       </div>
       <MemberExercisesGrid data={goals} />
