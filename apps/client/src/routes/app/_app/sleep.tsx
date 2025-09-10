@@ -338,8 +338,8 @@ export const Route = createFileRoute("/app/_app/sleep")({
     component: RouteComponent,
     loader: async () => {
         const goals = await getSleepGoals();
-        const members = await getMembers();
-        return { goals, members };
+
+        return { goals };
     },
     pendingComponent: LoadingScreen,
 });
@@ -491,8 +491,7 @@ function AddSleepDialog() {
 
 function RouteComponent() {
     const context = Route.useRouteContext();
-    const { goals, members } = Route.useLoaderData();
-    const user = context.user;
+    const { goals } = Route.useLoaderData();
 
 
 

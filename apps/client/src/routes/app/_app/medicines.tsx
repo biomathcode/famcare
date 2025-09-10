@@ -14,15 +14,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Badge } from '@/components/ui/badge';
 import { toast } from "sonner";
 import { medicine, medicineSchedule } from "~/lib/db/schema";
 import { api } from "~/lib/api";
 import { MemberPicker } from "@/components/member-picker";
 import { MedicinePicker } from "~/components/medicine-picker";
 import { LoadingScreen } from "~/components/loading-screen";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 
 import {
     Card,
+    CardAction,
     CardContent,
     CardDescription,
     CardHeader,
@@ -35,6 +38,8 @@ import { MemberMedicinePicker } from "~/components/member-medicine-picker";
 
 import { Calendar } from "~/components/ui/calendar";
 import { useState } from "react";
+import { deleteMedicine, getMedicines } from "~/lib/db/queries";
+import { format } from "date-fns";
 
 //TODO: Add Options for scheduling like daily, weekly, monthly
 //TODO: Add Dosage options like daily 2times, weekly -> set day of the week, Monthly -> Select Dates
@@ -86,26 +91,13 @@ export const createMedicineSchedule = createServerFn({
         return await api.medicineSchedules.create(payload);
     })
 
-export const getMedicines = createServerFn({ method: "GET" }).handler(
-    async () => {
-        const medicines = await api.medicines.findAll();
-        return medicines;
-    }
-);
-
-
-export const Route = createFileRoute("/app/_app/medicines")({
-    component: RouteComponent,
-    loader: async () => {
-        const medicines = await getMedicines();
-        return { medicines };
-    },
-    pendingComponent: LoadingScreen,
-});
 
 
 
-function MedicineSchedule() {
+
+
+
+function MedicineScheduleForm() {
 
 
     const context = Route.useRouteContext();
@@ -170,13 +162,20 @@ function MedicineSchedule() {
 
 
     return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button>Add Medicine Schedule</Button>
+            </DialogTrigger>
 
-        <Card className="w-full max-w-sm gap-0">
-            <CardHeader className="m-0">
-                <CardTitle>Add Medicine Schedule</CardTitle>
+            <DialogContent className="max-w-md">
+                <DialogHeader>
+                    <DialogTitle>Add Medicine Schedule</DialogTitle>
+                    <DialogDescription>
+                        Add A Schedule to your Medicines
+                    </DialogDescription>
+                </DialogHeader>
 
-            </CardHeader>
-            <CardContent>
+
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
@@ -418,9 +417,8 @@ function MedicineSchedule() {
                 </Form>
 
 
-            </CardContent>
-
-        </Card>
+            </DialogContent>
+        </Dialog>
     )
 }
 
@@ -458,15 +456,18 @@ function MedicineForm() {
     }
 
     return (
-        <Card className="w-full max-w-sm">
-            <CardHeader>
-                <CardTitle>Add Medicine</CardTitle>
-                <CardDescription>
-                    Add your Medicine
-                </CardDescription>
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button>Add Medicine</Button>
+            </DialogTrigger>
 
-            </CardHeader>
-            <CardContent>
+            <DialogContent className="max-w-md">
+                <DialogHeader>
+                    <DialogTitle>Add Medicine</DialogTitle>
+                    <DialogDescription>
+                        Add your Medicine                            </DialogDescription>
+                </DialogHeader>
+
                 <Form {...form}>
                     <form
                         action={createMedicine.url}
@@ -535,45 +536,128 @@ function MedicineForm() {
                         </Button>
                     </form>
                 </Form>
-            </CardContent>
-        </Card>
+            </DialogContent>
+        </Dialog>
     )
 }
+
+
+
+export const Route = createFileRoute("/app/_app/medicines")({
+    component: RouteComponent,
+    loader: async () => {
+        const medicines = await getMedicines();
+        return { medicines };
+    },
+    pendingComponent: LoadingScreen,
+});
 
 
 
 
 function RouteComponent() {
     const { medicines } = Route.useLoaderData();
+    console.log(medicines)
     return (
-        <div className=" p-6">
-
-            <div className="flex gap-4">
-                <MedicineForm />
-
-                <MedicineSchedule />
-                <div>
-                    <h2 className="text-xl font-semibold mb-4">Add Medicine</h2>
-
-
-                    <ul className="space-y-2">
-                        {medicines.map((m) => (
-                            <li key={m.id} className="p-2 border rounded">
-                                <p className="font-medium">{m.name}</p>
-                                {m.description && <p className="text-sm">{m.description}</p>}
-                                {m.dosage && (
-                                    <p className="text-sm text-muted-foreground">Dosage: {m.dosage}</p>
-                                )}
-                            </li>
-                        ))}
-                    </ul>
-
-                </div>
-
-            </div>
+        <div className=" p-6 w-full">
+            <MemberMedicinesGrid data={medicines} />
+        </div>
+    );
+}
 
 
 
+const groupByMember = (data: any) => {
+    const map = new Map();
+    data.forEach((item) => {
+        const memberId = item.member.id;
+        if (!map.has(memberId)) {
+            map.set(memberId, { member: item.member, medicines: [] });
+        }
+        map.get(memberId).medicines.push({
+            medicine: item.medicine,
+            schedule: item.medicineSchedule,
+        });
+    });
+    return Array.from(map.values());
+};
+
+
+
+
+export function MemberMedicinesGrid({ data }: any) {
+    const grouped = groupByMember(data);
+
+    const router = useRouter()
+
+    return (
+        <div className="flex flex-col  gap-4 w-full">
+            {grouped.map(({ member, medicines }) => (
+                <Card key={member.id}>
+                    <CardHeader className="flex w-full justify-between">
+                        <div className="flex items-center gap-3">
+                            <img
+                                src={member.imageUrl}
+                                alt={member.name}
+                                className="w-12 h-12 rounded-full object-cover"
+                            />
+                            <CardTitle>{member.name}</CardTitle>
+                        </div>
+                        <CardAction className="flex gap-2">
+                            <MedicineForm />
+                            <MedicineScheduleForm />
+
+                        </CardAction>
+                    </CardHeader>
+                    <CardContent className="w-full">
+                        <div className="space-y-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {medicines.map(({ medicine, schedule }) => (
+                                <div
+                                    key={medicine.id}
+                                    className="p-2 border rounded-md bg-muted flex flex-col gap-1 relative"
+                                >
+                                    <Button
+                                        onClick={async () => {
+                                            await deleteMedicine({ data: { id: medicine.id } })
+                                            router.invalidate()
+                                        }}
+                                        className="absolute right-2 top-2" variant="destructive">
+                                        Delete
+                                    </Button>
+                                    <div className="font-semibold">{medicine.name || "No Name"}</div>
+                                    {medicine.description && <div className="text-sm">{medicine.description}</div>}
+
+                                    {schedule ? (
+                                        <div className="flex flex-wrap gap-2 mt-1">
+                                            <Badge variant="secondary">
+                                                {schedule.frequency} ({schedule.timesPerDay}x/day)
+                                            </Badge>
+                                            {schedule.recurrenceRule.daysOfWeek && (
+                                                <Badge variant="outline">
+                                                    Days: {schedule.recurrenceRule.daysOfWeek.join(", ")}
+                                                </Badge>
+                                            )}
+                                            {schedule.recurrenceRule.customDates && (
+                                                <Badge variant="outline">
+                                                    Dates:{" "}
+                                                    {schedule.recurrenceRule.customDates
+                                                        .map((d: string) => format(new Date(d), "dd MMM"))
+                                                        .join(", ")}
+                                                </Badge>
+                                            )}
+                                            <Badge variant="outline">
+                                                Dosage: {schedule.dosage} {schedule.unit}
+                                            </Badge>
+                                        </div>
+                                    ) : (
+                                        <div className="text-sm text-muted-foreground mt-1">No schedule</div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
+            ))}
         </div>
     );
 }
