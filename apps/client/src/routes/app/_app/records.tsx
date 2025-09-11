@@ -235,12 +235,12 @@ export function FilesTable({ files }: FilesTableProps) {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {files.map((file) => (
+                {files?.map((file) => (
                     <TableRow key={file.id}>
-                        <TableCell>{file.title}</TableCell>
+                        <TableCell >{file.title}</TableCell>
                         <TableCell className="capitalize">{file.type}</TableCell>
                         <TableCell>{file.size.toFixed(2)}</TableCell>
-                        <TableCell>{format(new Date(file.createdAt), "PPP p")}</TableCell>
+                        <TableCell>{format(new Date(file.createdAt), "dd-MM-yyyy")}</TableCell>
                         <TableCell>
                             <AlertDialog>
                                 <AlertDialogTrigger asChild>

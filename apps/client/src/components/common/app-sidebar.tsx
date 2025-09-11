@@ -30,6 +30,7 @@ import { etiquettes } from "~/components/big-calendar";
 import { Checkbox } from "../ui/checkbox";
 import { useCalendarContext } from "../event-calendar/calendar-context";
 import { RiCheckLine } from "@remixicon/react";
+import { useLocation } from "@tanstack/react-router";
 
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -39,6 +40,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   });
 
   const { isColorVisible, toggleColorVisibility } = useCalendarContext();
+
+
+  const location = useLocation()
+
+  const showCalendarSection = location.pathname === "/app/calendar";
 
 
   return (
@@ -59,7 +65,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="no-scrollbar" >
         <NavMain />
         <Collapsible
           defaultOpen
@@ -100,8 +106,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
       </SidebarContent>
 
+
+
       <SidebarFooter>
-        <SidebarGroup className="px-1 mt-3 pt-4 border-t">
+        {showCalendarSection && <SidebarGroup className="px-1 mt-3 pt-4 ">
           <SidebarGroupLabel className="uppercase text-muted-foreground/65">
             Calendars
           </SidebarGroupLabel>
@@ -149,7 +157,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
-        </SidebarGroup>
+        </SidebarGroup>}
+
+
 
         <NavUser />
       </SidebarFooter>

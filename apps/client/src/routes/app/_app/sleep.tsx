@@ -10,6 +10,16 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 
 import { LabelList, RadialBar, RadialBarChart } from "recharts"
 
+
+import {
+    Table,
+    TableHeader,
+    TableRow,
+    TableHead,
+    TableBody,
+    TableCell,
+} from "@/components/ui/table";
+
 import {
     ChartConfig,
     ChartContainer,
@@ -238,7 +248,7 @@ export function ChartAreaInteractive({ data }) {
 
 
 
-export function ChartRadialLabel({ data }) {
+export function RadialSleepChart({ data }) {
 
     const members = Array.from(new Set(data.map((e) => e?.member?.name)));
 
@@ -494,7 +504,7 @@ function RouteComponent() {
 
 
                 <SleepCycleSummary sleepGoalsData={goals} />
-                <ChartRadialLabel data={goals} />
+                <RadialSleepChart data={goals} />
                 <AddSleepDialog />
 
 
@@ -505,8 +515,7 @@ function RouteComponent() {
     );
 }
 
-
-function SleepCycleSummary({ sleepGoalsData }) {
+export function SleepCycleSummary({ sleepGoalsData }) {
     const today = format(new Date(), "yyyy-MM-dd");
 
     // Extract all unique members
@@ -524,52 +533,53 @@ function SleepCycleSummary({ sleepGoalsData }) {
         .map(({ member }) => member.id);
 
     return (
-        <div className="space-y-6 p-4">
-            <h2 className="text-xl font-semibold">Sleep Cycle Summary</h2>
+        <div className="space-y-6 ">
+            <h2 className="text-md font-semibold py-2 px-4 bg-accent">Sleep Cycle Summary For Today</h2>
 
-            <div>
-                <h3 className="font-medium text-green-600">✅ Recorded Today:</h3>
-                {allMembers.filter(m => membersWithSleepToday.includes(m.id)).length === 0 ? (
-                    <p>No sleep records found for today.</p>
-                ) : (
-                    <ul className="list-disc list-inside">
-                        {allMembers
-                            .filter((m) => membersWithSleepToday.includes(m.id))
-                            .map((m) => (
-                                <li key={m.id} className="flex items-center space-x-2">
+            <Table className="p-4">
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>Member</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Action</TableHead>
+                    </TableRow>
+                </TableHeader>
+
+                <TableBody>
+                    {allMembers.map((member) => {
+                        const recordedToday = membersWithSleepToday.includes(member.id);
+
+                        return (
+                            <TableRow key={member.id}>
+                                <TableCell className="flex items-center space-x-2">
                                     <img
-                                        src={m.imageUrl}
-                                        alt={m.name}
+                                        src={member.imageUrl}
+                                        alt={member.name}
                                         className="h-8 w-8 rounded-full object-cover"
                                     />
-                                    <span>{m.name}</span>
-                                </li>
-                            ))}
-                    </ul>
-                )}
-            </div>
+                                    <span>{member.name}</span>
+                                </TableCell>
 
-            <div>
-                <h3 className="font-medium text-red-600">⚠️ Not Recorded Today:</h3>
-                {allMembers.filter(m => !membersWithSleepToday.includes(m.id)).length === 0 ? (
-                    <p>All members have recorded their sleep cycle today 🎉</p>
-                ) : (
-                    <ul className="list-disc list-inside">
-                        {allMembers
-                            .filter((m) => !membersWithSleepToday.includes(m.id))
-                            .map((m) => (
-                                <li key={m.id} className="flex items-center space-x-2">
-                                    <img
-                                        src={m.imageUrl}
-                                        alt={m.name}
-                                        className="h-8 w-8 rounded-full object-cover"
-                                    />
-                                    <span>{m.name}</span> — Please add today's sleep cycle
-                                </li>
-                            ))}
-                    </ul>
-                )}
-            </div>
+                                <TableCell>
+                                    {recordedToday ? (
+                                        <span className="text-green-600 font-medium">✅ Recorded</span>
+                                    ) : (
+                                        <span className="text-red-600 font-medium">⚠️ Not Recorded</span>
+                                    )}
+                                </TableCell>
+
+                                <TableCell>
+                                    {!recordedToday && (
+                                        <span className="text-sm text-muted-foreground">
+                                            Please add today's sleep cycle
+                                        </span>
+                                    )}
+                                </TableCell>
+                            </TableRow>
+                        );
+                    })}
+                </TableBody>
+            </Table>
         </div>
     );
 }

@@ -34,7 +34,8 @@ export const getChatMessages = createServerFn().handler(async ({ data }: any) =>
 });
 
 export const getMembers = createServerFn({ method: "GET" }).handler(async () => {
-    const members = await api.members.findAll();
+    const members = await db.select()
+        .from(member)
     return members;
 });
 
