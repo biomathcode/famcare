@@ -28,7 +28,6 @@ import { ConditionPicker } from "~/components/condition-picker";
 import { LoadingScreen } from "~/components/loading-screen";
 import { createInsertSchema } from "drizzle-zod";
 
-//TODO: Add diseases field in the form 
 
 const memberSchema = createInsertSchema(member, {
     dob: z.string(),

@@ -7,7 +7,7 @@ import { format } from "date-fns";
 
 import { getEvents, getMedia, getMembers, getSleepGoals } from "~/lib/db/queries";
 import { FilesTable } from "./records";
-import { RadialSleepChart, SleepCycleSummary } from "./sleep";
+import { SleepCycleSummary } from "./sleep";
 
 // UI Elements 
 // Total Members
@@ -22,10 +22,7 @@ import { RadialSleepChart, SleepCycleSummary } from "./sleep";
 //TODO: Show Records
 
 
-
-//TODO: Add the Agent List view here
 //TODO: Add What to cook for today
-//TODO list of member
 //TODO: Start AI Chart
 //Todo: Upload Document
 
@@ -109,9 +106,9 @@ function RouteComponent() {
         location: e.location,
     }));
 
-    return <div className="px-10 py-4 h-fit w-full flex flex-col gap-8">
-        <h1 className="text-xl font-bold ">Dashboard, Welcome {session?.user?.name}</h1>
-        <div className="flex  justify-around gap-10 w-full ">
+    return <div className="px-10 py-4 h-fit w-full flex flex-col gap-4">
+        <h1 className="text-xl font-bold mt-4 "> Welcome {session?.user?.name}</h1>
+        <div className="flex  justify-around gap-4 w-full ">
             <div className=" max-h-[400px]  h-full overflow-scroll no-scrollbar flex flex-col  border rounded-md w-full ">
                 <div className=" sticky top-0 py-2 px-2 bg-accent z-10 text-md font-semibold ">
                     Upcoming Events
@@ -138,7 +135,7 @@ function RouteComponent() {
 
 
         </div>
-        <div className="flex  justify-around gap-10 w-full  ">
+        <div className="flex  justify-around gap-4 w-full  ">
             <div className=" w-full ">
                 <MembersTable members={members} />
             </div>

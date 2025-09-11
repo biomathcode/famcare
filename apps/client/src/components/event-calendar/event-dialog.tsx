@@ -1,4 +1,3 @@
-//TODO: add Create, update, delete, get all events 
 
 
 "use client";
