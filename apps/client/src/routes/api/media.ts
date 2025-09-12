@@ -61,7 +61,6 @@ export const ServerRoute = createServerFileRoute("/api/media").methods({
         // Save to DB
         await db.insert(media).values({
             id: mediaId,
-
             userId,
             title,
             fileUrl: uploadRes.secure_url,
@@ -133,8 +132,6 @@ export const ServerRoute = createServerFileRoute("/api/media").methods({
             JSON.stringify({ success: true, fileUrl: uploadRes.secure_url }),
             { status: 200 }
         );
-
-
     }
 })
 

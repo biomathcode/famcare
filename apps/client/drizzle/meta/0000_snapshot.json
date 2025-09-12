@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "da10ff29-8017-4518-b0c2-21c6bc3c1096",
+  "id": "9155dc69-f172-4061-848c-123028afcdcc",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "account": {
@@ -452,6 +452,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "member_id": {
+          "name": "member_id",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "meal_type": {
           "name": "meal_type",
           "type": "varchar(50)",
@@ -496,6 +503,19 @@
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "diet_member_id_member_id_fk": {
+          "name": "diet_member_id_member_id_fk",
+          "tableFrom": "diet",
+          "tableTo": "member",
+          "columnsFrom": [
+            "member_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -522,6 +542,13 @@
         },
         "user_id": {
           "name": "user_id",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "member_id": {
+          "name": "member_id",
           "type": "varchar(36)",
           "primaryKey": false,
           "notNull": true,
@@ -571,75 +598,13 @@
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "exercise_goal_id": {
-          "name": "exercise_goal_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
-      "uniqueConstraints": {},
-      "checkConstraint": {}
-    },
-    "health_metric": {
-      "name": "health_metric",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(36)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "(UUID())"
         },
-        "user_id": {
-          "name": "user_id",
-          "type": "varchar(36)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "type": {
-          "name": "type",
-          "type": "varchar(50)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "value": {
-          "name": "value",
-          "type": "float",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "unit": {
-          "name": "unit",
-          "type": "varchar(20)",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "recorded_at": {
-          "name": "recorded_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "CURRENT_TIMESTAMP"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "health_metric_user_id_user_id_fk": {
-          "name": "health_metric_user_id_user_id_fk",
-          "tableFrom": "health_metric",
-          "tableTo": "user",
+        "exercise_goal_member_id_member_id_fk": {
+          "name": "exercise_goal_member_id_member_id_fk",
+          "tableFrom": "exercise_goal",
+          "tableTo": "member",
           "columnsFrom": [
-            "user_id"
+            "member_id"
           ],
           "columnsTo": [
             "id"
@@ -649,8 +614,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "health_metric_id": {
-          "name": "health_metric_id",
+        "exercise_goal_id": {
+          "name": "exercise_goal_id",
           "columns": [
             "id"
           ]
@@ -712,6 +677,20 @@
           "notNull": true,
           "autoincrement": false,
           "default": "CURRENT_TIMESTAMP"
+        },
+        "image_url": {
+          "name": "image_url",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "conditions": {
+          "name": "conditions",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -759,11 +738,32 @@
           "notNull": true,
           "autoincrement": false
         },
-        "target_hours": {
-          "name": "target_hours",
-          "type": "float",
+        "member_id": {
+          "name": "member_id",
+          "type": "varchar(36)",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "woke_up": {
+          "name": "woke_up",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "sleep_time": {
+          "name": "sleep_time",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "note": {
+          "name": "note",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         },
         "created_at": {
@@ -783,6 +783,19 @@
           "tableTo": "user",
           "columnsFrom": [
             "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "sleep_goal_member_id_member_id_fk": {
+          "name": "sleep_goal_member_id_member_id_fk",
+          "tableFrom": "sleep_goal",
+          "tableTo": "member",
+          "columnsFrom": [
+            "member_id"
           ],
           "columnsTo": [
             "id"
@@ -1162,6 +1175,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "member_id": {
+          "name": "member_id",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "name": {
           "name": "name",
           "type": "text",
@@ -1172,13 +1192,6 @@
         "description": {
           "name": "description",
           "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "dosage": {
-          "name": "dosage",
-          "type": "varchar(100)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -1200,6 +1213,19 @@
           "tableTo": "user",
           "columnsFrom": [
             "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "medicine_member_id_member_id_fk": {
+          "name": "medicine_member_id_member_id_fk",
+          "tableFrom": "medicine",
+          "tableTo": "member",
+          "columnsFrom": [
+            "member_id"
           ],
           "columnsTo": [
             "id"
@@ -1244,26 +1270,59 @@
           "notNull": true,
           "autoincrement": false
         },
-        "time": {
-          "name": "time",
-          "type": "varchar(50)",
+        "member_id": {
+          "name": "member_id",
+          "type": "varchar(36)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "frequency": {
           "name": "frequency",
-          "type": "varchar(50)",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'daily'"
+        },
+        "times_per_day": {
+          "name": "times_per_day",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 1
+        },
+        "recurrence_rule": {
+          "name": "recurrence_rule",
+          "type": "json",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "dosage": {
+          "name": "dosage",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 1
+        },
+        "unit": {
+          "name": "unit",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'pill'"
         },
         "start_date": {
           "name": "start_date",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
         },
         "end_date": {
           "name": "end_date",
@@ -1294,6 +1353,19 @@
           "tableTo": "user",
           "columnsFrom": [
             "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "medicine_schedule_member_id_member_id_fk": {
+          "name": "medicine_schedule_member_id_member_id_fk",
+          "tableFrom": "medicine_schedule",
+          "tableTo": "member",
+          "columnsFrom": [
+            "member_id"
           ],
           "columnsTo": [
             "id"
@@ -1502,6 +1574,73 @@
       "compositePrimaryKeys": {
         "media_id": {
           "name": "media_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "media_chunks": {
+      "name": "media_chunks",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(UUID())"
+        },
+        "media_id": {
+          "name": "media_id",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "chunk": {
+          "name": "chunk",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "embedding": {
+          "name": "embedding",
+          "type": "VECTOR(768)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "order": {
+          "name": "order",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "media_chunks_media_id_media_id_fk": {
+          "name": "media_chunks_media_id_media_id_fk",
+          "tableFrom": "media_chunks",
+          "tableTo": "media",
+          "columnsFrom": [
+            "media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "media_chunks_id": {
+          "name": "media_chunks_id",
           "columns": [
             "id"
           ]

@@ -5,57 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1756664353373,
-      "tag": "0000_colossal_sheva_callister",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1756670075535,
-      "tag": "0001_shocking_warstar",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1756770361682,
-      "tag": "0002_blue_mikhail_rasputin",
-      "breakpoints": false
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1757022124449,
-      "tag": "0003_chunky_falcon",
-      "breakpoints": false
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1757325941193,
-      "tag": "0004_chubby_grandmaster",
-      "breakpoints": false
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1757326184418,
-      "tag": "0005_ambitious_deathbird",
-      "breakpoints": false
-    },
-    {
-      "idx": 6,
-      "version": "5",
-      "when": 1757326252432,
-      "tag": "0006_brief_the_renegades",
-      "breakpoints": false
-    },
-    {
-      "idx": 7,
-      "version": "5",
-      "when": 1757354001039,
-      "tag": "0007_lethal_luckman",
+      "when": 1757693833038,
+      "tag": "0000_grey_molecule_man",
       "breakpoints": false
     }
   ]
