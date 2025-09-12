@@ -45,14 +45,14 @@ function UserProfilePopup({ data, children }: UserProfilePopupProps) {
         <DialogHeader className="text-center space-y-4">
           <div className="flex flex-col items-center space-y-2 text-center">
             <Avatar className="h-16 w-16">
-              {data?.user.image && (
+              {data?.user?.image && (
                 <AvatarImage
-                  src={data.user.image}
-                  alt={data.user.name || "User"}
+                  src={data?.user?.image}
+                  alt={data?.user?.name || "User"}
                 />
               )}
               <AvatarFallback>
-                {data?.user.name ? (
+                {data?.user?.name ? (
                   data.user.name.charAt(0).toUpperCase()
                 ) : (
                   <User className="h-8 w-8" />
@@ -61,11 +61,11 @@ function UserProfilePopup({ data, children }: UserProfilePopupProps) {
             </Avatar>
             <div>
               <DialogTitle className="text-xl font-semibold">
-                {data?.user.name || "User"}
+                {data?.user?.name || "User"}
               </DialogTitle>
               {data?.user.email && (
                 <p className="text-sm text-muted-foreground">
-                  {data.user.email}
+                  {data?.user?.email}
                 </p>
               )}
             </div>

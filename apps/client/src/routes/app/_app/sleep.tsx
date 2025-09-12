@@ -57,7 +57,7 @@ import { toast } from "sonner";
 import { api } from "~/lib/api";
 
 import { MemberPicker } from "@/components/member-picker";
-import { getMembers, getSleepGoals } from "~/lib/db/queries";
+import { createSleepGoal, getMembers, getSleepGoals, SleepGoalFormData, sleepGoalSchema } from "~/lib/db/queries";
 import { sleepGoal } from "~/lib/db/schema";
 import z from "zod";
 
@@ -67,39 +67,6 @@ import { LoadingScreen } from "~/components/loading-screen";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
 
-
-function parseDateTimeLocal(value: string): Date {
-    // input format from <input type="datetime-local"> is "yyyy-MM-dd'T'HH:mm"
-    return parse(value, "yyyy-MM-dd'T'HH:mm", new Date());
-}
-
-export const sleepGoalSchema = createInsertSchema(sleepGoal, {
-    wokeUp: z.string(),
-    sleepTime: z.string()
-})
-
-export type SleepGoalFormData = z.infer<typeof sleepGoalSchema>;
-
-
-
-
-export const createSleepGoal = createServerFn({
-    method: "POST",
-    response: "raw",
-}) // no generics here
-    .validator(sleepGoalSchema)
-    .handler(async ({ data }) => {
-        if (!data.userId) throw new Error("userId is required");
-
-        console.log("data", data)
-        const payload = {
-            ...data,
-            sleepTime: parseDateTimeLocal(data.sleepTime),
-            wokeUp: parseDateTimeLocal(data.wokeUp),
-        };
-        return await api.sleepGoals.create(payload);
-        ;
-    });
 
 
 

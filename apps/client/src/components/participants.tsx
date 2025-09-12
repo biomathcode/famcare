@@ -18,9 +18,9 @@ export default function Participants() {
       {
         members.map((member) => (
           <img
-            key={member.id}
+            key={member?.id}
             className="ring-background rounded-full ring-1"
-            src={member.imageUrl}
+            src={member?.imageUrl}
             width={24}
             height={24}
             alt="Avatar 01"

@@ -2,14 +2,14 @@ import { Button } from "@/components/ui/button";
 import { LoginPopup } from "@/components/auth/login-popup";
 import { UserCircle } from "@/components/auth/user-icon";
 import LogoIcon from "../logo";
+import authClient from "~/lib/auth/auth-client";
+import { Link } from "@tanstack/react-router";
 // import { authClient } from "@/components/auth/client";
 
 export function Navigation() {
-  // const { data: user, isPending } = authClient.useSession();
+  const { data: user, isPending } = authClient.useSession();
 
-  // Dummy data for auth client
-  const user = { id: "1", name: "John Doe", email: "john@example.com" };
-  const isPending = false;
+
 
   return (
     <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-4xl mx-auto px-4">
@@ -27,16 +27,29 @@ export function Navigation() {
           ) : user ? (
             <UserCircle />
           ) : (
-            <LoginPopup>
-              {/* Login Button */}
-              <Button
+            <div className="flex gap-2 items-center">
+              <LoginPopup>
+                {/* Login Button */}
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="bg-primary hover:bg-primary/80"
+                >
+                  Login
+                </Button>
+              </LoginPopup>
+              <Button asChild
                 variant="default"
                 size="sm"
                 className="bg-primary hover:bg-primary/80"
               >
-                Login
+                <Link to="/signup">
+                  Sign Up
+                </Link>
+
               </Button>
-            </LoginPopup>
+            </div>
+
           )}
         </div>
       </div>

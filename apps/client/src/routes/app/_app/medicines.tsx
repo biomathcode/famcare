@@ -38,59 +38,8 @@ import { MemberMedicinePicker } from "~/components/member-medicine-picker";
 
 import { Calendar } from "~/components/ui/calendar";
 import { useState } from "react";
-import { deleteMedicine, getMedicines } from "~/lib/db/queries";
+import { createMedicine, CreateMedicineFormData, createMedicineSchedule, createMedicineSchema, deleteMedicine, getMedicines } from "~/lib/db/queries";
 import { format } from "date-fns";
-
-
-
-const createMedicineSchema = createInsertSchema(medicine)
-
-const createMedicineScheduleSchema = createInsertSchema(medicineSchedule, {
-    startDate: z.string(),
-    endDate: z.string(),
-})
-
-type createMedicineScheduleFormData = z.infer<typeof createMedicineScheduleSchema>;
-
-type CreateMedicineFormData = z.infer<typeof createMedicineSchema>;
-
-
-
-
-export const createMedicine = createServerFn({
-    method: "POST",
-    response: "raw",
-})
-    .validator(createMedicineSchema)
-    .handler(async ({ data }) => {
-        if (!data.userId) throw new Error("userId is required");
-        console.log('post data', data)
-        return await api.medicines.create(data);
-    });
-
-
-export const createMedicineSchedule = createServerFn({
-    method: "POST",
-    response: 'raw',
-})
-    .validator(createMedicineScheduleSchema)
-    .handler(async ({ data }) => {
-        if (!data.userId) throw new Error("userId is required");
-
-
-        console.log('post data', data)
-
-        const payload = {
-            ...data,
-            startDate: new Date(data.startDate),
-            endDate: new Date(data.endDate),
-
-        }
-        return await api.medicineSchedules.create(payload);
-    })
-
-
-
 
 
 
@@ -595,11 +544,11 @@ export function MemberMedicinesGrid({ data }: any) {
                     <CardHeader className="flex w-full justify-between">
                         <div className="flex items-center gap-3">
                             <img
-                                src={member.imageUrl}
-                                alt={member.name}
+                                src={member?.imageUrl}
+                                alt={member?.name}
                                 className="w-12 h-12 rounded-full object-cover"
                             />
-                            <CardTitle>{member.name}</CardTitle>
+                            <CardTitle>{member?.name}</CardTitle>
                         </div>
                         <CardAction className="flex gap-2">
                             <MedicineForm />
@@ -609,7 +558,7 @@ export function MemberMedicinesGrid({ data }: any) {
                     </CardHeader>
                     <CardContent className="w-full">
                         <div className="space-y-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {medicines.map(({ medicine, schedule }) => (
+                            {medicines?.map(({ medicine, schedule }) => (
                                 <div
                                     key={medicine.id}
                                     className="p-2 border rounded-md bg-muted flex flex-col gap-1 relative"
@@ -623,12 +572,12 @@ export function MemberMedicinesGrid({ data }: any) {
                                         Delete
                                     </Button>
                                     <div className="font-semibold">{medicine.name || "No Name"}</div>
-                                    {medicine.description && <div className="text-sm">{medicine.description}</div>}
+                                    {medicine?.description && <div className="text-sm">{medicine?.description}</div>}
 
                                     {schedule ? (
                                         <div className="flex flex-wrap gap-2 mt-1">
                                             <Badge variant="secondary">
-                                                {schedule.frequency} ({schedule.timesPerDay}x/day)
+                                                {schedule?.frequency} ({schedule?.timesPerDay}x/day)
                                             </Badge>
                                             {schedule.recurrenceRule.daysOfWeek && (
                                                 <Badge variant="outline">
