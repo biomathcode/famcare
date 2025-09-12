@@ -1,10 +1,9 @@
 import { tool } from "ai";
 import { z } from "zod";
-import { api } from "~/lib/api";
 import { db } from "~/lib/db";
-import { diet, exerciseGoal, mediaChunks, medicine } from "~/lib/db/schema";
+import { diet, event, exerciseGoal, mediaChunks, medicine } from "~/lib/db/schema";
 import { sql } from "drizzle-orm";
-import { addMinutes, format } from "date-fns";
+import { getMembers as getAllMembers, getDiets as getAllDeits, getExerciseGoals, getSleepGoals, getMedicines as getAllMedicines, } from "~/lib/db/queries";
 
 
 
@@ -13,7 +12,7 @@ const getMembers = tool({
     inputSchema: z.object({}),
     execute: async () => {
         console.log("Tool getMembers called ✅");
-        const members = await api.members.findAll();
+        const members = await getAllMembers();
         console.log('members', members)
         return JSON.parse(JSON.stringify(members));
     }
@@ -23,7 +22,7 @@ const getDiets = tool({
     description: "Use this tool to get all the diets from the database",
     inputSchema: z.object({}),
     execute: async () => {
-        const diets = await api.diets.findAll();
+        const diets = await getAllDeits();
         return JSON.stringify(diets);
     }
 })
@@ -33,7 +32,7 @@ const getExercises = tool({
     description: "Use this tool to get all the exercises from the database",
     inputSchema: z.object({}),
     execute: async () => {
-        const exercise = await api.exerciseGoals.findAll();
+        const exercise = await getExerciseGoals();
         return JSON.stringify(exercise);
     }
 })
@@ -43,19 +42,11 @@ const getMedicine = tool({
     description: "Use this tool to get all the medicines from the database",
     inputSchema: z.object({}),
     execute: async () => {
-        const exercise = await api.medicines.findAll();
+        const exercise = await getAllMedicines();
         return JSON.stringify(exercise);
     }
 })
 
-const getMedicineSchedule = tool({
-    description: "Use this tool to get all the medicineSchedules from the database",
-    inputSchema: z.object({}),
-    execute: async () => {
-        const exercise = await api.medicineSchedules.findAll();
-        return JSON.stringify(exercise);
-    }
-})
 
 
 
@@ -133,9 +124,8 @@ export const createMedicineTool = (userId: string) =>
             memberId: z.string().describe("The ID of the member"),
             name: z.string().describe("The name of the medicine"),
             description: z.string().optional().describe("Details about the medicine (e.g., purpose, instructions)"),
-            dosage: z.string().describe("Dosage information (e.g., 1 pill, 5ml, twice a day)"),
         }),
-        execute: async ({ memberId, name, description, dosage }) => {
+        execute: async ({ memberId, name, description }) => {
             console.log("Tool createMedicine called ✅");
 
             return await db
@@ -145,7 +135,6 @@ export const createMedicineTool = (userId: string) =>
                     memberId,
                     name,
                     description,
-                    dosage,
                 })
 
 
@@ -325,7 +314,7 @@ export const createEventsTool = (userId: string) =>
             console.log("eventdata after parsing", eventData)
 
             try {
-                const newEvent = await api.events.create(eventData);
+                const newEvent = await db.insert(event).values(eventData);
                 return newEvent;
             } catch (error) {
                 console.error("Error in createEventsTool:", error);
@@ -341,7 +330,6 @@ export default async function getTools(ctx: { userId: string }) {
         getDiets,
         getExercises,
         getMedicine,
-        getMedicineSchedule,
 
         getDrugLabel: getDrugLabelTool,
         getAdverseEvents: getAdverseEventsTool,

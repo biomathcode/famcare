@@ -41,12 +41,57 @@ export const getChatSessions = createServerFn()
 
 export const getChatMessages = createServerFn().middleware([authMiddleware]).handler(async ({ data }: any) => { await db.select().from(chatMessage).where(eq(chatMessage.sessionId, data.sessionId)).orderBy(asc(chatMessage.createdAt)); });
 
+
+
+//CRUD for members
+
+export const memberSchema = createInsertSchema(member, {
+    dob: z.string(),
+    conditions: z.string().optional(), // Expect stringified JSON
+})
+
+
+export type memberFormData = z.infer<typeof memberSchema>;
+
+
+export const memberDeleteSchema = z.object({
+    id: z.string(),
+});
+
+export const createMembers = createServerFn({ method: 'POST' })
+    .validator(memberSchema)
+    .handler(async ({ data }) => {
+        console.log("data", data)
+        if (!data.userId) throw new Error("userId is required");
+        const payload = {
+            ...data,
+            dob: data.dob ? new Date(data.dob) : null,
+            conditions: JSON.parse(data.conditions || ' '), // Store as JSON type
+        };
+        return await db.insert(member).values(payload);
+    });
+
+
+
+
+
+
 export const getMembers = createServerFn({ method: "GET" })
     .middleware([authMiddleware])
     .handler(async () => {
         const userId = await getUserIdFromSession();
         return await db.select().from(member).where(eq(member.userId, userId));
     });
+
+export const deleteMember = createServerFn({ method: "POST" })
+    .validator(memberDeleteSchema)
+    .handler(async ({ data }) => {
+        if (!data || !data.id) {
+            throw new Error("Member id is required for deletion");
+        }
+        const id = await db.delete(member).where(eq(member.id, data.id));
+        return id
+    })
 
 export const getMedicines = createServerFn({ method: "GET" })
     .middleware([authMiddleware])

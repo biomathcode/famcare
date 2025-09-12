@@ -1,7 +1,5 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { createServerFn } from '@tanstack/react-start'
 
-import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -19,58 +17,10 @@ import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { format } from "date-fns"
-import { api } from "~/lib/api";
-import ProfileUpload from "~/components/profile-upload";
 import { Trash2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { member } from "~/lib/db/schema";
 import { ConditionPicker } from "~/components/condition-picker";
-import { LoadingScreen } from "~/components/loading-screen";
-import { createInsertSchema } from "drizzle-zod";
-
-
-const memberSchema = createInsertSchema(member, {
-    dob: z.string(),
-    conditions: z.string().optional(), // Expect stringified JSON
-})
-
-
-export type memberFormData = z.infer<typeof memberSchema>;
-
-
-export const memberDeleteSchema = z.object({
-    id: z.string(),
-});
-
-export const createMembers = createServerFn({ method: 'POST' })
-    .validator(memberSchema)
-    .handler(async ({ data }) => {
-        console.log("data", data)
-        if (!data.userId) throw new Error("userId is required");
-        const payload = {
-            ...data,
-            dob: data.dob ? new Date(data.dob) : null,
-            conditions: JSON.parse(data.conditions || ' '), // Store as JSON type
-        };
-        return await api.members.create(payload);
-    });
-
-export const getMembers = createServerFn({ method: "GET" })
-    .handler(async () => {
-        const members = await api.members.findAll();
-        return members
-    })
-
-
-export const deleteMember = createServerFn({ method: "POST" })
-    .validator(memberDeleteSchema)
-    .handler(async ({ data }) => {
-        if (!data || !data.id) {
-            throw new Error("Member id is required for deletion");
-        }
-        const id = await api.members.remove(data.id)
-        return id
-    })
+import { createMembers, deleteMember, getMembers, memberFormData, memberSchema } from "~/lib/db/queries";
 
 
 

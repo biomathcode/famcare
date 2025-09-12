@@ -16,8 +16,6 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from '@/components/ui/badge';
 import { toast } from "sonner";
-import { medicine, medicineSchedule } from "~/lib/db/schema";
-import { api } from "~/lib/api";
 import { MemberPicker } from "@/components/member-picker";
 import { MedicinePicker } from "~/components/medicine-picker";
 import { LoadingScreen } from "~/components/loading-screen";
@@ -27,11 +25,9 @@ import {
     Card,
     CardAction,
     CardContent,
-    CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { createInsertSchema } from "drizzle-zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { MemberMedicinePicker } from "~/components/member-medicine-picker";
