@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { z } from "zod";
 import { useForm } from "react-hook-form";
 import {
     Form,
@@ -25,6 +23,7 @@ import {
     Card,
     CardAction,
     CardContent,
+    CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
@@ -36,15 +35,16 @@ import { Calendar } from "~/components/ui/calendar";
 import { useState } from "react";
 import { createMedicine, CreateMedicineFormData, createMedicineSchedule, createMedicineSchema, deleteMedicine, getMedicines } from "~/lib/db/queries";
 import { format } from "date-fns";
+import authClient from "~/lib/auth/auth-client";
 
 
 
 
-function MedicineScheduleForm() {
+export function MedicineScheduleForm({ mode }: { mode: "card" | "dialog" }) {
 
 
-    const context = Route.useRouteContext();
-    const user = context.user;
+    const { data: session } = authClient.useSession();
+
 
     const router = useRouter();
 
@@ -61,7 +61,7 @@ function MedicineScheduleForm() {
             unit: "pill",
             startDate: "",
             endDate: "",
-            userId: user?.id || ""
+            userId: session?.user?.id || ""
         },
     });
     async function onSubmit(values: any) {
@@ -104,6 +104,266 @@ function MedicineScheduleForm() {
     const [frequency, setFrequency] = useState("daily");
 
 
+    const FormComponent = (<Form {...form}>
+        <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4 mt-6"
+        >
+            <FormField
+                control={form.control}
+                name="memberId"
+                render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Select Member</FormLabel>
+                        <FormControl>
+                            <MemberPicker
+                                value={field.value}
+                                onChange={(value) => {
+                                    field.onChange(value);
+                                    setMemberId(value); // Keep local state in sync
+                                }}
+                                placeholder="Choose a member..."
+                            />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
+            />
+            {
+                memberId && <FormField
+                    control={form.control}
+                    name="medicineId"
+                    render={({ field }) => {
+
+                        return (<FormItem>
+                            <FormLabel>Select Medicine</FormLabel>
+                            <FormControl>
+                                <MemberMedicinePicker
+                                    memberId={memberId}
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    placeholder="Choose a medicine..."
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>)
+                    }}
+                />
+            }
+
+
+            <FormField
+                control={form.control}
+                name="timesPerDay"
+                render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Times Per Day</FormLabel>
+                        <FormControl>
+                            <Input type="number" {...field} min={1}
+                                value={field?.value || 1}
+                            />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
+            />
+
+            <div className="flex justify-between">
+                <FormField
+                    control={form.control}
+                    name="dosage"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Dosage</FormLabel>
+                            <FormControl>
+                                <Input
+
+                                    type="number" {...field} min={1}
+                                    value={field?.value ?? 1}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="unit"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Unit</FormLabel>
+                            <FormControl>
+                                <Select
+                                    value={field.value ?? ""}
+                                    onValueChange={field.onChange}
+
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select unit" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="pill">Pill</SelectItem>
+                                        <SelectItem value="ml">ml</SelectItem>
+                                        <SelectItem value="drop">drops</SelectItem>
+
+                                    </SelectContent>
+                                </Select>
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+            </div>
+            <FormField
+                control={form.control}
+                name="startDate"
+                render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Start Date</FormLabel>
+                        <FormControl>
+                            <Input type="datetime-local" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
+            />
+
+            <FormField
+                control={form.control}
+                name="endDate"
+                render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>End Date (Optional)</FormLabel>
+                        <FormControl>
+                            <Input type="datetime-local" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
+            />
+
+            <FormField
+                control={form.control}
+                name="frequency"
+                render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Frequency</FormLabel>
+                        <FormControl>
+                            <Select
+                                value={field.value}
+                                onValueChange={(value) => {
+                                    setFrequency(value);
+                                    field.onChange(value);
+                                    form.setValue("daysOfWeek", []);
+                                    form.setValue("customDates", []);
+                                }}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select frequency" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="daily">Daily</SelectItem>
+                                    <SelectItem value="weekly">Weekly</SelectItem>
+                                    <SelectItem value="monthly">Monthly</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
+            />
+
+            {
+                frequency === 'daily' ?
+                    <FormItem>
+                        <FormLabel>Daily Recurrence</FormLabel>
+                        <FormControl>
+                            <div className="text-gray-500">No additional input needed.</div>
+                        </FormControl>
+                    </FormItem> :
+                    frequency === 'weekly' ?
+                        <FormField
+                            control={form.control}
+                            name="daysOfWeek"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Select Days of the Week</FormLabel>
+                                    <FormControl>
+                                        <div className="flex flex-wrap gap-2">
+                                            {["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"].map((day) => (
+                                                <Button
+                                                    key={day}
+                                                    variant={Array.isArray(field.value) && field.value.includes(day) ? "default" : "outline"}
+                                                    onClick={() => {
+                                                        let updatedDays: string[] = Array.isArray(field.value) ? field.value : [];
+
+                                                        if (updatedDays.includes(day)) {
+                                                            updatedDays = updatedDays.filter((d) => d !== day);
+                                                        } else {
+                                                            updatedDays.push(day);
+                                                        }
+
+                                                        field.onChange(updatedDays);
+                                                    }}
+                                                    type="button"
+                                                >
+                                                    {day.charAt(0).toUpperCase() + day.slice(1)}
+                                                </Button>
+                                            ))}
+                                        </div>
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                        :
+                        frequency === 'monthly' ? <FormField
+                            control={form.control}
+                            name="customDates"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Select Custom Dates</FormLabel>
+                                    <FormControl>
+                                        <Calendar
+                                            mode="multiple"
+                                            selected={
+                                                field.value
+                                            }
+                                            onSelect={field.onChange}
+                                        />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        /> : null
+            }
+
+            <Button type="submit"
+                disabled={form.formState.isSubmitting}
+                className="w-full">
+                Add Medicine Schedule
+            </Button>
+        </form>
+    </Form>
+
+
+    )
+
+    if (mode === "card") {
+        return (
+            <Card>
+                <CardHeader>
+                    <CardTitle>Add Medicine Schedule</CardTitle>
+                    <CardDescription>
+                        Add A Schedule to your Medicines
+                    </CardDescription>
+
+                </CardHeader>
+                <CardContent>
+                    {FormComponent}
+                </CardContent>
+            </Card>
+        )
+    }
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -119,246 +379,7 @@ function MedicineScheduleForm() {
                 </DialogHeader>
 
 
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="space-y-4 mt-6"
-                    >
-                        <FormField
-                            control={form.control}
-                            name="memberId"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Select Member</FormLabel>
-                                    <FormControl>
-                                        <MemberPicker
-                                            value={field.value}
-                                            onChange={(value) => {
-                                                field.onChange(value);
-                                                setMemberId(value); // Keep local state in sync
-                                            }}
-                                            placeholder="Choose a member..."
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        {
-                            memberId && <FormField
-                                control={form.control}
-                                name="medicineId"
-                                render={({ field }) => {
-
-                                    return (<FormItem>
-                                        <FormLabel>Select Medicine</FormLabel>
-                                        <FormControl>
-                                            <MemberMedicinePicker
-                                                memberId={memberId}
-                                                value={field.value}
-                                                onChange={field.onChange}
-                                                placeholder="Choose a medicine..."
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>)
-                                }}
-                            />
-                        }
-
-
-                        <FormField
-                            control={form.control}
-                            name="timesPerDay"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Times Per Day</FormLabel>
-                                    <FormControl>
-                                        <Input type="number" {...field} min={1}
-                                            value={field?.value || 1}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <div className="flex justify-between">
-                            <FormField
-                                control={form.control}
-                                name="dosage"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Dosage</FormLabel>
-                                        <FormControl>
-                                            <Input
-
-                                                type="number" {...field} min={1}
-                                                value={field?.value ?? 1}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="unit"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Unit</FormLabel>
-                                        <FormControl>
-                                            <Select
-                                                value={field.value ?? ""}
-                                                onValueChange={field.onChange}
-
-                                            >
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Select unit" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="pill">Pill</SelectItem>
-                                                    <SelectItem value="ml">ml</SelectItem>
-                                                    <SelectItem value="drop">drops</SelectItem>
-
-                                                </SelectContent>
-                                            </Select>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                        <FormField
-                            control={form.control}
-                            name="startDate"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Start Date</FormLabel>
-                                    <FormControl>
-                                        <Input type="datetime-local" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="endDate"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>End Date (Optional)</FormLabel>
-                                    <FormControl>
-                                        <Input type="datetime-local" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="frequency"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Frequency</FormLabel>
-                                    <FormControl>
-                                        <Select
-                                            value={field.value}
-                                            onValueChange={(value) => {
-                                                setFrequency(value);
-                                                field.onChange(value);
-                                                form.setValue("daysOfWeek", []);
-                                                form.setValue("customDates", []);
-                                            }}>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select frequency" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="daily">Daily</SelectItem>
-                                                <SelectItem value="weekly">Weekly</SelectItem>
-                                                <SelectItem value="monthly">Monthly</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        {
-                            frequency === 'daily' ?
-                                <FormItem>
-                                    <FormLabel>Daily Recurrence</FormLabel>
-                                    <FormControl>
-                                        <div className="text-gray-500">No additional input needed.</div>
-                                    </FormControl>
-                                </FormItem> :
-                                frequency === 'weekly' ?
-                                    <FormField
-                                        control={form.control}
-                                        name="daysOfWeek"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Select Days of the Week</FormLabel>
-                                                <FormControl>
-                                                    <div className="flex flex-wrap gap-2">
-                                                        {["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"].map((day) => (
-                                                            <Button
-                                                                key={day}
-                                                                variant={Array.isArray(field.value) && field.value.includes(day) ? "default" : "outline"}
-                                                                onClick={() => {
-                                                                    let updatedDays: string[] = Array.isArray(field.value) ? field.value : [];
-
-                                                                    if (updatedDays.includes(day)) {
-                                                                        updatedDays = updatedDays.filter((d) => d !== day);
-                                                                    } else {
-                                                                        updatedDays.push(day);
-                                                                    }
-
-                                                                    field.onChange(updatedDays);
-                                                                }}
-                                                                type="button"
-                                                            >
-                                                                {day.charAt(0).toUpperCase() + day.slice(1)}
-                                                            </Button>
-                                                        ))}
-                                                    </div>
-                                                </FormControl>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    :
-                                    frequency === 'monthly' ? <FormField
-                                        control={form.control}
-                                        name="customDates"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Select Custom Dates</FormLabel>
-                                                <FormControl>
-                                                    <Calendar
-                                                        mode="multiple"
-                                                        selected={
-                                                            field.value
-                                                        }
-                                                        onSelect={field.onChange}
-                                                    />
-                                                </FormControl>
-                                            </FormItem>
-                                        )}
-                                    /> : null
-                        }
-
-                        <Button type="submit"
-                            disabled={form.formState.isSubmitting}
-                            className="w-full">
-                            Add Medicine Schedule
-                        </Button>
-                    </form>
-                </Form>
-
+                {FormComponent}
 
             </DialogContent>
         </Dialog>
@@ -367,10 +388,9 @@ function MedicineScheduleForm() {
 
 
 
-function MedicineForm() {
+export function MedicineForm({ mode }: { mode: "card" | "dialog" }) {
+    const { data: session } = authClient.useSession();
 
-    const context = Route.useRouteContext();
-    const user = context.user;
 
     const router = useRouter();
 
@@ -379,7 +399,7 @@ function MedicineForm() {
         defaultValues: {
             name: "",
             description: "",
-            userId: user?.id,
+            userId: session?.user?.id,
         },
         resolver: zodResolver(createMedicineSchema)
     });
@@ -398,6 +418,98 @@ function MedicineForm() {
         }
     }
 
+
+    const FormComponent = (
+        <Form {...form}>
+            <form
+                action={createMedicine.url}
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4 mt-6"
+            >
+                <FormField
+                    control={form.control}
+                    name="memberId"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Select Member</FormLabel>
+                            <FormControl>
+                                <MemberPicker
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    placeholder="Choose a member..."
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+
+                <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Select Medicine</FormLabel>
+                            <FormControl>
+                                <MedicinePicker
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    placeholder="Choose a medicine..."
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+
+
+
+                <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Description</FormLabel>
+                            <FormControl>
+                                <Textarea
+                                    placeholder="Optional description..."
+                                    {...field}
+                                    value={field?.value ?? ""}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <Button type="submit" className="w-full">
+                    Add Medicine
+                </Button>
+            </form>
+        </Form>
+
+    )
+
+
+    if (mode === "card") {
+        return (
+            <Card>
+                <CardHeader>
+                    <CardTitle>Add Medicine</CardTitle>
+                    <CardDescription>
+                        Add your Medicine
+                    </CardDescription>
+
+                </CardHeader>
+                <CardContent>
+                    {FormComponent}
+                </CardContent>
+            </Card>
+        )
+    }
+
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -408,77 +520,10 @@ function MedicineForm() {
                 <DialogHeader>
                     <DialogTitle>Add Medicine</DialogTitle>
                     <DialogDescription>
-                        Add your Medicine                            </DialogDescription>
+                        Add your Medicine
+                    </DialogDescription>
                 </DialogHeader>
-
-                <Form {...form}>
-                    <form
-                        action={createMedicine.url}
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="space-y-4 mt-6"
-                    >
-                        <FormField
-                            control={form.control}
-                            name="memberId"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Select Member</FormLabel>
-                                    <FormControl>
-                                        <MemberPicker
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                            placeholder="Choose a member..."
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Select Medicine</FormLabel>
-                                    <FormControl>
-                                        <MedicinePicker
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                            placeholder="Choose a medicine..."
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-
-
-
-                        <FormField
-                            control={form.control}
-                            name="description"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Description</FormLabel>
-                                    <FormControl>
-                                        <Textarea
-                                            placeholder="Optional description..."
-                                            {...field}
-                                            value={field?.value ?? ""}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <Button type="submit" className="w-full">
-                            Add Medicine
-                        </Button>
-                    </form>
-                </Form>
+                {FormComponent}
             </DialogContent>
         </Dialog>
     )
@@ -535,6 +580,21 @@ export function MemberMedicinesGrid({ data }: any) {
 
     return (
         <div className="flex flex-col  gap-4 w-full">
+            <div className="flex justify-between w-full px-4">
+                <div className="flex flex-col ">
+                    <div className="text-2xl font-bold">
+                        Medicines
+                    </div>
+                    <div>
+                        Add Medicines and its Schedule
+                    </div>
+                </div>
+                <div className="flex gap-4 items-center">
+                    <MedicineForm mode="dialog" />
+                    <MedicineScheduleForm mode="dialog" />
+
+                </div>
+            </div>
             {grouped.map(({ member, medicines }) => (
                 <Card key={member.id}>
                     <CardHeader className="flex w-full justify-between">

@@ -21,8 +21,9 @@ import { Trash2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { ConditionPicker } from "~/components/condition-picker";
 import { createMembers, deleteMember, getMembers, memberFormData, memberSchema } from "~/lib/db/queries";
-
-
+import { LoadingScreen } from "~/components/loading-screen";
+import authClient from "~/lib/auth/auth-client";
+import ProfileUpload from "~/components/profile-upload";
 
 
 export const Route = createFileRoute("/app/_app/members")({
@@ -35,20 +36,17 @@ export const Route = createFileRoute("/app/_app/members")({
 });
 
 
+export function AddMemberForm() {
 
-function RouteComponent() {
-    const context = Route.useRouteContext();
-    const { members } = Route.useLoaderData();
-    const user = context.user;
+    const { data: session } = authClient.useSession();
 
     const form = useForm<memberFormData>({
-
         defaultValues: {
             name: "",
             relation: "",
             dob: '',
             gender: "",
-            userId: user?.id,
+            userId: session?.user?.id,
             imageUrl: "",
             conditions: "[]",
         },
@@ -63,7 +61,7 @@ function RouteComponent() {
         console.log('submitted', values);
         try {
             await createMembers({
-                data: { ...values, userId: user?.id || ' ' },
+                data: { ...values, userId: session?.user?.id || ' ' },
             });
 
             toast.success("Member added successfully");
@@ -75,6 +73,137 @@ function RouteComponent() {
             console.error(err);
         }
     }
+
+    return (
+        <Card className="p-6  w-full sm:w-1/3    ">
+            <h2 className="text-xl font-semibold mb-4">Add Member</h2>
+
+
+
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+                    <FormField
+                        control={form.control}
+                        name="imageUrl"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Profile Image</FormLabel>
+                                <FormControl>
+                                    <ProfileUpload value={field.value} onChange={field.onChange} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+
+                    <FormField
+                        control={form.control}
+                        name="conditions"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Select Condition</FormLabel>
+                                <FormControl>
+                                    <ConditionPicker
+                                        value={JSON.parse(field.value || ' ')}
+                                        onChange={(values) => field.onChange(JSON.stringify(values))}
+                                        placeholder="Choose a condition..."
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+
+
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Name</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Enter name" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="relation"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Relation</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="e.g. Father, Mother, Son" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="dob"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Date of Birth</FormLabel>
+                                <FormControl>
+                                    <Input type="date" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="gender"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Gender</FormLabel>
+                                <Select onValueChange={field.onChange} value={field?.value ?? " "}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select gender" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        <SelectItem value="male">Male</SelectItem>
+                                        <SelectItem value="female">Female</SelectItem>
+                                        <SelectItem value="other">Other</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+
+
+                    <Button type="submit"
+                        disabled={form.formState.isSubmitting}
+                        className="w-full">
+                        Add Member
+                    </Button>
+                </form>
+            </Form>
+        </Card>
+
+    )
+}
+
+
+function RouteComponent() {
+    const { members } = Route.useLoaderData();
+
+
+    const router = useRouter();
+
+
 
     async function handleDelete(id: string) {
         try {
@@ -96,125 +225,7 @@ function RouteComponent() {
 
             />
 
-
-            <Card className="p-6  w-full sm:w-1/3    ">
-                <h2 className="text-xl font-semibold mb-4">Add Member</h2>
-
-
-
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-                        <FormField
-                            control={form.control}
-                            name="imageUrl"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Profile Image</FormLabel>
-                                    <FormControl>
-                                        <ProfileUpload value={field.value} onChange={field.onChange} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-
-                        <FormField
-                            control={form.control}
-                            name="conditions"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Select Condition</FormLabel>
-                                    <FormControl>
-                                        <ConditionPicker
-                                            value={JSON.parse(field.value || ' ')}
-                                            onChange={(values) => field.onChange(JSON.stringify(values))}
-                                            placeholder="Choose a condition..."
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-
-
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Name</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Enter name" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="relation"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Relation</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="e.g. Father, Mother, Son" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="dob"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Date of Birth</FormLabel>
-                                    <FormControl>
-                                        <Input type="date" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="gender"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Gender</FormLabel>
-                                    <Select onValueChange={field.onChange} value={field?.value ?? " "}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select gender" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            <SelectItem value="male">Male</SelectItem>
-                                            <SelectItem value="female">Female</SelectItem>
-                                            <SelectItem value="other">Other</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-
-
-                        <Button type="submit"
-                            disabled={form.formState.isSubmitting}
-                            className="w-full">
-                            Add Member
-                        </Button>
-                    </form>
-                </Form>
-            </Card>
-
+            <AddMemberForm />
 
         </div>
     );
