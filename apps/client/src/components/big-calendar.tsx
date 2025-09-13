@@ -14,31 +14,31 @@ import {
 export const etiquettes = [
   {
     id: "my-events",
-    name: "My Events",
+    name: "Diet",
     color: "emerald" as EventColor,
     isActive: true,
   },
   {
     id: "marketing-team",
-    name: "Marketing Team",
+    name: "Medicine",
     color: "orange" as EventColor,
     isActive: true,
   },
   {
     id: "interviews",
-    name: "Interviews",
+    name: "Exercise",
     color: "violet" as EventColor,
     isActive: true,
   },
   {
     id: "events-planning",
-    name: "Events Planning",
+    name: "Sleep",
     color: "blue" as EventColor,
     isActive: true,
   },
   {
     id: "holidays",
-    name: "Holidays",
+    name: "Activity",
     color: "rose" as EventColor,
     isActive: true,
   },

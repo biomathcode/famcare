@@ -1,11 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createServerFileRoute, createServerRoute } from "@tanstack/react-start/server";
+import { fileTypeFromBuffer } from 'file-type';
+import { convertToModelMessages, generateText } from 'ai'
+
 
 import { v2 as cloudinary } from "cloudinary";
 import { media, mediaChunks } from '@/lib/db/schema';
 
 import { db } from "@/lib/db";
 import { nanoid } from "nanoid";
+
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
+
+
 
 
 cloudinary.config({
@@ -14,6 +21,12 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET!,
 });
 
+
+const moonshotai = createOpenAICompatible({
+    apiKey: process.env.MOONSHOTAI_API_KEY!,
+    name: 'moonshotai',
+    baseURL: 'https://api.moonshot.ai/v1',
+})
 
 
 export const ServerRoute = createServerFileRoute("/api/media").methods({
@@ -32,6 +45,8 @@ export const ServerRoute = createServerFileRoute("/api/media").methods({
         const file = formData.get("file") as File | null;
         const title = formData.get("title") as string;
         const userId = formData.get("userId") as string;
+
+
 
 
         if (!file || !title || !userId) {
@@ -68,10 +83,46 @@ export const ServerRoute = createServerFileRoute("/api/media").methods({
             size: uploadRes.bytes / (1024 * 1024), // convert to MB
         });
 
-        const result = await fetch(`https://r.jina.ai/${uploadRes.secure_url}`);
+        const detectedType = await fileTypeFromBuffer(buffer);
 
-        const content = await result.text();
-        console.log("Fetched content length:", content);
+        let contentText = "";
+
+        if (detectedType?.mime.startsWith('image/')) {
+            // Extract text from image using Kimi Vision Model
+            const imageBase64 = `data:${detectedType.mime};base64,${buffer.toString('base64')}`;
+
+
+            const model = moonshotai("moonshot-v1-8k-vision-preview");
+
+            const { text } = await generateText({
+                model,
+                messages: [
+
+                    {
+                        role: "user",
+                        content: [
+                            { type: "text", text: "Extract and return all readable text from the image." },
+                            { type: "image", image: imageBase64 },
+                        ],
+                    },
+                ],
+                system: `You are Vision model, Your Task is to get the image annotate, give image summary and get all text from the image`
+            });
+
+            console.log("text from the image", text)
+
+            contentText = text;
+
+        } else if (detectedType?.mime === 'application/pdf') {
+            // Fetch PDF as text
+            const result = await fetch(uploadRes.secure_url);
+            contentText = await result.text();
+        } else {
+            return new Response(JSON.stringify({ error: "Unsupported file type" }), { status: 400 });
+        }
+
+
+
 
         const segmentsResult = await fetch(`https://segment.jina.ai`, {
             method: "POST",
@@ -80,7 +131,7 @@ export const ServerRoute = createServerFileRoute("/api/media").methods({
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                content,
+                content: contentText,
                 return_tokens: true,
                 return_chunks: true,
                 max_chunk_length: 1000,

@@ -181,7 +181,8 @@ export default function Chat() {
                         <Message from={role} key={index}>
                             <MessageContent>
                                 {parts.map((part, i) => {
-                                    console.log("parts", part)
+                                    console.log("parts", part);
+
                                     switch (part.type) {
                                         case 'text':
                                             return <Response key={`${role}-${i}`}>{part.text}</Response>;
@@ -189,20 +190,61 @@ export default function Chat() {
                                         case 'tool-findRelevantContent':
                                             switch (part.state) {
                                                 case 'input-available':
-                                                    return <div key={index}>Scanning documents...</div>;
+                                                    return <div key={i}>Scanning documents...</div>;
                                                 case 'output-available':
-                                                    return <Response key={`${role}-${i}`}>{part.text}</Response>
+                                                    return <Response key={`${role}-${i}`}>Successfully retrieved documents.</Response>;
                                                 case 'output-error':
-                                                    return <div key={index}>Error: {part.errorText}</div>;
+                                                    return <div key={i}>Error: {part.errorText}</div>;
                                                 default:
                                                     return null;
-
                                             }
 
+                                        case 'tool-getMembers':
+                                        case 'tool-getDiets':
+                                        case 'tool-getExercises':
+                                        case 'tool-getMedicine':
+                                            switch (part.state) {
+                                                case 'input-available':
+                                                    return <div key={i}>Fetching data...</div>;
+                                                case 'output-available':
+                                                    return <Response key={`${role}-${i}`}>Data fetched successfully.</Response>;
+                                                case 'output-error':
+                                                    return <div key={i}>Error: {part.errorText}</div>;
+                                                default:
+                                                    return null;
+                                            }
+
+                                        case 'tool-getDrugLabel':
+                                        case 'tool-getAdverseEvents':
+                                        case 'tool-getDrugRecalls':
+                                            switch (part.state) {
+                                                case 'input-available':
+                                                    return <div key={i}>Querying FDA API...</div>;
+                                                case 'output-available':
+                                                    return <Response key={`${role}-${i}`}>Drug info retrieved successfully.</Response>;
+                                                case 'output-error':
+                                                    return <div key={i}>Error: {part.errorText}</div>;
+                                                default:
+                                                    return null;
+                                            }
+
+                                        case 'tool-createExerciseGoal':
+                                        case 'tool-createDietTool':
+                                        case 'tool-createMedicineTool':
+                                        case 'tool-createEvents':
+                                            switch (part.state) {
+                                                case 'input-available':
+                                                    return <div key={i}>Processing creation request...</div>;
+                                                case 'output-available':
+                                                    return <Response key={`${role}-${i}`}>Creation successful.</Response>;
+                                                case 'output-error':
+                                                    return <div key={i}>Error: {part.errorText}</div>;
+                                                default:
+                                                    return null;
+                                            }
 
                                         default:
                                             return null;
-
                                     }
                                 })}
                             </MessageContent>

@@ -30,13 +30,18 @@ export function HeroSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-4xl mx-auto">
           {/* Badge */}
-          <Badge
-            variant="outline"
-            className="mb-6 px-4 py-2 text-sm font-medium bg-primary/5 border-primary/20 text-primary"
-          >
-            <Sparkles className="mr-2 h-3 w-3" />
-            Open Sourced
-          </Badge>
+
+
+          <a href="https://github.com/biomathcode/famcare" target="_blank" rel="noreferrer noopener" >
+            <Badge
+              variant="outline"
+              className="mb-6 px-4 py-2 text-sm font-medium bg-primary/5 border-primary/20 text-primary"
+            >
+              <Sparkles className="mr-2 h-3 w-3" />
+              Open Sourced
+            </Badge>
+          </a>
+
 
           {/* Main headline */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">

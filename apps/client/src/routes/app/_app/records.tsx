@@ -26,6 +26,7 @@ import { format } from "date-fns";
 
 import { deleteMedia, getMedia } from "~/lib/db/queries";
 import { useRouter } from "@tanstack/react-router";
+import { toast } from "sonner";
 
 //Step 1-> Upload Media
 //Step 2 -> parsing
@@ -43,19 +44,20 @@ function FileUploadForm() {
     const [loading, setLoading] = useState(false);
     const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
 
-
     const context = Route.useRouteContext();
 
     const user = context.user;
 
+    const router = useRouter();
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!file || !title) return;
+        if (!file) return;
 
         setLoading(true);
         const formData = new FormData();
         formData.append("file", file);
-        formData.append("title", title);
+        formData.append("title", file.name);
         formData.append("userId", user?.id ||
             ' '
         ); // Replace with logged-in userId
@@ -71,6 +73,10 @@ function FileUploadForm() {
         if (data.fileUrl) {
             setUploadedUrl(data.fileUrl);
         }
+
+        toast('File Upload Successfully')
+        router.invalidate()
+
     };
 
     return (
@@ -87,13 +93,7 @@ function FileUploadForm() {
                         Add your health records for Knowledge base                          </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <input
-                        type="text"
-                        placeholder="Enter file title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        className="w-full border rounded-lg p-2"
-                    />
+
 
                     <input
                         type="file"

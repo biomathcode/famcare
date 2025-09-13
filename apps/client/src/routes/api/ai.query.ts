@@ -13,7 +13,6 @@ const moonshotai = createOpenAICompatible({
   apiKey: process.env.MOONSHOTAI_API_KEY!,
   name: 'moonshotai',
   baseURL: 'https://api.moonshot.ai/v1',
-
 })
 
 export const ServerRoute = createServerFileRoute("/api/ai/query").methods({

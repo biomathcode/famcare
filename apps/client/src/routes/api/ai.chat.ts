@@ -1,5 +1,5 @@
 import { createServerFileRoute } from '@tanstack/react-start/server'
-import { convertToModelMessages, stepCountIs, streamText } from 'ai'
+import { convertToModelMessages, stepCountIs, streamText, } from 'ai'
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
 
 import getTools from '@/utils/tools'
@@ -29,7 +29,6 @@ const moonshotai = createOpenAICompatible({
     apiKey: process.env.MOONSHOTAI_API_KEY!,
     name: 'moonshotai',
     baseURL: 'https://api.moonshot.ai/v1',
-
 })
 
 export const ServerRoute = createServerFileRoute('/api/ai/chat').methods({

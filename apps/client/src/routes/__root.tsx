@@ -47,11 +47,11 @@ export const Route = createRootRouteWithContext<{
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "React TanStarter",
+        title: "FamCare- Family Health Management System using AI",
       },
       {
         name: "description",
-        content: "A minimal starter template for 🏝️ TanStack Start.",
+        content: "FamCare provides health care records upload, with ai feature to chat with them, ",
       },
     ],
     links: [{ rel: "stylesheet", href: appCss }],
