@@ -1,12 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import authClient from "~/lib/auth/auth-client";
 import { AddMemberForm } from '~/components/forms/add-member-form'
-import { MedicineForm, MedicineScheduleForm } from "./medicines";
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Button } from '~/components/ui/button';
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { MedicineForm } from "~/components/forms/add-medicine-form";
+import { MedicineScheduleForm } from "~/components/forms/add-medicine-schedule-form";
 
 export const Route = createFileRoute("/app/_app/")({
   component: RouteComponent,

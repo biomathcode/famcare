@@ -4,6 +4,8 @@ import { SidebarInset, SidebarProvider } from "~/components/ui/sidebar";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 import { Toaster } from "~/components/ui/sonner";
 import { CalendarProvider } from "~/components/event-calendar/calendar-context";
+import { LoadingScreen } from "~/components/loading-screen";
+
 
 export const Route = createFileRoute("/app/_app")({
     component: RouteComponent,
@@ -12,6 +14,7 @@ export const Route = createFileRoute("/app/_app")({
             throw redirect({ to: "/login" });
         }
     },
+    pendingComponent: LoadingScreen
 
 });
 function RouteComponent() {

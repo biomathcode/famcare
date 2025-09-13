@@ -7,6 +7,7 @@ import {
     Message,
     MessageContent,
 } from '@/components/ai-elements/message';
+import { LoadingScreen } from "~/components/loading-screen";
 
 import {
     Reasoning,
@@ -68,7 +69,9 @@ export const Route = createFileRoute("/app/_app/chat/$chatId")({
     loader: async ({ params }) => {
         const chats = await getChatMessages({ data: { sessionId: params.chatId } });
         return { chats };
-    }
+    },
+    pendingComponent: LoadingScreen,
+
 });
 
 
