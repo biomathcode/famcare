@@ -35,7 +35,7 @@ import {
   WeekCellsHeight,
   WeekView,
 } from "./index";
-import { cn } from "~/lib/utils";
+import { cn, downloadIcsFile } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -57,23 +57,6 @@ export interface EventCalendarProps {
   initialView?: CalendarView;
 }
 
-function addEventToGoogleCalendar(event: CalendarEvent) {
-  const formatDate = (date: Date) =>
-    date
-      .toISOString()
-      .replace(/-|:|\.\d{3}/g, ''); // Format: 20250911T154500Z
-
-  const startStr = formatDate(event.start);
-  const endStr = formatDate(event.end);
-
-  const details = encodeURIComponent(event.description || '');
-  const title = encodeURIComponent(event.title);
-  const location = encodeURIComponent(event.location || '');
-
-  const url = `https://calendar.google.com/calendar/r/eventedit?text=${title}&dates=${startStr}/${endStr}&details=${details}&location=${location}`;
-
-  window.open(url, '_blank');
-}
 
 export function EventCalendar({
   events = [],
@@ -359,12 +342,14 @@ export function EventCalendar({
                 onClick={() => {
                   if (events.length > 0) {
                     // Example: Export the first event (you can customize to export all)
-                    addEventToGoogleCalendar(events[0]);
+                    // addEventToGoogleCalendar(events[0]);
+
+                    downloadIcsFile(events);
                   }
 
                 }}
               >
-                + Google Calendar
+                + Download Calendar
               </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

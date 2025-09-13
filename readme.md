@@ -68,7 +68,31 @@ Add `.env` file in `apps/client`, check out `sample.env`
 ### Deployment 
 
 You can deploy the app using vercel, netlify, cloudflare, or any node server. As the app uses tanstack start. 
+#### Vercel
 
+set `target : "vercel" ` in `vite.config.ts`
+
+```bash
+npx vercel deploy --prod    
+```
+
+#### Cloudflare
+
+set `target : "cloudflare-modul" ` in `vite.config.ts`
+
+```bash
+npx wrangler deploy .output/server/index.mjs --assets .output/public
+
+```
+
+#### Netlify 
+
+set `targe: "netlify"` in `vite.confg.ts`
+
+```bash
+netlify deploy
+
+```
 
 
 

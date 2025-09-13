@@ -386,6 +386,7 @@ export const createMedicineSchedule = createServerFn({
 
         const payload = {
             ...data,
+
             startDate: new Date(data.startDate),
             endDate: new Date(data.endDate),
 

@@ -78,6 +78,8 @@ export function MedicineScheduleForm({ mode }: { mode: "card" | "dialog" }) {
 
             const payload = {
                 ...values,
+                dosage: Number(values.dosage),
+                timesPerDay: Number(values.timesPerDay),
                 recurrenceRule,
             };
 

@@ -324,6 +324,57 @@ export const createEventsTool = (userId: string) =>
     });
 
 
+export const createBulkEventsTool = (userId: string) =>
+    tool({
+        description: "Create multiple events for a member in bulk",
+        inputSchema: z.object({
+            events: z.array(
+                z.object({
+                    memberId: z.string().describe("The ID of the member"),
+                    title: z.string().describe("Title of the event"),
+                    description: z.string().describe("Detailed description of the event"),
+                    startTime: z.string().describe("yyyy-MM-dd HH:mm:ss format of event start time"),
+                    endTime: z.string().describe("yyyy-MM-dd HH:mm:ss format of event end time"),
+                    allDay: z.boolean().optional().describe("Is this an all-day event"),
+                    visibility: visibilityEnum
+                        .optional()
+                        .default("private")
+                        .describe("Event visibility (public or private)"),
+                    location: z.string().optional().default("").describe("Event location"),
+                    color: eventColorEnum
+                        .optional()
+                        .default("blue")
+                        .describe("Color for event display"),
+                })
+            ).describe("Array of event objects to create"),
+        }),
+        execute: async ({ events }) => {
+            console.log(`Creating ${events.length} events in bulk ✅`);
+
+            const eventsData = events.map((e) => ({
+                userId,           // Injected from auth context
+                memberId: e.memberId,
+                title: e.title,
+                description: e.description,
+                startTime: e.startTime,
+                endTime: e.endTime,
+                visibility: e.visibility,
+                location: e.location,
+                color: e.color,
+            }));
+
+            console.log("Prepared events data:", eventsData);
+
+            try {
+                const insertedEvents = await db.insert(event).values(eventsData);
+                return insertedEvents;
+            } catch (error) {
+                console.error("Error in createBulkEventsTool:", error);
+                throw new Error("Failed to create bulk events");
+            }
+        },
+    });
+
 export default async function getTools(ctx: { userId: string }) {
     return {
         getMembers,
@@ -338,7 +389,8 @@ export default async function getTools(ctx: { userId: string }) {
         createDietTool: createDietTool(ctx.userId),
         createMedicineTool: createMedicineTool(ctx.userId),
         findRelevantContent: findRelevantContent,
-        createEvents: createEventsTool(ctx.userId)
+        createEvents: createEventsTool(ctx.userId),
+        createBulkEventsTool: createBulkEventsTool(ctx.userId),
     };
 }
 
