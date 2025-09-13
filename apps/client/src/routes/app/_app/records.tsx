@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import {
     Table,
@@ -40,7 +40,6 @@ import { toast } from "sonner";
 
 function FileUploadForm() {
     const [file, setFile] = useState<File | null>(null);
-    const [title, setTitle] = useState("");
     const [loading, setLoading] = useState(false);
     const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
 

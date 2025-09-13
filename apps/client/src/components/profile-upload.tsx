@@ -117,6 +117,8 @@ export default function ProfileUpload({ value, onChange }: {
   // State for zoom level
   const [zoom, setZoom] = useState(1)
 
+  const [loading, setLoading] = useState(false);
+
   // Callback for Cropper to provide crop data - Wrap with useCallback
   const handleCropChange = useCallback((pixels: Area | null) => {
     setCroppedAreaPixels(pixels)
@@ -124,7 +126,11 @@ export default function ProfileUpload({ value, onChange }: {
 
   const handleApply = async () => {
     if (!previewUrl || !fileId || !croppedAreaPixels) return
+
+    setLoading(true);
     try {
+
+
       const croppedBlob = await getCroppedImg(previewUrl, croppedAreaPixels)
       if (!croppedBlob) throw new Error("Failed to generate cropped image blob")
 
@@ -139,9 +145,12 @@ export default function ProfileUpload({ value, onChange }: {
       // notify parent
       onChange?.(data.url)
       setIsDialogOpen(false)
+      setLoading(false)
     } catch (error) {
       console.error("Upload error:", error)
       setIsDialogOpen(false)
+      setLoading(false)
+
     }
   }
 
@@ -246,7 +255,10 @@ export default function ProfileUpload({ value, onChange }: {
                 disabled={!previewUrl}
                 autoFocus
               >
-                Apply
+                {
+                  loading ? "Uploading" : "Apply"
+                }
+
               </Button>
             </DialogTitle>
           </DialogHeader>

@@ -11,25 +11,37 @@ import {
 import { useNavigate, useRouteContext, Link } from "@tanstack/react-router";
 import { createChatSession } from '@/lib/api/chatSession';
 import { navItems } from './nav-items'
+import { useState } from "react";
+import { toast } from "sonner";
 
 export function NavMain() {
   const nav = useNavigate();
   const { user } = useRouteContext({ from: '/app' });
+
+  const [isChat, setIsChat] = useState(false);
+
+
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
             <SidebarMenuButton
+              disabled={isChat}
               onClick={async () => {
+                setIsChat(true);
                 const chatSession = await createChatSession({
                   data: {
                     userId: user?.id || ''
                   }
                 })
 
-                console.log(chatSession);
+                setIsChat(false);
+
+                toast("New Chat session Created ")
+
                 nav({ to: `/app/chat/${chatSession.id}` })
+
 
               }}
               tooltip="Quick Upload"

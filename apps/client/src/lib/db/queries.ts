@@ -47,6 +47,9 @@ export const getChatMessages = createServerFn().middleware([authMiddleware]).han
 
 export const memberSchema = createInsertSchema(member, {
     dob: z.string(),
+    name: z.string().min(3, { message: "Name must be at least 3 characters long" }),
+    relation: z.string().min(2, { message: "relation must be atlest 2 characters long " }),
+
     conditions: z.string().optional(), // Expect stringified JSON
 })
 

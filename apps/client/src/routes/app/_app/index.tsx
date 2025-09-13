@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import authClient from "~/lib/auth/auth-client";
-import { AddMemberForm } from './members'
+import { AddMemberForm } from '~/components/forms/add-member-form'
 import { MedicineForm, MedicineScheduleForm } from "./medicines";
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";

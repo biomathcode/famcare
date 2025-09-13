@@ -1,29 +1,17 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-    Form,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormControl,
-    FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { format } from "date-fns"
 import { Trash2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { ConditionPicker } from "~/components/condition-picker";
-import { createMembers, deleteMember, getMembers, memberFormData, memberSchema } from "~/lib/db/queries";
+import { deleteMember, getMembers, memberFormData, } from "~/lib/db/queries";
 import { LoadingScreen } from "~/components/loading-screen";
-import authClient from "~/lib/auth/auth-client";
-import ProfileUpload from "~/components/profile-upload";
+import { AddMemberForm } from "~/components/forms/add-member-form";
+
 
 
 export const Route = createFileRoute("/app/_app/members")({
@@ -36,165 +24,7 @@ export const Route = createFileRoute("/app/_app/members")({
 });
 
 
-export function AddMemberForm() {
 
-    const { data: session } = authClient.useSession();
-
-    const form = useForm<memberFormData>({
-        defaultValues: {
-            name: "",
-            relation: "",
-            dob: '',
-            gender: "",
-            userId: session?.user?.id,
-            imageUrl: "",
-            conditions: "[]",
-        },
-        resolver: zodResolver(memberSchema),
-
-    });
-
-
-    const router = useRouter();
-
-    const handleSubmit: SubmitHandler<memberFormData> = async (values) => {
-        console.log('submitted', values);
-        try {
-            await createMembers({
-                data: { ...values, userId: session?.user?.id || ' ' },
-            });
-
-            toast.success("Member added successfully");
-            form.reset();
-            router.invalidate();
-
-        } catch (err) {
-            toast.error("Failed to add member");
-            console.error(err);
-        }
-    }
-
-    return (
-        <Card className="p-6  w-full sm:w-1/3    ">
-            <h2 className="text-xl font-semibold mb-4">Add Member</h2>
-
-
-
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-                    <FormField
-                        control={form.control}
-                        name="imageUrl"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Profile Image</FormLabel>
-                                <FormControl>
-                                    <ProfileUpload value={field.value} onChange={field.onChange} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
-
-                    <FormField
-                        control={form.control}
-                        name="conditions"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Select Condition</FormLabel>
-                                <FormControl>
-                                    <ConditionPicker
-                                        value={JSON.parse(field.value || ' ')}
-                                        onChange={(values) => field.onChange(JSON.stringify(values))}
-                                        placeholder="Choose a condition..."
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
-
-
-                    <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Name</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Enter name" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
-                    <FormField
-                        control={form.control}
-                        name="relation"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Relation</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="e.g. Father, Mother, Son" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
-                    <FormField
-                        control={form.control}
-                        name="dob"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Date of Birth</FormLabel>
-                                <FormControl>
-                                    <Input type="date" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
-                    <FormField
-                        control={form.control}
-                        name="gender"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Gender</FormLabel>
-                                <Select onValueChange={field.onChange} value={field?.value ?? " "}>
-                                    <FormControl>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select gender" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        <SelectItem value="male">Male</SelectItem>
-                                        <SelectItem value="female">Female</SelectItem>
-                                        <SelectItem value="other">Other</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
-
-
-                    <Button type="submit"
-                        disabled={form.formState.isSubmitting}
-                        className="w-full">
-                        Add Member
-                    </Button>
-                </form>
-            </Form>
-        </Card>
-
-    )
-}
 
 
 function RouteComponent() {
