@@ -21,16 +21,16 @@ Click Create Chat -> db chat session in created -> incremental save the chat_mes
 -[x] Create Diet plan
 -[x] Add Calendar View - p0
 -[x] Add validation in forms - p0
--[] Add Data isolation By userId - p0
--[] remove the lib/api.ts -> lib/db/queries.ts - p0
+-[x] Add Data isolation By userId - p0
+-[x] remove the lib/api.ts -> lib/db/queries.ts - p0
 
--[] For the medicines tab, user is not able to add any medicines, if new  - p0
+-[x] For the medicines tab, user is not able to add any medicines, if new  - p0
 
 
 
--[] Refactor and save the data in the chat system backend and not on the frontend
--[] Add loading states - p1
--[] Add error handling - p2
+-[x] Refactor and save the data in the chat system backend and not on the frontend
+-[x] Add loading states - p1
+-[x] Add error handling - p2
 -[] Add Support for input files in the chat system- https://ai-sdk.dev/cookbook/guides/multi-modal-chatbot - p1
 -[] Add Q/A system using the uploaded Files - p1
 -[] Add Onboarding flow - p1

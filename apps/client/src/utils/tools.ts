@@ -381,7 +381,6 @@ export default async function getTools(ctx: { userId: string }) {
         getDiets,
         getExercises,
         getMedicine,
-
         getDrugLabel: getDrugLabelTool,
         getAdverseEvents: getAdverseEventsTool,
         getDrugRecalls: getDrugRecallsTool,
@@ -393,4 +392,7 @@ export default async function getTools(ctx: { userId: string }) {
         createBulkEventsTool: createBulkEventsTool(ctx.userId),
     };
 }
+
+
+
 

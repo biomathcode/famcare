@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import BigCalendar from "@/components/big-calendar";
-import { CalendarProvider } from "@/components/event-calendar/calendar-context";
 import { LoadingScreen } from "~/components/loading-screen";
 import { getEvents } from "~/lib/db/queries";
 import { CalendarEvent, EventColor } from "~/components/event-calendar";
@@ -36,16 +35,7 @@ function RouteComponent() {
   console.log('events', events)
 
   return <div>{events &&
-    <BigCalendar initialEvents={[...events,
-    {
-      id: "test",
-      title: "Test Event",
-      start: new Date(),
-      end: new Date(new Date().getTime() + 60 * 60 * 1000),
-      allDay: false,
-      color: "blue",
-    }
-    ]} />
+    <BigCalendar initialEvents={[...events]} />
 
 
   }</div>;

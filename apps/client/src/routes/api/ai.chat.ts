@@ -20,7 +20,6 @@ type: "Activity" use color: "rose"
 You can use the following tools to help the user:
 
 - getMembers: Use this tool to get all members from the database
-- displayWeather: Use this tool to get the current weather for a location
 - createExerciseGoalTool: Use this tool to create an exercise goal for a member
 - createDietTool: Use this tool to create a diet plan for a member
 - createMedicine: Use this tool to log a medicine entry for a member
