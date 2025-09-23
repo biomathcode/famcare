@@ -1,7 +1,7 @@
 {
 	"name": "@biomathcode/react-medicine-select",
 	"description": "A lightweight React component for searching and selecting medicines with async autocomplete support using react-select.",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"author": "Pratik Sharma<sharma.pratik2016@gmail.com>",
 	"license": "MIT",
 	"keywords": [
