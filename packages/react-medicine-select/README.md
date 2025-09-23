@@ -2,7 +2,17 @@
 
 # `react-medicine-select`
 
+[![npm version](https://img.shields.io/npm/v/@biomathcode/react-medicine-select?color=blue&label=npm)](https://www.npmjs.com/package/@biomathcode/react-medicine-select)
+[![npm downloads](https://img.shields.io/npm/dm/@biomathcode/react-medicine-select?color=green&label=downloads)](https://www.npmjs.com/package/@biomathcode/react-medicine-select)
+[![Storybook](https://img.shields.io/badge/Storybook-Demo-orange)](https://biomathcode.github.io/famcare/)
+
 A simple React component library for **searching and selecting medicines** using [`react-select/async`](https://react-select.com/async). Supports **single and multi-select** modes.
+
+---
+## Demo
+
+Check out the live Storybook demo:  
+[https://biomathcode.github.io/famcare/](https://biomathcode.github.io/famcare/)
 
 ---
 
