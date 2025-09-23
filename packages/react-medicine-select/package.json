@@ -1,19 +1,27 @@
 {
 	"name": "@biomathcode/react-medicine-select",
-	"description": "",
+	"description": "A lightweight React component for searching and selecting medicines with async autocomplete support using react-select.",
 	"version": "0.0.1",
 	"author": "Pratik Sharma<sharma.pratik2016@gmail.com>",
 	"license": "MIT",
 	"keywords": [
 		"react",
 		"medicine",
-		"select",
-		"medicine select",
-		"autocomplete"
+		"react-select",
+		"autocomplete",
+		"multi-select",
+		"form",
+		"healthcare",
+		"pharmacy"
 	],
+	"homepage": "https://github.com/biomathcode/famcare/tree/main/packages/react-medicine-select#readme",
 	"repository": {
 		"type": "git",
-		"url": ""
+		"url": "https://github.com/biomathcode/famcare.git",
+		"directory": "packages/react-medicine-select"
+	},
+	"publishConfig": {
+		"access": "public"
 	},
 	"scripts": {
 		"dev": "concurrently \"pnpm build --watch\" \"pnpm storybook\" \"pnpm test\" ",
@@ -37,7 +45,8 @@
 		}
 	},
 	"files": [
-		"dist"
+		"dist",
+		"README.md"
 	],
 	"config": {
 		"commitizen": {
@@ -79,6 +88,7 @@
 		"@vitest/coverage-v8": "3.0.9",
 		"concurrently": "9.1.2",
 		"dotenv": "^16.4.7",
+		"gh-pages": "^6.3.0",
 		"jsdom": "26.0.0",
 		"lefthook": "1.11.3",
 		"prop-types": "15.8.1",
@@ -95,10 +105,10 @@
 		"vitest": "3.0.9"
 	},
 	"peerDependencies": {
-		"react": ">=17",
-		"react-dom": ">=17",
 		"@types/react": "18.3.13",
-		"@types/react-dom": "18.3.1"
+		"@types/react-dom": "18.3.1",
+		"react": ">=17",
+		"react-dom": ">=17"
 	},
 	"pnpm": {
 		"overrides": {
