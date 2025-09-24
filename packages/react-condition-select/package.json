@@ -1,7 +1,7 @@
 {
 	"name": "@biomathcode/react-condition-select",
 	"description": "A lightweight React component for searching and selecting medical conditions with async autocomplete support using react-select.",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"author": "Pratik Sharma<sharma.pratik2016@gmail.com>",
 	"license": "MIT",
 	"keywords": [
